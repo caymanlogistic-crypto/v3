@@ -1,0 +1,52 @@
+[2026-05-08 10:31:54] INFO: Home page visited
+[2026-05-08 10:33:11] ERROR: Class "App\Modules\Home\Controllers\HomeController" not found
+[2026-05-08 10:33:54] ERROR: Class "App\Modules\Home\Controllers\HomeController" not found
+[2026-05-08 10:33:55] ERROR: Class "App\Modules\Home\Controllers\HomeController" not found
+[2026-05-08 10:35:07] INFO: HomeController@index
+[2026-05-08 10:41:26] ERROR: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+[2026-05-08 10:55:40] ERROR: Class "App\Core\Repository\BaseRepository" not found
+[2026-05-08 11:32:49] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/app/Modules/Contractors/Views/index.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 11:40:37] INFO: HomeController@index
+[2026-05-08 11:42:14] INFO: HomeController@index
+[2026-05-08 11:43:11] ERROR: Undefined constant "APP_ROOT"
+[2026-05-08 11:44:04] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/Views/components/button-link.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 11:48:35] ERROR: Call to undefined method App\Modules\Contractors\Repositories\ContractorRepository::all()
+[2026-05-08 12:07:40] ERROR: Call to undefined method App\Modules\Contractors\Repositories\ContractorRepository::all()
+[2026-05-08 12:10:04] ERROR: Class "App\Core\View\View" not found
+[2026-05-08 13:11:04] ERROR: SQLSTATE[HY000] [2002] No such file or directory
+[2026-05-08 13:11:27] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/Modules/Modules/Contractors/Views/index.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 13:12:47] ERROR: Path must not be empty
+[2026-05-08 13:14:23] ERROR: Call to undefined method App\Modules\Contractors\Repositories\ContractorRepository::paginate()
+[2026-05-08 13:14:30] ERROR: Call to undefined method App\Modules\Contractors\Repositories\ContractorRepository::paginate()
+[2026-05-08 13:15:18] ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'spugovxsim_fr3.contractors' doesn't exist
+[2026-05-08 13:19:04] ERROR: syntax error, unexpected token "\"
+[2026-05-08 13:19:41] ERROR: syntax error, unexpected token "\"
+[2026-05-08 13:20:23] ERROR: syntax error, unexpected token "\"
+[2026-05-08 13:20:24] ERROR: syntax error, unexpected token "\"
+[2026-05-08 13:21:14] INFO: HomeController@index
+[2026-05-08 16:17:40] INFO: HomeController@index
+[2026-05-08 16:17:42] INFO: HomeController@index
+[2026-05-08 16:20:57] INFO: HomeController@index
+[2026-05-08 16:55:30] ERROR: Class "App\Core\Controller\Controller" not found
+[2026-05-08 16:58:04] ERROR: SQLSTATE[HY000] [1045] Access denied for user 'spugovxsim_v3'@'localhost' (using password: YES)
+[2026-05-08 18:41:28] ERROR: App\Core\Routing\Router::get(): Argument #2 ($handler) must be of type callable, array given, called in /home/s/spugovxsim/public_html/v3/routes/web.php on line 62
+[2026-05-08 18:41:29] ERROR: App\Core\Routing\Router::get(): Argument #2 ($handler) must be of type callable, array given, called in /home/s/spugovxsim/public_html/v3/routes/web.php on line 62
+[2026-05-08 18:47:52] ERROR: Call to undefined function request()
+[2026-05-08 18:47:52] ERROR: Call to undefined function request()
+[2026-05-08 18:47:53] ERROR: Call to undefined function request()
+[2026-05-08 18:49:50] ERROR: Call to undefined function request()
+[2026-05-08 18:50:37] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/contractors.index.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 18:53:51] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/Views/contractors/index.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 18:53:52] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/Views/contractors/index.php' (include_path='.:/usr/share/php7:/usr/share/php')
+[2026-05-08 18:55:08] ERROR: Call to undefined function e()
+[2026-05-08 18:58:54] ERROR: Call to undefined function e()
+[2026-05-08 18:58:55] ERROR: Call to undefined function e()
+[2026-05-08 18:58:55] ERROR: Call to undefined function e()
+[2026-05-08 18:58:55] ERROR: Call to undefined function e()
+[2026-05-08 19:11:44] ERROR: App\Modules\Contractors\Controllers\ContractorsController::index(): Return value must be of type App\Core\Http\Response, null returned
+[2026-05-08 19:12:39] ERROR: App\Modules\Contractors\Controllers\ContractorsController::index(): Return value must be of type App\Core\Http\Response, null returned
+[2026-05-08 19:31:01] ERROR: Call to undefined method App\Modules\Contractors\Controllers\ContractorsController::create()
+[2026-05-08 19:42:07] ERROR: Call to undefined method App\Modules\Contractors\Controllers\ContractorsController::create()
+[2026-05-08 19:45:50] ERROR: Call to undefined method App\Modules\Contractors\Controllers\ContractorsController::create()
+[2026-05-08 19:46:06] ERROR: Call to undefined method App\Modules\Contractors\Controllers\ContractorsController::create()
+[2026-05-08 19:47:13] ERROR: Failed opening required '/home/s/spugovxsim/public_html/v3/app/Views/contractors/create.php' (include_path='.:/usr/share/php7:/usr/share/php')

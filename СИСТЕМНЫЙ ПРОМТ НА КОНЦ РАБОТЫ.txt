@@ -1,0 +1,1132 @@
+# Transport ERP Platform v3 — Full Project Context
+
+---
+
+# Project Type
+
+Custom modular ERP/CRM platform for transport and logistics operations.
+
+Main stack:
+- PHP 8.4
+- Custom MVC-like architecture
+- PDO + MySQL
+- No Laravel/Symfony
+- Modular architecture
+- Shared hosting
+- Public path:
+  `/v3/public`
+
+Project goal:
+
+Build production-quality transport ERP with modern architecture standards while keeping lightweight custom core.
+
+---
+
+# Current Architecture
+
+## Current Structure
+
+```text
+app/
+  Core/
+  Modules/
+  Views/
+bootstrap/
+config/
+database/
+public/
+routes/
+storage/
+```
+
+---
+
+# Core Important Classes
+
+## Router
+
+```text
+app/Core/Routing/Router.php
+```
+
+Responsibilities:
+- GET routes
+- POST routes
+- route parameters
+- middleware support
+- dispatch()
+
+Routes registered in:
+
+```text
+routes/web.php
+```
+
+Example:
+
+```php
+$router->get(
+    '/contractors',
+    static function (): void {
+        (new ContractorsController())->index(
+            new Request()
+        );
+    }
+);
+```
+
+---
+
+## Base Controller
+
+```text
+app/Core/Controller/Controller.php
+```
+
+Responsibilities:
+- rendering views
+- redirects
+- common controller helpers
+
+---
+
+## Database
+
+```text
+app/Core/Database/Database.php
+```
+
+Uses:
+- PDO
+- singleton-like static connection
+- prepared statements only
+
+---
+
+## Auth
+
+```text
+app/Core/Auth/Auth.php
+```
+
+Responsibilities:
+- authentication
+- session user
+- permission checks
+
+---
+
+## View
+
+```text
+app/Core/View/View.php
+```
+
+Uses:
+- dot notation
+- layouts
+- output buffering
+
+Example:
+
+```php
+$this->view('contractors.index');
+```
+
+Resolves to:
+
+```text
+app/Views/contractors/index.php
+```
+
+Main layout:
+
+```text
+app/Views/layouts/main.php
+```
+
+---
+
+## Validator
+
+```text
+app/Core/Validation/Validator.php
+```
+
+Responsibilities:
+- reusable validation logic
+- field validation
+- error collection
+
+---
+
+## Flash
+
+```text
+app/Core/Session/Flash.php
+```
+
+Methods:
+
+```php
+Flash::success()
+Flash::error()
+Flash::getSuccess()
+Flash::getError()
+```
+
+Integrated into:
+
+```text
+app/Views/layouts/main.php
+```
+
+---
+
+## Paginator
+
+```text
+app/Core/Pagination/Paginator.php
+```
+
+Responsibilities:
+- pagination calculations
+- total pages
+- offsets
+
+---
+
+# Helpers
+
+Helpers file MUST be loaded in:
+
+```text
+bootstrap/app.php
+```
+
+Helpers path:
+
+```text
+app/helpers.php
+```
+
+Current helper:
+
+```php
+function e(?string $value): string
+```
+
+Purpose:
+- htmlspecialchars wrapper
+- XSS protection
+
+---
+
+# Database Conventions
+
+```text
+Database Rules
+- snake_case tables
+- snake_case columns
+- id BIGINT unsigned
+- timestamps:
+  created_at
+  updated_at
+  deleted_at
+- soft delete by deleted_at
+- utf8mb4 everywhere
+- InnoDB only
+```
+
+---
+
+# PHP Environment
+
+IMPORTANT:
+
+Global `php` command uses old PHP 5.2.
+
+Always use:
+
+```bash
+php8.4
+```
+
+or:
+
+```bash
+/usr/bin/php8.4
+```
+
+Syntax checks:
+
+```bash
+php8.4 -l file.php
+```
+
+---
+
+# Authentication / RBAC
+
+Already implemented and working.
+
+Components:
+
+```text
+app/Core/Auth/
+app/Core/Middleware/
+```
+
+Implemented:
+- login/logout
+- sessions
+- RBAC
+- permissions
+- AuthMiddleware
+- PermissionMiddleware
+
+Permissions:
+- contractors.view
+- contractors.create
+- contractors.edit
+
+---
+
+# Contractors Module
+
+Main module:
+
+```text
+app/Modules/Contractors/
+```
+
+---
+
+# IMPORTANT NAMING
+
+OLD controller exists:
+
+```text
+ContractorController.php
+```
+
+NEW active controller:
+
+```text
+ContractorsController.php
+```
+
+Routes use:
+
+```php
+use App\Modules\Contractors\Controllers\ContractorsController;
+```
+
+Do NOT confuse them.
+
+---
+
+# Module Structure Standard
+
+```text
+ModuleName/
+  Controllers/
+  Repositories/
+  Services/
+  Validation/
+  DTO/
+```
+
+Views stored globally:
+
+```text
+app/Views/{module}/
+```
+
+Important:
+
+Do NOT mix:
+
+```text
+Modules/Contractors/Views
+```
+
+with:
+
+```text
+app/Views/contractors
+```
+
+Current project standard uses:
+
+```text
+app/Views/{module}/
+```
+
+---
+
+# Contractors Module Structure
+
+```text
+app/Modules/Contractors/
+  Controllers/
+  Repositories/
+  Services/
+  Validation/
+```
+
+Views:
+
+```text
+app/Views/contractors/
+```
+
+---
+
+# Current Contractors Features
+
+Implemented and working:
+
+## CRUD
+
+- contractors list
+- contractor create
+- contractor edit
+- contractor update
+- contractor soft delete
+
+---
+
+# Pagination
+
+Backend pagination implemented.
+
+Repository method:
+
+```php
+paginate(int $page, int $perPage, string $search)
+```
+
+Returns:
+
+```php
+[
+    'data' => [],
+    'pagination' => []
+]
+```
+
+Pagination UI not implemented yet.
+
+---
+
+# Search
+
+Search works in contractors list.
+
+Fields:
+- name
+- inn
+- contact1_phone
+
+---
+
+# Soft Delete
+
+Uses:
+
+```sql
+deleted_at
+```
+
+Deleted rows are hidden.
+
+---
+
+# Validation
+
+Validator:
+
+```text
+app/Modules/Contractors/Validation/ContractorValidator.php
+```
+
+Current validation:
+- required name
+- required inn
+- email validation
+- status validation
+
+Recommended improvements:
+- min length name
+- strict INN regex
+
+---
+
+# Current Contractor Fields
+
+```text
+id
+name
+inn
+contact1_phone
+contact1_email
+legal_address
+status
+created_at
+updated_at
+deleted_at
+```
+
+Statuses:
+
+```text
+active
+blocked
+archive
+```
+
+---
+
+# Routes
+
+Current contractors routes:
+
+```text
+/contractors
+/contractors/create
+/contractors/store
+/contractors/{id}/edit
+/contractors/{id}/update
+/contractors/{id}/delete
+```
+
+Public URLs:
+
+```text
+/v3/public/contractors
+```
+
+---
+
+# Controller Rules
+
+```text
+- controllers return void
+- rendering through $this->view()
+- redirects through $this->redirect()
+- no echo in controllers
+- no SQL in controllers
+- Request object only
+- controllers should stay thin
+```
+
+---
+
+# Routing Rules
+
+```text
+- REST-like URLs
+- GET only for pages
+- POST for mutations
+- route params:
+  /module/{id}/edit
+```
+
+Examples:
+
+```text
+/contractors
+/contractors/create
+/contractors/store
+/contractors/{id}/edit
+/contractors/{id}/update
+/contractors/{id}/delete
+```
+
+---
+
+# Security Rules
+
+```text
+- prepared statements only
+- escape output via e()
+- CSRF required for POST forms
+- no raw $_POST in controllers
+- Request object only
+- validate all external input
+- never trust client input
+```
+
+---
+
+# UI Direction
+
+ERP-style admin interface.
+
+Preferred:
+- clean tables
+- compact forms
+- reusable components
+- minimalistic styling
+- lightweight CSS
+
+Avoid:
+- huge inline styles
+- random bootstrap templates
+- mixed UI styles
+
+---
+
+# UI Rules
+
+```text
+- ERP-like compact UI
+- desktop-first
+- reusable CSS classes
+- lightweight CSS
+- tables optimized for operations
+- avoid random bootstrap templates
+- avoid huge inline styles
+- consistent spacing/styles
+```
+
+---
+
+# Coding Standards
+
+```text
+- strict_types always
+- final classes by default
+- typed properties
+- typed arguments
+- typed returns
+- PSR-12 formatting style
+- one responsibility per class
+- repositories only for DB access
+- services for business logic
+- views only rendering
+```
+
+---
+
+# Current State
+
+Project already transitioned from:
+
+```text
+legacy PHP scripts
+```
+
+into:
+
+```text
+modular ERP architecture
+```
+
+Current maturity:
+
+```text
+FOUNDATION / EARLY CORE STAGE
+```
+
+Already implemented:
+
+```text
+✔ router
+✔ modular structure
+✔ repositories
+✔ controllers
+✔ validation
+✔ layouts/views
+✔ RBAC
+✔ auth
+✔ flash messages
+✔ pagination backend
+✔ CRUD
+✔ soft delete
+✔ PDO prepared statements
+```
+
+---
+
+# Current Technical Debt
+
+Not implemented yet:
+
+```text
+- CSRF protection
+- centralized exception handler
+- BaseRepository
+- reusable form components
+- reusable table component
+- API response layer
+- route groups
+- request DTO layer
+- policy layer
+```
+
+---
+
+# Future Planned Core Components
+
+```text
+- BaseRepository
+- BaseService
+- CSRF middleware
+- ExceptionHandler
+- API Response layer
+- Request DTO layer
+- Policy layer
+- Event system
+- Queue system
+- Notification system
+```
+
+---
+
+# Future Architecture Direction
+
+```text
+Target:
+Lightweight custom enterprise modular ERP platform
+```
+
+Future preferred layers:
+
+```text
+Controllers
+Services
+Repositories
+DTO
+Policies
+Validation
+Core
+```
+
+---
+
+# Performance Direction
+
+```text
+- avoid unnecessary queries
+- pagination everywhere
+- indexes for searchable columns
+- lazy heavy calculations
+- minimize duplicated DB calls
+```
+
+---
+
+# Current Development Priorities
+
+## Stage 1 — UX Foundation
+
+- pagination UI
+- reusable table styles
+- reusable form styles
+- filters
+- sorting
+- better validation UX
+
+---
+
+## Stage 2 — Security/Core
+
+- CSRF protection
+- BaseRepository
+- request validation abstraction
+- better exception handling
+- reusable response layer
+- route groups
+- middleware pipeline cleanup
+
+---
+
+## Stage 3 — ERP Expansion
+
+Potential future modules:
+
+- Orders
+- Logistics
+- Drivers
+- Fleet
+- Vehicles
+- Shipments
+- GPS/Tracking
+- Warehouse
+- Finance
+- Documents
+- Users/Roles
+- Notifications
+- Integrations
+
+---
+
+# Debug / Dev Commands
+
+## Logs
+
+```bash
+tail -50 storage/logs/app.log
+
+tail -20 storage/logs/app.log
+
+tail -100 storage/logs/app.log
+
+tail -f storage/logs/app.log
+
+grep ERROR storage/logs/app.log
+```
+
+Main log:
+
+```text
+storage/logs/app.log
+```
+
+---
+
+## Syntax
+
+```bash
+php8.4 -l routes/web.php
+```
+
+---
+
+## Autoload
+
+```bash
+php8.4 composer.phar dump-autoload
+```
+
+---
+
+## DB Test
+
+```bash
+php8.4 -r "require 'bootstrap/app.php'; \App\Core\Database\Database::connection(); echo 'DB OK';"
+```
+
+---
+
+## RBAC Test
+
+```bash
+php8.4 -r "require 'bootstrap/app.php'; use App\Core\Auth\Auth; $_SESSION['user_id']=1; var_dump(Auth::can('contractors.view'));"
+```
+
+---
+
+## Useful Search Commands
+
+```bash
+grep -R "contractors" app routes
+
+find app routes -type f -name "*.php"
+```
+
+---
+
+# Known Important Issues
+
+## Shared hosting environment
+
+Global php command is old PHP 5.2.
+
+Always use:
+
+```bash
+php8.4
+```
+
+---
+
+## Heredoc sometimes breaks in SSH shell
+
+Large:
+
+```bash
+cat <<'PHP'
+```
+
+blocks may corrupt.
+
+In difficult cases use:
+
+```bash
+nano file.php
+```
+
+instead.
+
+---
+
+# Architecture Direction
+
+Target architecture:
+
+```text
+Lightweight custom enterprise modular ERP
+```
+
+Guidelines:
+- no spaghetti PHP
+- modular domain structure
+- thin controllers
+- repositories for DB access
+- services for business logic
+- reusable core components
+- secure defaults
+- maintainable codebase
+
+---
+
+# Additional Architecture Clarifications
+
+## CSRF Protection
+
+Current state:
+
+```text
+NOT IMPLEMENTED YET
+```
+
+Current POST forms work without CSRF validation.
+
+Planned architecture:
+
+```text
+Session-based CSRF tokens
+```
+
+Planned components:
+
+```text
+app/Core/Security/Csrf.php
+app/Core/Middleware/CsrfMiddleware.php
+```
+
+Planned helpers:
+
+```php
+csrf_token()
+csrf_field()
+```
+
+Reasoning:
+- server-rendered ERP
+- simpler architecture
+- no SPA complexity
+- session-based auth already used
+
+Double-submit cookies are NOT planned.
+
+---
+
+## Request Object
+
+Current Request implementation is minimal/lightweight.
+
+Currently used pattern:
+
+```php
+$request->input('name')
+```
+
+Current functionality:
+- input()
+- basic GET/POST wrapper
+
+Not implemented yet:
+- validate()
+- all()
+- only()
+- except()
+- file()
+- query()
+- typed DTO mapping
+
+Planned future API:
+
+```php
+$request->all()
+$request->only([])
+$request->except([])
+$request->has()
+$request->method()
+$request->isPost()
+```
+
+---
+
+## BaseRepository
+
+Current state:
+
+```text
+NOT IMPLEMENTED
+```
+
+Repositories are currently custom per-module.
+
+Planned BaseRepository methods:
+
+```php
+find()
+findOrFail()
+paginate()
+create()
+update()
+delete()
+softDelete()
+count()
+```
+
+Soft delete handling should become automatic:
+
+```sql
+WHERE deleted_at IS NULL
+```
+
+Expected architecture:
+
+```php
+protected string $table;
+
+protected bool $softDelete = true;
+```
+
+---
+
+## Router Parameters
+
+Current router already supports route parameters.
+
+Working example:
+
+```text
+/contractors/{id}/edit
+```
+
+Multiple parameters are expected to work:
+
+```text
+/contractors/{contractorId}/orders/{orderId}/edit
+```
+
+But:
+- route constraints are not implemented
+- named regex patterns are not implemented
+- advanced route grouping not implemented
+
+Router is intentionally lightweight/custom.
+
+---
+
+## Error Handling
+
+Current state:
+- partial ExceptionHandler exists
+- errors logged into:
+
+```text
+storage/logs/app.log
+```
+
+Current behavior is closer to development mode.
+
+Planned:
+- APP_DEBUG=true/false
+- production-safe 500 pages
+- centralized exception handling
+
+Development mode should show:
+- stack traces
+- detailed exceptions
+
+Production mode should:
+- hide stack traces
+- log only
+
+---
+
+## Database Schema / Migrations
+
+Current state:
+
+```text
+Manual schema management
+```
+
+Currently:
+- SQL dumps used
+- manual DB updates
+- existing production-like tables
+
+Migration system is planned but not implemented.
+
+Preferred lightweight structure:
+
+```text
+database/
+  migrations/
+  seeds/
+```
+
+Planned CLI:
+
+```bash
+php8.4 cli migrate
+```
+
+No heavy Laravel-style migration system planned.
+
+---
+
+## Contractors Table Status
+
+Current contractors table already behaves like real production data.
+
+Evidence:
+- real records exist
+- CRUD fully operational
+- soft delete affects live data
+- IDs already used in production-like flow
+
+This is NOT a demo/mock table anymore.
+
+---
+
+# Important Notes For Next AI
+
+- Do NOT revert architecture back into legacy flat PHP.
+- Continue modular structure.
+- Continue using PHP 8.4 syntax.
+- Always use `php8.4` in commands.
+- Contractors module already works.
+- Do not break routes.
+- Active controller:
+  `ContractorsController.php`
+- Flash messages already integrated.
+- Soft delete already implemented.
+- Pagination backend already implemented.
+
+View paths use:
+
+```php
+contractors.index
+```
+
+NOT:
+
+```php
+Modules/Contractors/Views/index
+```
+
+Main layout:
+
+```text
+app/Views/layouts/main.php
+```
