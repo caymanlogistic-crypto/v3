@@ -1,0 +1,21 @@
+name: Auto Deploy to Server
+
+on:
+  push:
+    branches:
+      - feature/backend-contractors
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 77.222.40.251
+          username: spugovxsim
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/public_html/v3
+            git pull origin feature/backend-contractors
