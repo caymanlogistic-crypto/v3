@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
+      - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 77.222.40.251
+          host: vh326.timeweb.ru
           username: spugovxsim
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
