@@ -1,39 +1,26 @@
-# AI Rules
+# AI Rules — Quick Reference
 
-## Forbidden refactors
+- Use this file for fast operational reminders.
+- The primary AI behavior file is `docs/AI_CONTEXT_RULES.md`.
 
-- Do not rewrite the system into Laravel.
-- Do not introduce Symfony or heavy frameworks.
-- Do not replace the custom routing system.
-- Do not replace the PDO persistence layer.
-- Do not convert the codebase into microservices.
-- Do not introduce DDD, CQRS, or event sourcing.
+## Core boundaries
 
-## Architectural boundaries
+- Preserve the lightweight modular ERP architecture.
+- Keep PHP 8.4 as the runtime target.
+- Keep the custom router and PDO-based DB layer.
+- Preserve existing routes, module structure, and DB schema.
 
-- Preserve the current modular structure under `app/Modules`.
-- Keep the platform as a lightweight enterprise modular ERP.
-- Retain the custom core in `app/Core`.
-- Avoid broad architectural rewrites.
+## Quick do nots
 
-## ERP conventions
+- No Laravel, Symfony, or heavy framework rewrites.
+- No ORM replacement.
+- No SPA frontend architecture.
+- No microservices or event-sourcing patterns.
+- No unnecessary abstractions.
 
-- Desktop-first operational UI.
-- Compact tables and forms.
-- Lightweight CSS and reusable styles.
-- Focus on real transport/logistics business use cases.
+## Quick principles
 
-## Stabilization-first philosophy
-
-- Prioritize stabilization and gradual improvement.
-- Fix technical debt incrementally.
-- Document real limitations honestly.
-- Improve consistency without introducing unnecessary complexity.
-
-## AI behavior expectations
-
-- Document actual implementation, not imagined features.
-- Keep changes aligned with current architecture.
-- Recommend future improvements separately from current implementation.
-- Preserve current working modules.
-- Do not invent nonexistent systems or patterns.
+- Prefer small, safe refactors.
+- Stabilize before adding new complexity.
+- Keep controllers thin and repositories DB-focused.
+- Document real technical debt honestly.

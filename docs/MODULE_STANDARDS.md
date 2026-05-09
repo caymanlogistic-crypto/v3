@@ -3,13 +3,14 @@
 ## Naming conventions
 
 - Module names use PascalCase directories under `app/Modules`.
-- Controllers use `Controller` or plural `Controllers` suffix consistently.
+- Controller files use the plural suffix `Controllers` when active: e.g. `ContractorsController.php`.
+- Avoid legacy duplicate filenames like `ContractorController.php`.
 - Repository classes use `Repository` suffix.
 - Service classes use `Service` suffix.
 - Validation classes use `Validator` suffix.
 - DTOs use descriptive names and `DTO` suffix.
 
-## Module structure
+## Active module structure
 
 Each module should follow this layout:
 
@@ -18,37 +19,62 @@ Each module should follow this layout:
 - `Services/`
 - `Validation/`
 - `DTO/`
-- `Views/`
 
-## Repository rules
+Active views live in `app/Views/{module}/`, not in module-local `app/Modules/{Module}/Views/`.
 
-- Repositories encapsulate direct PDO queries and CRUD operations.
-- Keep SQL in repository layer only.
-- Return arrays or structured DTOs, not raw database resources.
-- Avoid embedding view or response logic in repositories.
+## Real module example: Contractors
 
-## Service rules
+- Controller: `app/Modules/Contractors/Controllers/ContractorsController.php`
+- Repository: `app/Modules/Contractors/Repositories/ContractorRepository.php`
+- Service: `app/Modules/Contractors/Services/ContractorService.php`
+- Validator: `app/Modules/Contractors/Validation/ContractorValidator.php`
+- Active views: `app/Views/contractors/*.php`
 
-- Services coordinate business operations and repository actions.
-- Use services for cross-entity flows and non-trivial use cases.
-- Avoid duplicate service methods that are not used by controllers.
+## Recommended CRUD flow
 
-## Validation rules
+- Form → Controller → Validator → Service → Repository → Redirect/Flash
 
-- Validation belongs to validation classes or a shared validator subsystem.
-- Keep validation rules centralized per module.
-- Return structured error arrays and do not mix view rendering into validation.
+### Example route flow
 
-## Controller rules
+- `GET /contractors`
+- `GET /contractors/create`
+- `POST /contractors/store`
+- `GET /contractors/{id}/edit`
+- `POST /contractors/{id}/update`
+- `POST /contractors/{id}/delete`
 
-- Controllers receive request input and route parameters.
-- Controllers call validation, service, or repository layers.
-- Controllers handle flash messages and redirect/render flows.
-- Keep controller actions focused and avoid heavy business logic.
+## Validation flow
+
+- Controller collects request input.
+- Controller calls module validator.
+- Validator returns structured error arrays.
+- Controller renders the view with errors or proceeds to save.
+
+## Repository responsibilities
+
+- PDO queries only.
+- CRUD operations.
+- Pagination and search.
+- Soft delete.
+- No business logic or rendering.
+
+## Service responsibilities
+
+- Business workflows and orchestration.
+- Cross-entity coordination when needed.
+- No view rendering or SQL.
+
+## Controller responsibilities
+
+- Request handling and input mapping.
+- Validation orchestration.
+- Service or repository calls.
+- Redirects, flash messages, and rendering.
+- Keep controllers thin.
 
 ## Routing rules
 
 - Define routes in `routes/web.php`.
-- Use explicit route handlers and middleware declarations.
-- Keep route definitions simple and stable.
+- Use explicit route handlers with middleware declarations.
+- Keep route definitions stable and readable.
 - Route parameters use `{param}` syntax.

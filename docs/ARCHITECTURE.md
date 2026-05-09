@@ -43,8 +43,10 @@
 - `app/Modules/<ModuleName>/Repositories`
 - `app/Modules/<ModuleName>/Services`
 - `app/Modules/<ModuleName>/Validation`
-- `app/Modules/<ModuleName>/Views`
 - `app/Modules/<ModuleName>/DTO`
+
+Active views are stored in `app/Views/{module}/`.
+Module-local views under `app/Modules/<ModuleName>/Views` are legacy/deprecated and inactive for current rendering.
 
 ## Current architecture limitations
 
