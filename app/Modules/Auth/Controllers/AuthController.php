@@ -7,6 +7,7 @@ namespace App\Modules\Auth\Controllers;
 use App\Core\Auth\Auth;
 use App\Core\Controller\Controller;
 use App\Core\Http\Request;
+use App\Core\Http\Response;
 use App\Core\Session\Flash;
 
 final class AuthController extends Controller
@@ -14,7 +15,10 @@ final class AuthController extends Controller
     public function login(): void
     {
         $this->view(
-            'Modules/Auth/Views/login'
+            'Modules/Auth/Views/login',
+            [
+                'old' => Flash::getOld() ?? [],
+            ]
         );
     }
 
@@ -36,36 +40,32 @@ final class AuthController extends Controller
                 $password
             )
         ) {
+            Flash::setError(
+                'Invalid credentials'
+            );
 
-            Flash::error('Invalid email or password');
+            Flash::setOld([
+                'email' => $email,
+            ]);
 
-            $this->view(
-                'Modules/Auth/Views/login',
-                [
-                    'old' => [
-                        'email' => $email,
-                    ],
-                ]
+            Response::redirect(
+                config('app.url') . '/login'
             );
 
             return;
         }
 
-        header(
-            'Location: ' . config('app.url') . '/contractors'
+        Response::redirect(
+            config('app.url') . '/contractors'
         );
-
-        exit;
     }
 
     public function logout(): void
     {
         Auth::logout();
 
-        header(
-            'Location: ' . config('app.url') . '/login'
+        Response::redirect(
+            config('app.url') . '/login'
         );
-
-        exit;
     }
 }
