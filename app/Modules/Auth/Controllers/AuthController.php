@@ -17,7 +17,7 @@ final class AuthController extends Controller
         $this->view(
             'Modules/Auth/Views/login',
             [
-                'old' => Flash::getOld() ?? [],
+                'old' => [],
             ]
         );
     }
@@ -69,3 +69,4 @@ final class AuthController extends Controller
         );
     }
 }
+
