@@ -9,7 +9,7 @@ Transport ERP v3 is a custom modular transport/logistics ERP platform built for 
 - Lightweight modular monolith.
 - Core framework pieces in `app/Core`.
 - Modules under `app/Modules` with controllers, repositories, services, validation, DTOs, and views.
-- Views are rendered from `app/Views/{module}/`.
+- **Transitional hybrid views**: Contractors uses `app/Views/contractors/`, Auth uses `app/Modules/Auth/Views/` with compatibility layer.
 - Routing is custom and defined in `routes/web.php` using `App\Core\Routing\Router`.
 - Database access is direct PDO with prepared statements.
 - Public entry point is `public/index.php` and the application is served under `/v3/public`.
@@ -18,14 +18,12 @@ Transport ERP v3 is a custom modular transport/logistics ERP platform built for 
 
 ### Active view standard
 
-- Active views live in `app/Views/{module}/`.
-- Legacy module-local `app/Modules/{Module}/Views/` is deprecated/transitional and should not be used for active rendering.
+- **Transitional hybrid state**: Contractors module uses centralized views in `app/Views/contractors/`. Auth module uses module-local views in `app/Modules/Auth/Views/`, with compatibility layer in `app/Views/Modules/Auth/Views/`. Full normalization postponed after stabilization-phase-1.
 
 ### Active controller naming
 
 - Active controller file: `ContractorsController.php`.
-- Duplicate/legacy naming: `ContractorController.php` is dangerous and should be considered deprecated.
-- Duplicate naming can cause autoload confusion, inconsistent routing, and maintenance risk.
+- Legacy duplicate naming: `ContractorController.php` removed during stabilization.
 
 ### Controllers
 
@@ -98,6 +96,14 @@ Validation should remain centralized and reusable. Module validators should coll
 
 - Desktop-first ERP interface.
 - Operational and task-focused.
+
+## Stabilization Status
+
+- **Phase-1 completed**: Runtime fully functional (auth, routing, middleware, contractors CRUD, database, deploy workflow).
+- **Runtime-first strategy**: Prioritized working system over ideal architecture.
+- **Compatibility layer**: Added for Auth views to maintain runtime without refactoring.
+- **Postponed normalization**: Auth module views not yet centralized to avoid instability.
+- **Current deploy workflow**: Functional with git-based deployment and environment config.
 - Compact tables and forms.
 - Reusable lightweight styling.
 - Minimal visual noise.

@@ -11,12 +11,13 @@
 - Preserve the existing lightweight modular architecture.
 - Preserve current route behavior and route definitions.
 - Preserve the current database schema and PDO persistence layer.
-- Preserve active conventions such as `app/Views/{module}/` and `ContractorsController.php`.
+- Preserve active conventions: centralized views for Contractors (`app/Views/contractors/`), module-local for Auth (`app/Modules/Auth/Views/`) with compatibility layer.
 - Prefer incremental changes over broad rewrites.
 - Avoid overengineering and unnecessary complexity.
 - Document technical debt honestly and accurately.
 - Use PHP 8.4 as the target runtime.
 - Follow the modular structure in `app/Core` and `app/Modules`.
+- **Do NOT normalize Auth views yet**: Respect postponed normalization to preserve runtime stability.
 
 ## AI must NOT
 
@@ -26,6 +27,7 @@
 - Create fake abstractions or invented systems.
 - Replace working router, repository, or modular conventions unnecessarily.
 - Introduce microservices, event sourcing, DDD complexity, or ORM migration.
+- **Normalize Auth views prematurely**: Auth uses module-local with compatibility layer; do not move files or refactor without explicit permission.
 
 ## Safe refactor philosophy
 
@@ -37,7 +39,8 @@
 
 ## Operational reminders
 
-- Active views are in `app/Views/{module}/`.
-- Legacy module-local views under `app/Modules/{Module}/Views/` are deprecated.
+- **Transitional views**: Contractors in `app/Views/contractors/`, Auth in `app/Modules/Auth/Views/` with compatibility layer.
+- Legacy module-local views are deprecated except for Auth (transitional).
 - The current active controller naming is `ContractorsController.php`.
-- `ContractorController.php` is legacy/duplicate and should not be used for new runtime behavior.
+- `ContractorController.php` was removed during stabilization.
+- **Stabilization-phase-1 completed**: Runtime works; do not break it with premature normalization.

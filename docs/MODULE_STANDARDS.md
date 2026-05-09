@@ -20,7 +20,10 @@ Each module should follow this layout:
 - `Validation/`
 - `DTO/`
 
-Active views live in `app/Views/{module}/`, not in module-local `app/Modules/{Module}/Views/`.
+**Transitional views standard**:
+- Contractors: centralized in `app/Views/contractors/`.
+- Auth: module-local in `app/Modules/Auth/Views/`, with compatibility layer in `app/Views/Modules/Auth/Views/`.
+- Future: normalize all modules to centralized views.
 
 ## Real module example: Contractors
 
@@ -29,6 +32,12 @@ Active views live in `app/Views/{module}/`, not in module-local `app/Modules/{Mo
 - Service: `app/Modules/Contractors/Services/ContractorService.php`
 - Validator: `app/Modules/Contractors/Validation/ContractorValidator.php`
 - Active views: `app/Views/contractors/*.php`
+
+## Transitional module example: Auth
+
+- Controller: `app/Modules/Auth/Controllers/AuthController.php`
+- Views: `app/Modules/Auth/Views/login.php` (module-local, with compatibility layer at `app/Views/Modules/Auth/Views/login.php`)
+- Future: normalize to centralized views.
 
 ## Recommended CRUD flow
 

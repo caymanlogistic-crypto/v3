@@ -29,6 +29,7 @@
 - `App\Core\View\View::render()` converts dot notation to file paths.
 - It requires the view file, captures output, and includes the layout file.
 - Data is extracted into local variables before view execution.
+- **Transitional hybrid state**: View.php prepends `app/Views/` to all view paths. Contractors module uses normalized centralized views (`app/Views/contractors/`). Auth module still uses module-local paths (`Modules/Auth/Views/login`), resolved via compatibility layer at `app/Views/Modules/Auth/Views/login.php`. Full normalization postponed to preserve runtime stability.
 
 ## Controller / Service / Repository boundaries
 
@@ -45,8 +46,10 @@
 - `app/Modules/<ModuleName>/Validation`
 - `app/Modules/<ModuleName>/DTO`
 
-Active views are stored in `app/Views/{module}/`.
-Module-local views under `app/Modules/<ModuleName>/Views` are legacy/deprecated and inactive for current rendering.
+**Transitional hybrid views architecture**:
+- Contractors module: normalized centralized views in `app/Views/contractors/`.
+- Auth module: module-local views in `app/Modules/Auth/Views/`, with runtime compatibility layer in `app/Views/Modules/Auth/Views/`.
+- Full view normalization intentionally postponed after stabilization-phase-1 to avoid breaking working runtime.
 
 ## Current architecture limitations
 
@@ -56,6 +59,7 @@ Module-local views under `app/Modules/<ModuleName>/Views` are legacy/deprecated 
 - Many classes are `final`, limiting extension and testing.
 - Hardcoded public path and redirect URLs (`/v3/public`).
 - Mixed old/new patterns across controller, service, and repository layers.
+- **Transitional hybrid views**: Auth module uses module-local views with compatibility layer, Contractors normalized. Postponed full normalization to preserve runtime stability.
 
 ## Future direction
 
@@ -63,3 +67,4 @@ Module-local views under `app/Modules/<ModuleName>/Views` are legacy/deprecated 
 - Keep current custom routing and PDO layer.
 - Improve consistency of controllers, services, repositories, validation, and policies.
 - Incrementally add reusable core abstractions without rewriting working modules.
+- **Stabilization-phase-1 completed**: Runtime works (auth, routing, middleware, contractors, database, deploy). Auth view normalization postponed. Compatibility layer added for runtime-first approach.
