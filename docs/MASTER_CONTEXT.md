@@ -19,8 +19,8 @@ Transport ERP v3 is a custom modular transport/logistics ERP platform built for 
 - deploy workflow stable
 - hybrid views architecture exists intentionally
 - Auth normalization postponed
-- CSRF incomplete
-- production hardening incomplete
+- CSRF protection active for POST routes
+- production hardening partially improved
 
 ## Current architecture
 
@@ -28,6 +28,7 @@ Transport ERP v3 is a custom modular transport/logistics ERP platform built for 
 - Core framework pieces in `app/Core`.
 - Modules under `app/Modules` with controllers, repositories, services, validation, DTOs, and views.
 - **Transitional hybrid views**: Contractors uses `app/Views/contractors/`, Auth uses `app/Modules/Auth/Views/` with compatibility layer.
+- Home route uses compatibility view `app/Views/Modules/Home/Views/index.php` for `Modules/Home/Views/index`.
 - Routing is custom and defined in `routes/web.php` using `App\Core\Routing\Router`.
 - Database access is direct PDO with prepared statements.
 - Public entry point is `public/index.php` and the application is served under `/v3/public`.
@@ -105,12 +106,13 @@ Validation should remain centralized and reusable. Module validators should coll
 - RBAC permission checks.
 - PDO prepared statements.
 - Output escaping helper `e()`.
+- CSRF middleware + CSRF token helpers for POST routes.
+- Session ID regeneration on login and safer session cookie params.
 
 ### Currently improving
 
-- CSRF protection.
 - Exception handling.
-- Session hardening.
+- Full production hardening and safe error pages.
 
 ## UI philosophy
 

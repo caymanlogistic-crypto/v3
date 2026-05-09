@@ -32,6 +32,7 @@
 - It requires the view file, captures output, and includes the layout file.
 - Data is extracted into local variables before view execution.
 - **Transitional hybrid state**: View.php prepends `app/Views/` to all view paths. Contractors module uses normalized centralized views (`app/Views/contractors/`). Auth module still uses module-local paths (`Modules/Auth/Views/login`), resolved via compatibility layer at `app/Views/Modules/Auth/Views/login.php`. Full normalization postponed to preserve runtime stability.
+- Home module currently also uses compatibility path resolution (`Modules/Home/Views/index`) via `app/Views/Modules/Home/Views/index.php`.
 
 ## Controller / Service / Repository boundaries
 
@@ -51,6 +52,7 @@
 **Transitional hybrid views architecture**:
 - Contractors module: normalized centralized views in `app/Views/contractors/`.
 - Auth module: module-local views in `app/Modules/Auth/Views/`, with runtime compatibility layer in `app/Views/Modules/Auth/Views/`.
+- Home module: compatibility view path in `app/Views/Modules/Home/Views/`.
 - Full view normalization intentionally postponed after stabilization-phase-1 to avoid breaking working runtime.
 
 ## Current architecture limitations

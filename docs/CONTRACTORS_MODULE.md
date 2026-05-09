@@ -54,14 +54,12 @@ Middleware on routes enforces authentication and RBAC on contractor views.
 
 - Controller contains direct request extraction and view/redirect logic.
 - Service layer exists but is not consistently used.
-- `ContractorService::update()` uses field names incompatible with repository update fields.
-- Module has duplicate controller filename issue (`ContractorController.php` / `ContractorsController.php`).
+- CSRF forms/routes are now protected, but the module still relies on manual wiring.
 - Hardcoded redirect paths contain `/v3/public`.
 
 ## Future improvements
 
 - Stabilize module boundaries: use service layer consistently.
-- Clean up duplicate controller naming and files.
 - Centralize validation and request input mapping.
 - Remove hardcoded public path values gradually.
 - Keep existing route and repository approach while improving consistency.

@@ -11,6 +11,7 @@
 - Output escaping helper `e()` is available for view templates.
 - Session-based authentication is implemented in `App\Core\Auth\Auth`.
 - RBAC permission checks exist through `PermissionMiddleware`.
+- CSRF protection for POST routes is enforced via `CsrfMiddleware`.
 - Soft delete prevents immediate data removal from contractor listing.
 
 ## Auth
@@ -29,13 +30,15 @@
 
 - Session state is managed through native PHP sessions.
 - Login state is represented by `$_SESSION['user_id']`.
+- Session ID is regenerated on successful login.
+- Session cookie uses `httponly` and `samesite=Lax` (`secure` when HTTPS is on).
 - Logout removes the user session identifier.
 
 ## CSRF
 
-- CSRF protection is currently not fully enforced across all forms.
-- The project status notes that CSRF protection has started as a planned improvement.
-- Do not assume forms are protected until a consistent token workflow is implemented.
+- CSRF token helpers exist in `app/Core/Support/helpers.php` (`csrf_token()`, `csrf_field()`, `csrf_verify()`).
+- POST forms include `_token` hidden field via `csrf_field()`.
+- POST routes are protected by `App\Core\Middleware\CsrfMiddleware`.
 
 ## Output escaping
 
@@ -50,21 +53,18 @@
 ## Exception handling
 
 - `App\Core\Exceptions\ExceptionHandler` registers a global handler.
-- The current handler logs errors and outputs trace details.
-- This behavior is useful for early development but not safe for production.
+- In `APP_DEBUG=true`, handler shows trace details for debugging.
+- In non-debug mode, handler returns `500 Internal Server Error` without trace output.
 
 ## Current weaknesses
 
 - Hardcoded redirects and path assumptions increase security risk in deployment.
-- Session handling does not show session regeneration or secure cookie flags.
-- Exception handler reveals stack traces to users; this is development behavior, not production-safe.
-- No consistent CSRF token implementation documented in active code.
+- `/db-test` route still exists and should remain non-public in production environments.
 - Authorization relies on static auth methods and direct middleware instantiation.
 
 ## Future improvements
 
-- Introduce consistent CSRF protection for POST forms.
-- Add secure session management and session regeneration after login.
-- Harden exception handling for production with safe error pages.
+- Continue hardening session settings (timeouts, rotation strategy, secure deployment defaults).
+- Replace plain `500` text with a dedicated safe error view.
 - Continue using prepared statements and output escaping.
 - Keep the existing auth/RBAC approach while improving security practices incrementally.

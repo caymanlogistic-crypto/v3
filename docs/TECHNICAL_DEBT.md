@@ -15,7 +15,9 @@ This document records real current technical debt and unstable architecture area
 - Request object is minimal and does not abstract input/source separation.
 - No route groups or route organization beyond `routes/web.php`.
 - Manual schema and migration management is currently implicit.
+- `GET /db-test` diagnostic route remains in codebase (auth-protected) and should be removed or restricted in production deploys.
 - **Transitional hybrid views architecture**: Auth module uses module-local views (`app/Modules/Auth/Views/`) with compatibility layer (`app/Views/Modules/Auth/Views/`), Contractors uses centralized (`app/Views/contractors/`). Full normalization postponed.
+- Home compatibility view path exists at `app/Views/Modules/Home/Views/index.php`.
 - **Postponed Auth normalization**: Auth module architecture not yet aligned with Contractors to avoid runtime instability during stabilization-phase-1.
 
 ## Brutally honest notes

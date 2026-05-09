@@ -21,6 +21,8 @@
 - Each middleware is instantiated and `handle()` is called before the route handler.
 - Middleware can be passed parameters using `ClassName:parameter` syntax.
 - Example: `PermissionMiddleware::class . ':contractors.view'`.
+- CSRF validation is applied on POST routes via `CsrfMiddleware`.
+- `logout` route is POST-only.
 
 ## Current limitations
 
