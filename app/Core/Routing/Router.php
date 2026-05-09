@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Routing;
 
+use App\Core\Http\Request;
+
 final class Router
 {
     private array $routes = [];
