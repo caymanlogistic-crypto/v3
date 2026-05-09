@@ -22,6 +22,12 @@ Each module should follow this layout:
 
 Current runtime exceptions may exist during stabilization. Auth module intentionally diverges from normalized view standards until runtime-safe normalization is approved.
 
+## Current implementation reference
+
+- Use the Contractors module as the canonical reference implementation for new modules.
+- Do not treat Auth module patterns as the normalization reference; Auth contains transitional compatibility behavior.
+- Direct superglobal request handling is acceptable during stabilization, with full Request abstraction postponed.
+
 **Transitional views standard**:
 - Contractors: centralized in `app/Views/contractors/`.
 - Auth: module-local in `app/Modules/Auth/Views/`, with compatibility layer in `app/Views/Modules/Auth/Views/`.

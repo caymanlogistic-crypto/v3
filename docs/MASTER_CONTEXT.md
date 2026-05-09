@@ -76,6 +76,8 @@ Validation should remain centralized and reusable. Module validators should coll
 ### Stable module
 
 - Contractors is the current stable active module.
+- Contractors is the canonical implementation reference for new modules.
+- Auth module remains transitional with legacy/runtime compatibility patterns and should not be treated as a normalization reference.
 
 ### Implemented features
 
