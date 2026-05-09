@@ -13,7 +13,7 @@ final class AuthController extends Controller
     public function login(): void
     {
         $this->view(
-            'Modules/Auth/Views/login'
+            'auth/login'
         );
     }
 
