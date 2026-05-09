@@ -36,7 +36,10 @@ $router->get(
     '/logout',
     static function (): void {
         (new AuthController())->logout();
-    }
+    },
+    [
+        AuthMiddleware::class,
+    ]
 );
 
 $router->get(

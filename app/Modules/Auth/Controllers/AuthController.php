@@ -7,6 +7,7 @@ namespace App\Modules\Auth\Controllers;
 use App\Core\Auth\Auth;
 use App\Core\Controller\Controller;
 use App\Core\Http\Request;
+use App\Core\Session\Flash;
 
 final class AuthController extends Controller
 {
@@ -36,7 +37,16 @@ final class AuthController extends Controller
             )
         ) {
 
-            echo 'Invalid credentials';
+            Flash::error('Invalid email or password');
+
+            $this->view(
+                'Modules/Auth/Views/login',
+                [
+                    'old' => [
+                        'email' => $email,
+                    ],
+                ]
+            );
 
             return;
         }

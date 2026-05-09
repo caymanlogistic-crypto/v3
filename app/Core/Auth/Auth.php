@@ -21,6 +21,8 @@ final class Auth
             SELECT *
             FROM users
             WHERE email = :email
+              AND is_active = 1
+              AND deleted_at IS NULL
             LIMIT 1
             "
         );
@@ -51,7 +53,15 @@ final class Auth
 
     public static function logout(): void
     {
-        unset($_SESSION['user_id']);
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
+        }
+        session_destroy();
     }
 
     public static function check(): bool

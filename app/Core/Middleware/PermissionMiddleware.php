@@ -16,7 +16,11 @@ final class PermissionMiddleware implements MiddlewareInterface
         string $permission
     ) {
 
-        $this->permission = $permission;
+        if (str_contains($permission, ':')) {
+            $this->permission = explode(':', $permission, 2)[1];
+        } else {
+            $this->permission = $permission;
+        }
     }
 
     public function handle(Request $request, callable $next): mixed

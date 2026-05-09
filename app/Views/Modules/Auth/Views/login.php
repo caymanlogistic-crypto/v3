@@ -1,6 +1,12 @@
 <h1>Login</h1>
 
-<form method="POST" action="/v3/public/login">
+<?php if ($errorFlash = Flash::getError()): ?>
+<div class="flash-error">
+    <?= e($errorFlash) ?>
+</div>
+<?php endif; ?>
+
+<form method="POST" action="<?= config('app.url') ?>/login">
 
     <div style="margin-bottom:15px;">
 
@@ -11,6 +17,7 @@
         <input
             type="email"
             name="email"
+            value="<?= e($old['email'] ?? '') ?>"
             required
         >
 
