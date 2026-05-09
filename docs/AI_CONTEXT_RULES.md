@@ -2,7 +2,8 @@
 
 ## Primary behavior
 
-- This file is the primary AI guidance source for the project.
+- `docs/MASTER_CONTEXT.md` is the primary AI onboarding and continuity document.
+- This file is a supporting operational guidance source for the project.
 - Use it for architecture preservation, safe refactoring, and stability decisions.
 - Keep the project practical, lightweight, and ERP-focused.
 
@@ -17,6 +18,8 @@
 - Document technical debt honestly and accurately.
 - Use PHP 8.4 as the target runtime.
 - Follow the modular structure in `app/Core` and `app/Modules`.
+- Preserve the current View system and compatibility layers.
+- Preserve the current custom router and route definitions.
 - **Do NOT normalize Auth views yet**: Respect postponed normalization to preserve runtime stability.
 
 ## AI must NOT
@@ -26,6 +29,7 @@
 - Introduce SPA frontend architecture or React/Vue rewrites.
 - Create fake abstractions or invented systems.
 - Replace working router, repository, or modular conventions unnecessarily.
+- Replace the current View system or remove compatibility layers.
 - Introduce microservices, event sourcing, DDD complexity, or ORM migration.
 - **Normalize Auth views prematurely**: Auth uses module-local with compatibility layer; do not move files or refactor without explicit permission.
 

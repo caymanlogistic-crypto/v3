@@ -29,6 +29,7 @@
 - Route definitions create controller instances inside closures.
 - Hardcoded public path normalization exists in `Router::dispatch()`.
 - No support for HTTP verbs beyond GET and POST.
+- Preserve the current router and route declarations during stabilization.
 
 ## Future improvements
 
@@ -36,3 +37,4 @@
 - Standardize middleware invocation and parameter parsing.
 - Improve route handler consistency without replacing the routing system.
 - Retain current route declarations while incrementally removing hardcoded paths.
+- Favor incremental, runtime-safe evolution over large routing rewrites.

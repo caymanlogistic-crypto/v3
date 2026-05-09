@@ -1,7 +1,8 @@
 # AI Rules — Quick Reference
 
 - Use this file for fast operational reminders.
-- The primary AI behavior file is `docs/AI_CONTEXT_RULES.md`.
+- The primary AI onboarding file is `docs/MASTER_CONTEXT.md`.
+- `docs/AI_CONTEXT_RULES.md` is a secondary operational guidance file.
 
 ## Core boundaries
 

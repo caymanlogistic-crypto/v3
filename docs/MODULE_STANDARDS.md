@@ -20,10 +20,12 @@ Each module should follow this layout:
 - `Validation/`
 - `DTO/`
 
+Current runtime exceptions may exist during stabilization. Auth module intentionally diverges from normalized view standards until runtime-safe normalization is approved.
+
 **Transitional views standard**:
 - Contractors: centralized in `app/Views/contractors/`.
 - Auth: module-local in `app/Modules/Auth/Views/`, with compatibility layer in `app/Views/Modules/Auth/Views/`.
-- Future: normalize all modules to centralized views.
+- Future: normalize modules to centralized views only after stabilization-phase-1 and compatibility verification.
 
 ## Real module example: Contractors
 

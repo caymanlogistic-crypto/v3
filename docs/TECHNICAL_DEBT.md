@@ -2,6 +2,8 @@
 
 This document records real current technical debt and unstable architecture areas.
 
+- Use `docs/MASTER_CONTEXT.md` as the authoritative runtime and stabilization truth document.
+
 ## Current technical debt
 
 - Hardcoded `/v3/public` paths in router dispatch and controller redirects.

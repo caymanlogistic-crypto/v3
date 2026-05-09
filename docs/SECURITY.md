@@ -1,5 +1,10 @@
 # Security
 
+## Current security posture
+
+- Security is stabilization/development level, not fully production hardened.
+- Runtime security improvements are incremental and must preserve working behavior.
+
 ## Currently implemented security
 
 - Prepared statements are used throughout repositories and auth SQL.
@@ -30,6 +35,7 @@
 
 - CSRF protection is currently not fully enforced across all forms.
 - The project status notes that CSRF protection has started as a planned improvement.
+- Do not assume forms are protected until a consistent token workflow is implemented.
 
 ## Output escaping
 
@@ -51,7 +57,7 @@
 
 - Hardcoded redirects and path assumptions increase security risk in deployment.
 - Session handling does not show session regeneration or secure cookie flags.
-- Exception handler reveals stack traces to users.
+- Exception handler reveals stack traces to users; this is development behavior, not production-safe.
 - No consistent CSRF token implementation documented in active code.
 - Authorization relies on static auth methods and direct middleware instantiation.
 

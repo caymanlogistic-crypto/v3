@@ -4,6 +4,24 @@
 
 Transport ERP v3 is a custom modular transport/logistics ERP platform built for shared hosting. It uses PHP 8.4, PDO + MySQL, and a custom lightweight MVC-like core. It is not a framework, not a demo, and not a SPA.
 
+## Primary AI onboarding
+
+- `docs/MASTER_CONTEXT.md` is the authoritative AI onboarding, runtime truth, and stabilization truth layer.
+- Use this file first for architecture, active conventions, current status, and safe project direction.
+
+## Current runtime snapshot
+
+- auth working
+- contractors working
+- routing stable
+- middleware stable
+- database stable
+- deploy workflow stable
+- hybrid views architecture exists intentionally
+- Auth normalization postponed
+- CSRF incomplete
+- production hardening incomplete
+
 ## Current architecture
 
 - Lightweight modular monolith.
@@ -104,9 +122,6 @@ Validation should remain centralized and reusable. Module validators should coll
 - **Compatibility layer**: Added for Auth views to maintain runtime without refactoring.
 - **Postponed normalization**: Auth module views not yet centralized to avoid instability.
 - **Current deploy workflow**: Functional with git-based deployment and environment config.
-- Compact tables and forms.
-- Reusable lightweight styling.
-- Minimal visual noise.
 
 ### Avoid
 
@@ -172,6 +187,15 @@ Real current debt includes:
 - Make final architecture decisions.
 - Review AI changes and control business logic.
 - Validate stability on real ERP workflows.
+
+## AI decision hierarchy
+
+1. Preserve runtime
+2. Preserve deployability
+3. Preserve compatibility
+4. Improve consistency carefully
+5. Improve architecture incrementally
+6. Avoid risky normalization
 
 ## Primary AI entry point
 

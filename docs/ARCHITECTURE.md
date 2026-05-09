@@ -2,6 +2,8 @@
 
 ## Current architecture style
 
+- `docs/MASTER_CONTEXT.md` is the authoritative runtime and stabilization snapshot for AI agents.
+
 - Lightweight modular monolith.
 - Custom framework-like core under `app/Core`.
 - Modules in `app/Modules` with dedicated controllers, repositories, services, validation, and views.
