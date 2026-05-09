@@ -42,7 +42,7 @@ final class AuthController extends Controller
         }
 
         header(
-            'Location: /v3/public/contractors'
+            'Location: ' . config('app.url') . '/contractors'
         );
 
         exit;
@@ -53,7 +53,7 @@ final class AuthController extends Controller
         Auth::logout();
 
         header(
-            'Location: /v3/public/login'
+            'Location: ' . config('app.url') . '/login'
         );
 
         exit;

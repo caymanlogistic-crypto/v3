@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Core\Middleware;
 
 use App\Core\Auth\Auth;
+use App\Core\Http\Request;
+use App\Core\Http\Response;
 
-final class AuthMiddleware
+final class AuthMiddleware implements MiddlewareInterface
 {
-    public function handle(): void
+    public function handle(Request $request, callable $next): mixed
     {
         if (!Auth::check()) {
-
-            header(
-                'Location: /v3/public/login'
+            Response::redirect(
+                config('app.url') . '/login'
             );
-
-            exit;
         }
+
+        return $next($request);
     }
 }

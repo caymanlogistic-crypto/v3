@@ -9,22 +9,17 @@ use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
 
-use App\Modules\Contractors\Repositories\ContractorRepository;
 use App\Modules\Contractors\Services\ContractorService;
 use App\Modules\Contractors\Validation\ContractorValidator;
 
 final class ContractorsController extends Controller
 {
-    private ContractorRepository $repository;
-
     private ContractorService $service;
 
     private ContractorValidator $validator;
 
     public function __construct()
     {
-        $this->repository = new ContractorRepository();
-
         $this->service = new ContractorService();
 
         $this->validator = new ContractorValidator();
@@ -49,7 +44,7 @@ final class ContractorsController extends Controller
             )
         );
 
-        $result = $this->repository->paginate(
+        $result = $this->service->paginate(
             $page,
             20,
             $search
@@ -112,7 +107,7 @@ final class ContractorsController extends Controller
             return;
         }
 
-        $this->repository->create(
+        $this->service->create(
             $data
         );
 
@@ -121,7 +116,7 @@ final class ContractorsController extends Controller
         );
 
         Response::redirect(
-            '/v3/public/contractors'
+            config('app.url') . '/contractors'
         );
     }
 
@@ -130,7 +125,7 @@ final class ContractorsController extends Controller
         array $params
     ): void {
 
-        $contractor = $this->repository->findById(
+        $contractor = $this->service->findById(
             (int) $params['id']
         );
 
@@ -191,7 +186,7 @@ final class ContractorsController extends Controller
             return;
         }
 
-        $this->repository->update(
+        $this->service->update(
             $id,
             $data
         );
@@ -201,7 +196,7 @@ final class ContractorsController extends Controller
         );
 
         Response::redirect(
-            '/v3/public/contractors'
+            config('app.url') . '/contractors'
         );
     }
 
@@ -210,7 +205,7 @@ final class ContractorsController extends Controller
         array $params
     ): void {
 
-        $this->repository->softDelete(
+        $this->service->softDelete(
             (int) $params['id']
         );
 
@@ -219,7 +214,7 @@ final class ContractorsController extends Controller
         );
 
         Response::redirect(
-            '/v3/public/contractors'
+            config('app.url') . '/contractors'
         );
     }
 }

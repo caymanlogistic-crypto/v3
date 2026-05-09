@@ -51,4 +51,14 @@ final class Request
         return isset($_POST[$key])
             || isset($_GET[$key]);
     }
+
+    public function isPost(): bool
+    {
+        return $this->method() === 'POST';
+    }
+
+    public function isGet(): bool
+    {
+        return $this->method() === 'GET';
+    }
 }

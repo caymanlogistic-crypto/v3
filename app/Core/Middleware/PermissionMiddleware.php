@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Core\Middleware;
 
 use App\Core\Auth\Auth;
+use App\Core\Http\Request;
+use App\Core\Http\Response;
 
-final class PermissionMiddleware
+final class PermissionMiddleware implements MiddlewareInterface
 {
     private string $permission;
 
@@ -17,19 +19,19 @@ final class PermissionMiddleware
         $this->permission = $permission;
     }
 
-    public function handle(): void
+    public function handle(Request $request, callable $next): mixed
     {
         if (
             !Auth::can(
                 $this->permission
             )
         ) {
-
-            http_response_code(403);
-
-            echo '403 Access Denied';
-
-            exit;
+            Response::abort(
+                403,
+                '403 Access Denied'
+            );
         }
+
+        return $next($request);
     }
 }

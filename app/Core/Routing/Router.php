@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Core\Routing;
 
+use App\Core\Http\Request;
+
 final class Router
 {
     private array $routes = [];
@@ -115,44 +117,56 @@ final class Router
                     ?? null;
             }
 
+            $request = new Request();
+
+            $next = static function (Request $request) use (
+                $route,
+                $params
+            ): void {
+                call_user_func(
+                    $route['handler'],
+                    $params
+                );
+            };
+
             foreach (
-                $route['middlewares']
+                array_reverse($route['middlewares'])
                 as $middleware
             ) {
-
-                if (
-                    str_contains(
-                        $middleware,
-                        ':'
-                    )
-                ) {
-
-                    [
-                        $class,
-                        $parameter
-                    ] = explode(
-                        ':',
-                        $middleware
-                    );
-
-                    (
-                        new $class(
-                            $parameter
+                $next = static function (Request $request) use (
+                    $middleware,
+                    $next
+                ): mixed {
+                    if (
+                        str_contains(
+                            $middleware,
+                            ':'
                         )
-                    )->handle();
+                    ) {
+                        [
+                            $class,
+                            $parameter
+                        ] = explode(
+                            ':',
+                            $middleware,
+                            2
+                        );
 
-                    continue;
-                }
+                        $instance = new $class(
+                            $parameter
+                        );
+                    } else {
+                        $instance = new $middleware();
+                    }
 
-                (
-                    new $middleware()
-                )->handle();
+                    return $instance->handle(
+                        $request,
+                        $next
+                    );
+                };
             }
 
-            call_user_func(
-                $route['handler'],
-                $params
-            );
+            $next($request);
 
             return;
         }
