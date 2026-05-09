@@ -1,6 +1,6 @@
 <h1>Login</h1>
 
-<?php if ($errorFlash = Flash::getError()): ?>
+<?php if ($errorFlash = \App\Core\Session\Flash::getError()): ?>
 <div class="flash-error">
     <?= e($errorFlash) ?>
 </div>
