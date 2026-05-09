@@ -14,10 +14,13 @@ final class AuthController extends Controller
 {
     public function login(): void
     {
+        $oldEmail = $_SESSION['old_email'] ?? '';
+        unset($_SESSION['old_email']);
+
         $this->view(
             'Modules/Auth/Views/login',
             [
-                'old' => [],
+                'old' => ['email' => $oldEmail],
             ]
         );
     }
@@ -25,11 +28,9 @@ final class AuthController extends Controller
     public function attempt(): void
     {
         $request = new Request();
-
         $email = trim(
             $request->input('email')
         );
-
         $password = trim(
             $request->input('password')
         );
@@ -40,18 +41,13 @@ final class AuthController extends Controller
                 $password
             )
         ) {
-            Flash::setError(
+            Flash::error(
                 'Invalid credentials'
             );
-
-            Flash::setOld([
-                'email' => $email,
-            ]);
-
+            $_SESSION['old_email'] = $email;
             Response::redirect(
                 config('app.url') . '/login'
             );
-
             return;
         }
 
@@ -63,10 +59,8 @@ final class AuthController extends Controller
     public function logout(): void
     {
         Auth::logout();
-
         Response::redirect(
             config('app.url') . '/login'
         );
     }
 }
-
