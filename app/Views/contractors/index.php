@@ -8,7 +8,7 @@
 
         <div style="margin-top:20px;">
 
-            <form method="GET" action="/v3/public/contractors">
+            <form method="GET" action="<?= config('app.url') ?>/contractors">
 
                 <input
                     type="text"
@@ -85,7 +85,7 @@
 
                     <form
                         method="POST"
-                        action="/v3/public/contractors/<?= (int) $contractor['id'] ?>/delete"
+                        action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/delete"
                         style="display:inline;"
                     >
 

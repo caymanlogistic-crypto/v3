@@ -6,7 +6,7 @@
         <h1>Create Contractor</h1>
     </div>
 
-    <form method="POST" action="/v3/public/contractors/store">
+    <form method="POST" action="<?= config('app.url') ?>/contractors/store">
 
         <table class="form-table">
 
@@ -98,15 +98,15 @@
 
                     <select name="status">
 
-                        <option value="active">
+                        <option value="active" <?= ($old['status'] ?? '') === 'active' ? 'selected' : '' ?>>
                             Active
                         </option>
 
-                        <option value="blocked">
+                        <option value="blocked" <?= ($old['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>
                             Blocked
                         </option>
 
-                        <option value="archive">
+                        <option value="archive" <?= ($old['status'] ?? '') === 'archive' ? 'selected' : '' ?>>
                             Archive
                         </option>
 

@@ -6,7 +6,7 @@
         <h1>Edit Contractor</h1>
     </div>
 
-    <form method="POST" action="/v3/public/contractors/<?= (int) $contractor['id'] ?>/update">
+    <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/update">
 
         <table class="form-table">
 
