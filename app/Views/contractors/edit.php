@@ -7,6 +7,7 @@
     </div>
 
     <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/update">
+        <?= csrf_field() ?>
 
         <table class="form-table">
 

@@ -88,6 +88,7 @@
                         action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/delete"
                         style="display:inline;"
                     >
+                        <?= csrf_field() ?>
 
                         <button
                             type="submit"

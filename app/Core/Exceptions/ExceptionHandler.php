@@ -16,15 +16,18 @@ final class ExceptionHandler
 
                 Logger::error($e->getMessage());
 
-                echo '<pre>';
+                $isDebug = ($_ENV['APP_DEBUG'] ?? 'false') === 'true';
 
-                echo 'ERROR: ' . $e->getMessage() . PHP_EOL . PHP_EOL;
-
-                echo $e->getFile() . ':' . $e->getLine() . PHP_EOL . PHP_EOL;
-
-                echo $e->getTraceAsString();
-
-                echo '</pre>';
+                if ($isDebug) {
+                    echo '<pre>';
+                    echo 'ERROR: ' . $e->getMessage() . PHP_EOL . PHP_EOL;
+                    echo $e->getFile() . ':' . $e->getLine() . PHP_EOL . PHP_EOL;
+                    echo $e->getTraceAsString();
+                    echo '</pre>';
+                } else {
+                    http_response_code(500);
+                    echo '500 Internal Server Error';
+                }
 
                 exit;
             }

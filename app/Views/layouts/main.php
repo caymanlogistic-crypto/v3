@@ -96,9 +96,10 @@ $errorFlash = Flash::getError();
                     Auth::user()['email']
                 ) ?>
 
-                <a href="/v3/public/logout">
-                    Logout
-                </a>
+                <form method="POST" action="<?= config('app.url') ?>/logout" style="display:inline;">
+                    <?= csrf_field() ?>
+                    <button type="submit">Logout</button>
+                </form>
 
             <?php endif; ?>
 

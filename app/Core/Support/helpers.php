@@ -33,3 +33,34 @@ function config(string $key, mixed $default = null): mixed
 
     return $value;
 }
+
+function csrf_token(): string
+{
+    if (!isset($_SESSION['_csrf_token']) || !is_string($_SESSION['_csrf_token'])) {
+        $_SESSION['_csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    return $_SESSION['_csrf_token'];
+}
+
+function csrf_field(): string
+{
+    $token = e(csrf_token());
+
+    return '<input type="hidden" name="_token" value="' . $token . '">';
+}
+
+function csrf_verify(?string $token): bool
+{
+    if (!is_string($token) || $token === '') {
+        return false;
+    }
+
+    $sessionToken = $_SESSION['_csrf_token'] ?? null;
+
+    if (!is_string($sessionToken) || $sessionToken === '') {
+        return false;
+    }
+
+    return hash_equals($sessionToken, $token);
+}

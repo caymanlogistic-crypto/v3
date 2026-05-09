@@ -46,6 +46,7 @@ final class Auth
             return false;
         }
 
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
 
         return true;

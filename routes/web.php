@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Core\Database\Database;
 use App\Core\Http\Request;
 use App\Core\Middleware\AuthMiddleware;
+use App\Core\Middleware\CsrfMiddleware;
 use App\Core\Middleware\PermissionMiddleware;
 
 use App\Modules\Auth\Controllers\AuthController;
@@ -29,16 +30,20 @@ $router->post(
     '/login',
     static function (): void {
         (new AuthController())->attempt();
-    }
+    },
+    [
+        CsrfMiddleware::class,
+    ]
 );
 
-$router->get(
+$router->post(
     '/logout',
     static function (): void {
         (new AuthController())->logout();
     },
     [
         AuthMiddleware::class,
+        CsrfMiddleware::class,
     ]
 );
 
@@ -59,7 +64,10 @@ $router->get(
         print_r($row);
 
         echo '</pre>';
-    }
+    },
+    [
+        AuthMiddleware::class,
+    ]
 );
 
 $router->get(
@@ -100,6 +108,7 @@ $router->post(
     },
     [
         AuthMiddleware::class,
+        CsrfMiddleware::class,
         PermissionMiddleware::class . ':contractors.create',
     ]
 );
@@ -130,6 +139,7 @@ $router->post(
     },
     [
         AuthMiddleware::class,
+        CsrfMiddleware::class,
         PermissionMiddleware::class . ':contractors.edit',
     ]
 );
@@ -145,6 +155,7 @@ $router->post(
     },
     [
         AuthMiddleware::class,
+        CsrfMiddleware::class,
         PermissionMiddleware::class . ':contractors.edit',
     ]
 );

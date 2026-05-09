@@ -7,6 +7,7 @@
     </div>
 
     <form method="POST" action="<?= config('app.url') ?>/contractors/store">
+        <?= csrf_field() ?>
 
         <table class="form-table">
 

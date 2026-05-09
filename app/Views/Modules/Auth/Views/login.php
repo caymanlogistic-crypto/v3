@@ -7,6 +7,7 @@
 <?php endif; ?>
 
 <form method="POST" action="<?= config('app.url') ?>/login">
+    <?= csrf_field() ?>
 
     <div style="margin-bottom:15px;">
 
