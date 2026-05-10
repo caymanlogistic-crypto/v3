@@ -609,6 +609,107 @@
                 </div>
             </form>
         </div>
+
+        <div style="margin-top:40px;">
+            <h2>Files</h2>
+
+            <table border="1" width="100%" cellpadding="8">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>File Name</th>
+                        <th>Size</th>
+                        <th>Uploaded</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($files)): ?>
+                        <tr>
+                            <td colspan="5">No files uploaded yet.</td>
+                        </tr>
+                    <?php endif; ?>
+
+                    <?php foreach ($files as $file): ?>
+                        <tr>
+                            <td><?= e($file['file_type'] ?? '') ?></td>
+                            <td><?= e($file['original_name'] ?? '') ?></td>
+                            <td>
+                                <?= e(isset($file['file_size']) ? number_format((int) $file['file_size'] / 1024, 0, '.', ' ') . ' KB' : '') ?>
+                            </td>
+                            <td><?= e($file['created_at'] ?? '') ?></td>
+                            <td>
+                                <a
+                                    href="<?= config('app.url') ?>/contractors/files/<?= (int) $file['id'] ?>/download"
+                                    class="btn"
+                                >
+                                    Download
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="<?= config('app.url') ?>/contractors/files/<?= (int) $file['id'] ?>/delete"
+                                    style="display:inline-block; margin-left:8px;"
+                                >
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+            <div style="margin-top:20px;">
+                <h3>Upload File</h3>
+
+                <form
+                    method="POST"
+                    action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload"
+                    enctype="multipart/form-data"
+                >
+                    <?= csrf_field() ?>
+
+                    <table class="form-table">
+                        <tr>
+                            <td>Type</td>
+                            <td>
+                                <select name="file_type">
+                                    <option value="contract">Contract</option>
+                                    <option value="company_card">Company Card</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Comment</td>
+                            <td>
+                                <textarea
+                                    name="comment"
+                                    rows="3"
+                                ></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>File</td>
+                            <td>
+                                <input
+                                    type="file"
+                                    name="file"
+                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                                >
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="margin-top:15px;">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 </div>

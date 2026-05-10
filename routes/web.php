@@ -11,6 +11,7 @@ use App\Core\Middleware\PermissionMiddleware;
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Contractors\Controllers\ContractorsController;
 use App\Modules\Contractors\Controllers\ContractorContactsController;
+use App\Modules\Contractors\Controllers\ContractorFilesController;
 use App\Modules\Home\Controllers\HomeController;
 
 $router->get(
@@ -198,6 +199,53 @@ $router->post(
     static function (array $params): void {
 
         (new ContractorContactsController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/{id}/files/upload',
+    static function (array $params): void {
+
+        (new ContractorFilesController())->upload(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->get(
+    '/contractors/files/{id}/download',
+    static function (array $params): void {
+
+        (new ContractorFilesController())->download(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/files/{id}/delete',
+    static function (array $params): void {
+
+        (new ContractorFilesController())->delete(
             new Request(),
             $params
         );

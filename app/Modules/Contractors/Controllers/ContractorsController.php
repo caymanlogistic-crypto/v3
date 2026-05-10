@@ -9,6 +9,7 @@ use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
 use App\Modules\Contractors\Services\ContractorContactService;
+use App\Modules\Contractors\Services\ContractorFileService;
 use App\Modules\Contractors\Services\ContractorService;
 use App\Modules\Contractors\Support\ContractorInputMapper;
 use App\Modules\Contractors\Validation\ContractorValidator;
@@ -158,12 +159,19 @@ final class ContractorsController extends Controller
             (int) $params['id']
         );
 
+        $fileService = new ContractorFileService();
+
+        $files = $fileService->findByContractorId(
+            (int) $params['id']
+        );
+
         $this->view(
             'contractors.edit',
             [
                 'contractor' => $contractor,
                 'errors' => [],
                 'contacts' => $contacts,
+                'files' => $files,
             ]
         );
     }
