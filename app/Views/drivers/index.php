@@ -70,15 +70,28 @@
 
     <?php if (isset($pagination)): ?>
         <div style="margin-top:20px;">
-            <?php if ($pagination->previousPage()): ?>
-                <a href="<?= config('app.url') ?>/drivers?page=<?= $pagination->previousPage() ?>&search=<?= urlencode($search ?? '') ?>" class="btn">Previous</a>
+
+            <?php if (($pagination['has_prev'] ?? false)): ?>
+
+                <a href="?page=<?= (int) $pagination['prev_page'] ?>&search=<?= urlencode($search ?? '') ?>">
+                    ← Prev
+                </a>
+
             <?php endif; ?>
 
-            <span>Page <?= $pagination->currentPage() ?> of <?= $pagination->lastPage() ?></span>
+            Page
+            <?= (int) ($pagination['page'] ?? 1) ?>
+            of
+            <?= (int) ($pagination['pages'] ?? 1) ?>
 
-            <?php if ($pagination->nextPage()): ?>
-                <a href="<?= config('app.url') ?>/drivers?page=<?= $pagination->nextPage() ?>&search=<?= urlencode($search ?? '') ?>" class="btn">Next</a>
+            <?php if (($pagination['has_next'] ?? false)): ?>
+
+                <a href="?page=<?= (int) $pagination['next_page'] ?>&search=<?= urlencode($search ?? '') ?>">
+                    Next →
+                </a>
+
             <?php endif; ?>
+
         </div>
     <?php endif; ?>
 
