@@ -348,8 +348,13 @@
     </form>
 
     <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/contractor-contacts-form.js"></script>
 
     <div style="margin-top:40px;">
+
+        <div id="contractorContactValidationAlert" class="error" style="display:none; margin-bottom: 16px;">
+            Пожалуйста, исправьте ошибки контакта
+        </div>
 
         <h2>Contacts</h2>
 
@@ -387,6 +392,7 @@
                                     name="full_name"
                                     value="<?= e($contact['full_name'] ?? '') ?>"
                                 >
+                                <div class="error contact-error-full_name"></div>
                                 <input
                                     type="hidden"
                                     name="comment"
@@ -427,6 +433,7 @@
                                     name="email"
                                     value="<?= e($contact['email'] ?? '') ?>"
                                 >
+                                <div class="error contact-error-email"></div>
                         </td>
 
                         <td>
@@ -504,6 +511,7 @@
                                 name="full_name"
                                 value=""
                             >
+                            <div class="error contact-error-full_name"></div>
                         </td>
                     </tr>
 
@@ -551,6 +559,7 @@
                                 name="email"
                                 value=""
                             >
+                            <div class="error contact-error-email"></div>
                         </td>
                     </tr>
 

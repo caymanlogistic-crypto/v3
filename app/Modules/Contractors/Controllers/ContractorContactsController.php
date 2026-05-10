@@ -9,6 +9,7 @@ use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
 use App\Modules\Contractors\Services\ContractorContactService;
+use App\Modules\Contractors\Support\ContractorContactInputMapper;
 use App\Modules\Contractors\Validation\ContractorContactValidator;
 
 final class ContractorContactsController extends Controller
@@ -39,6 +40,8 @@ final class ContractorContactsController extends Controller
             'status' => trim((string) $request->input('status')),
             'comment' => trim((string) $request->input('comment')),
         ];
+
+        $data = ContractorContactInputMapper::map($data);
 
         $errors = $this->validator->validate($data);
 
@@ -83,6 +86,8 @@ final class ContractorContactsController extends Controller
             'status' => trim((string) $request->input('status')),
             'comment' => trim((string) $request->input('comment')),
         ];
+
+        $data = ContractorContactInputMapper::map($data);
 
         $errors = $this->validator->validate($data);
 

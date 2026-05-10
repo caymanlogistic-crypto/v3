@@ -10,14 +10,24 @@ final class ContractorContactValidator
     {
         $errors = [];
 
+        if (!empty($data['full_name'])) {
+            $fullName = trim((string) $data['full_name']);
+            $parts = preg_split('/\s+/u', $fullName, -1, PREG_SPLIT_NO_EMPTY);
+
+            if (count($parts) !== 3 || array_filter($parts, static fn ($part) => mb_strlen($part) >= 2) !== $parts) {
+                $errors['full_name'] = 'ФИО должно быть в формате: Фамилия Имя Отчество';
+            }
+        }
+
         if (
             !empty($data['email']) &&
             !filter_var($data['email'], FILTER_VALIDATE_EMAIL)
         ) {
-            $errors['email'] = 'Invalid email';
+            $errors['email'] = 'Некорректный email';
         }
 
         if (
+            empty($data['role']) ||
             !in_array(
                 $data['role'],
                 [
@@ -31,10 +41,11 @@ final class ContractorContactValidator
                 true
             )
         ) {
-            $errors['role'] = 'Invalid role';
+            $errors['role'] = 'Роль указана неверно';
         }
 
         if (
+            empty($data['status']) ||
             !in_array(
                 $data['status'],
                 [
@@ -44,7 +55,7 @@ final class ContractorContactValidator
                 true
             )
         ) {
-            $errors['status'] = 'Invalid status';
+            $errors['status'] = 'Статус указан неверно';
         }
 
         return $errors;
