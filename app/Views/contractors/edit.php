@@ -349,6 +349,7 @@
 
     <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
     <script src="<?= config('app.url') ?>/assets/js/contractor-contacts-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/contractor-files.js"></script>
 
     <div style="margin-top:40px;">
 
@@ -661,7 +662,7 @@
             </table>
 
             <div style="margin-top:20px;">
-                <h3>Upload File</h3>
+                <h3>Загрузить договор</h3>
 
                 <form
                     method="POST"
@@ -670,39 +671,73 @@
                 >
                     <?= csrf_field() ?>
 
-                    <table class="form-table">
-                        <tr>
-                            <td>Type</td>
-                            <td>
-                                <select name="file_type">
-                                    <option value="contract">Contract</option>
-                                    <option value="company_card">Company Card</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </td>
-                        </tr>
+                    <input type="hidden" name="file_type" value="contract">
 
-                        <tr>
-                            <td>Comment</td>
-                            <td>
-                                <textarea
-                                    name="comment"
-                                    rows="3"
-                                ></textarea>
-                            </td>
-                        </tr>
+                    <input
+                        type="file"
+                        name="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                    >
 
-                        <tr>
-                            <td>File</td>
-                            <td>
-                                <input
-                                    type="file"
-                                    name="file"
-                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
-                                >
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="error file-error"></div>
+
+                    <div style="margin-top:15px;">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+
+            <div style="margin-top:20px;">
+                <h3>Загрузить карточку компании</h3>
+
+                <form
+                    method="POST"
+                    action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload"
+                    enctype="multipart/form-data"
+                >
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="file_type" value="company_card">
+
+                    <input
+                        type="file"
+                        name="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                    >
+
+                    <div class="error file-error"></div>
+
+                    <div style="margin-top:15px;">
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+            </div>
+
+            <div style="margin-top:20px;">
+                <h3>Прочие файлы</h3>
+
+                <form
+                    method="POST"
+                    action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload"
+                    enctype="multipart/form-data"
+                >
+                    <?= csrf_field() ?>
+
+                    <input type="hidden" name="file_type" value="other">
+
+                    <textarea
+                        name="comment"
+                        rows="3"
+                        placeholder="Комментарий (необязательно)"
+                    ></textarea>
+
+                    <input
+                        type="file"
+                        name="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                    >
+
+                    <div class="error file-error"></div>
 
                     <div style="margin-top:15px;">
                         <button type="submit" class="btn btn-primary">Upload</button>
