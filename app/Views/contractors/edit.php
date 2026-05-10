@@ -9,6 +9,10 @@
     <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/update">
         <?= csrf_field() ?>
 
+        <div id="contractorFormValidationAlert" class="error" style="display:none; margin-bottom: 16px;">
+            Пожалуйста, исправьте ошибки формы
+        </div>
+
         <table class="form-table">
 
             <tr>

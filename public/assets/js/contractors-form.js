@@ -13,6 +13,8 @@
         return;
     }
 
+    const validationAlert = document.getElementById('contractorFormValidationAlert');
+
     const fields = {
         inn: {
             validator: function (value) {
@@ -153,9 +155,50 @@
         });
     });
 
+    function hasFormValidationErrors(form) {
+        let foundInvalid = false;
+
+        Object.keys(fields).forEach(function (name) {
+            const input = form.querySelector('[name="' + name + '"]');
+            if (!input) {
+                return;
+            }
+            const fieldValid = validateField(name, input.value);
+            if (!fieldValid) {
+                foundInvalid = true;
+            }
+        });
+
+        return foundInvalid;
+    }
+
+    function updateValidationAlert() {
+        if (!validationAlert) {
+            return;
+        }
+
+        const anyInvalid = forms.some(function (form) {
+            return hasFormValidationErrors(form);
+        });
+
+        validationAlert.style.display = anyInvalid ? 'block' : 'none';
+    }
+
     forms.forEach(function (form) {
+        const inputs = Object.keys(fields).map(function (name) {
+            return form.querySelector('[name="' + name + '"]');
+        }).filter(Boolean);
+
+        inputs.forEach(function (input) {
+            input.addEventListener('input', function () {
+                validateField(input.name, input.value);
+                updateValidationAlert();
+            });
+        });
+
         form.addEventListener('submit', function (event) {
             let valid = true;
+            let firstInvalidField = null;
 
             Object.keys(fields).forEach(function (name) {
                 const input = form.querySelector('[name="' + name + '"]');
@@ -163,6 +206,9 @@
                     return;
                 }
                 const fieldValid = validateField(name, input.value);
+                if (!fieldValid && firstInvalidField === null) {
+                    firstInvalidField = input;
+                }
                 if (!fieldValid) {
                     valid = false;
                 }
@@ -170,6 +216,17 @@
 
             if (!valid) {
                 event.preventDefault();
+
+                if (validationAlert) {
+                    validationAlert.style.display = 'block';
+                    validationAlert.scrollIntoView({ block: 'center' });
+                }
+
+                if (firstInvalidField && typeof firstInvalidField.focus === 'function') {
+                    firstInvalidField.focus();
+                }
+            } else if (validationAlert) {
+                validationAlert.style.display = 'none';
             }
         });
     });
