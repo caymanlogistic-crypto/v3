@@ -212,7 +212,7 @@ final class DriverRepository
 
         return [
             'data' => $drivers,
-            'pagination' => $paginator,
+            'pagination' => $paginator->toArray(),
         ];
     }
 
