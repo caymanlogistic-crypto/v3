@@ -330,6 +330,9 @@
 
     </form>
 
+    <script>
+        window.contractorDadataLookupUrl = "<?= config('app.url') ?>/contractors/dadata/lookup";
+    </script>
     <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
     <script src="<?= config('app.url') ?>/assets/js/contractor-dadata.js"></script>
 

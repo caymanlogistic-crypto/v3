@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('inn', inn);
         formData.append('_token', document.querySelector('input[name="_token"]').value);
 
-        fetch(window.location.origin + '/contractors/dadata/lookup', {
+        fetch(window.contractorDadataLookupUrl, {
             method: 'POST',
             body: formData
         })
