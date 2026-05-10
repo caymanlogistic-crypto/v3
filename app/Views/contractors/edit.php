@@ -313,4 +313,257 @@
 
     </form>
 
+    <div style="margin-top:40px;">
+
+        <h2>Contacts</h2>
+
+        <table border="1" width="100%" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Full name</th>
+                    <th>Role</th>
+                    <th>Position</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Flags</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($contacts)): ?>
+                    <tr>
+                        <td colspan="8">No contacts added yet.</td>
+                    </tr>
+                <?php endif; ?>
+
+                <?php foreach ($contacts as $contact): ?>
+                    <tr>
+                        <td>
+                            <form
+                                method="POST"
+                                action="<?= config('app.url') ?>/contractors/contacts/<?= (int) $contact['id'] ?>/update"
+                            >
+                                <?= csrf_field() ?>
+
+                                <input
+                                    type="text"
+                                    name="full_name"
+                                    value="<?= e($contact['full_name'] ?? '') ?>"
+                                >
+                                <input
+                                    type="hidden"
+                                    name="comment"
+                                    value="<?= e($contact['comment'] ?? '') ?>"
+                                >
+                        </td>
+
+                        <td>
+                                <select name="role">
+                                    <option value="director" <?= ($contact['role'] ?? '') === 'director' ? 'selected' : '' ?>>Director</option>
+                                    <option value="manager" <?= ($contact['role'] ?? '') === 'manager' ? 'selected' : '' ?>>Manager</option>
+                                    <option value="accounting" <?= ($contact['role'] ?? '') === 'accounting' ? 'selected' : '' ?>>Accounting</option>
+                                    <option value="dispatcher" <?= ($contact['role'] ?? '') === 'dispatcher' ? 'selected' : '' ?>>Dispatcher</option>
+                                    <option value="owner" <?= ($contact['role'] ?? '') === 'owner' ? 'selected' : '' ?>>Owner</option>
+                                    <option value="other" <?= ($contact['role'] ?? '') === 'other' ? 'selected' : '' ?>>Other</option>
+                                </select>
+                        </td>
+
+                        <td>
+                                <input
+                                    type="text"
+                                    name="position"
+                                    value="<?= e($contact['position'] ?? '') ?>"
+                                >
+                        </td>
+
+                        <td>
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value="<?= e($contact['phone'] ?? '') ?>"
+                                >
+                        </td>
+
+                        <td>
+                                <input
+                                    type="text"
+                                    name="email"
+                                    value="<?= e($contact['email'] ?? '') ?>"
+                                >
+                        </td>
+
+                        <td>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="is_primary"
+                                        value="1"
+                                        <?= !empty($contact['is_primary']) ? 'checked' : '' ?>
+                                    >
+                                    Primary
+                                </label>
+                                <br>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="is_payment_recipient"
+                                        value="1"
+                                        <?= !empty($contact['is_payment_recipient']) ? 'checked' : '' ?>
+                                    >
+                                    Payment
+                                </label>
+                                <br>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="is_document_recipient"
+                                        value="1"
+                                        <?= !empty($contact['is_document_recipient']) ? 'checked' : '' ?>
+                                    >
+                                    Documents
+                                </label>
+                        </td>
+
+                        <td>
+                                <select name="status">
+                                    <option value="active" <?= ($contact['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                                    <option value="inactive" <?= ($contact['status'] ?? '') === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                                </select>
+                        </td>
+
+                        <td>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </form>
+
+                            <form
+                                method="POST"
+                                action="<?= config('app.url') ?>/contractors/contacts/<?= (int) $contact['id'] ?>/delete"
+                                style="margin-top:8px;"
+                            >
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <div style="margin-top:20px;">
+            <h3>Add Contact</h3>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/contacts/store"
+            >
+                <?= csrf_field() ?>
+
+                <table class="form-table">
+                    <tr>
+                        <td>Full name</td>
+                        <td>
+                            <input
+                                type="text"
+                                name="full_name"
+                                value=""
+                            >
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Role</td>
+                        <td>
+                            <select name="role">
+                                <option value="director">Director</option>
+                                <option value="manager">Manager</option>
+                                <option value="accounting">Accounting</option>
+                                <option value="dispatcher">Dispatcher</option>
+                                <option value="owner">Owner</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Position</td>
+                        <td>
+                            <input
+                                type="text"
+                                name="position"
+                                value=""
+                            >
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Phone</td>
+                        <td>
+                            <input
+                                type="text"
+                                name="phone"
+                                value=""
+                            >
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Email</td>
+                        <td>
+                            <input
+                                type="text"
+                                name="email"
+                                value=""
+                            >
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Flags</td>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="is_primary" value="1">
+                                Primary
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="is_payment_recipient" value="1">
+                                Payment recipient
+                            </label>
+                            <br>
+                            <label>
+                                <input type="checkbox" name="is_document_recipient" value="1">
+                                Document recipient
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            <select name="status">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Comment</td>
+                        <td>
+                            <textarea
+                                name="comment"
+                                rows="3"
+                            ></textarea>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Add Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>

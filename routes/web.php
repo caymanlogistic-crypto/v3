@@ -10,6 +10,7 @@ use App\Core\Middleware\PermissionMiddleware;
 
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Contractors\Controllers\ContractorsController;
+use App\Modules\Contractors\Controllers\ContractorContactsController;
 use App\Modules\Home\Controllers\HomeController;
 
 $router->get(
@@ -149,6 +150,54 @@ $router->post(
     static function (array $params): void {
 
         (new ContractorsController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/{id}/contacts/store',
+    static function (array $params): void {
+
+        (new ContractorContactsController())->store(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/contacts/{id}/update',
+    static function (array $params): void {
+
+        (new ContractorContactsController())->update(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/contacts/{id}/delete',
+    static function (array $params): void {
+
+        (new ContractorContactsController())->delete(
             new Request(),
             $params
         );

@@ -9,6 +9,7 @@ use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
 
+use App\Modules\Contractors\Services\ContractorContactService;
 use App\Modules\Contractors\Services\ContractorService;
 use App\Modules\Contractors\Validation\ContractorValidator;
 
@@ -149,11 +150,18 @@ final class ContractorsController extends Controller
             );
         }
 
+        $contactService = new ContractorContactService();
+
+        $contacts = $contactService->findByContractorId(
+            (int) $params['id']
+        );
+
         $this->view(
             'contractors.edit',
             [
                 'contractor' => $contractor,
                 'errors' => [],
+                'contacts' => $contacts,
             ]
         );
     }
