@@ -50,6 +50,45 @@
             </tr>
 
             <tr>
+                <td>KPP</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="kpp"
+                        value="<?= e($contractor['kpp'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>OGRN</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="ogrn"
+                        value="<?= e($contractor['ogrn'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>OKVED</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="okved"
+                        value="<?= e($contractor['okved'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
                 <td>Phone</td>
                 <td>
 
@@ -82,6 +121,19 @@
             </tr>
 
             <tr>
+                <td>Contact Name</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="contact1_name"
+                        value="<?= e($contractor['contact1_name'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
                 <td>Legal Address</td>
                 <td>
 
@@ -89,6 +141,108 @@
                         name="legal_address"
                         rows="4"
                     ><?= e($contractor['legal_address'] ?? '') ?></textarea>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Actual Address</td>
+                <td>
+
+                    <textarea
+                        name="actual_address"
+                        rows="4"
+                    ><?= e($contractor['actual_address'] ?? '') ?></textarea>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Director</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="director"
+                        value="<?= e($contractor['director'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Director Post</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="director_post"
+                        value="<?= e($contractor['director_post'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Bank Name</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="bank_name"
+                        value="<?= e($contractor['bank_name'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Bank Account</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="bank_account"
+                        value="<?= e($contractor['bank_account'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Bank Corr Account</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="bank_corr_account"
+                        value="<?= e($contractor['bank_corr_account'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Bank BIK</td>
+                <td>
+
+                    <input
+                        type="text"
+                        name="bank_bik"
+                        value="<?= e($contractor['bank_bik'] ?? '') ?>"
+                    >
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>Comments</td>
+                <td>
+
+                    <textarea
+                        name="comments"
+                        rows="4"
+                    ><?= e($contractor['comments'] ?? '') ?></textarea>
 
                 </td>
             </tr>

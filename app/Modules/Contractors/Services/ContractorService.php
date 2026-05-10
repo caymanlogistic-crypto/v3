@@ -15,14 +15,7 @@ final class ContractorService
 
     public function update(int $id, array $data): void
     {
-        $this->repository->update($id, [
-            'name' => $data['name'],
-            'inn' => $data['inn'],
-            'contact1_phone' => $data['contact1_phone'],
-            'contact1_email' => $data['contact1_email'],
-            'legal_address' => $data['legal_address'],
-            'status' => $data['status'],
-        ]);
+        $this->repository->update($id, $data);
     }
 
     public function softDelete(int $id): void
