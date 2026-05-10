@@ -12,6 +12,7 @@ use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Contractors\Controllers\ContractorsController;
 use App\Modules\Contractors\Controllers\ContractorContactsController;
 use App\Modules\Contractors\Controllers\ContractorDadataController;
+use App\Modules\Drivers\Controllers\DriversController;
 use App\Modules\Home\Controllers\HomeController;
 
 $router->get(
@@ -269,5 +270,95 @@ $router->post(
         AuthMiddleware::class,
         CsrfMiddleware::class,
         PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->get(
+    '/drivers',
+    static function (): void {
+
+        (new DriversController())->index(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.view',
+    ]
+);
+
+$router->get(
+    '/drivers/create',
+    static function (): void {
+
+        (new DriversController())->create(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->post(
+    '/drivers/store',
+    static function (): void {
+
+        (new DriversController())->store(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->get(
+    '/drivers/{id}/edit',
+    static function (array $params): void {
+
+        (new DriversController())->edit(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/drivers/{id}/update',
+    static function (array $params): void {
+
+        (new DriversController())->update(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/drivers/{id}/delete',
+    static function (array $params): void {
+
+        (new DriversController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
     ]
 );
