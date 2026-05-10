@@ -123,7 +123,7 @@ final class ContractorsController extends Controller
             return;
         }
 
-        $this->service->create(
+        $contractorId = $this->service->create(
             $data
         );
 
@@ -132,7 +132,7 @@ final class ContractorsController extends Controller
         );
 
         Response::redirect(
-            config('app.url') . '/contractors'
+            config('app.url') . '/contractors/' . $contractorId . '/edit'
         );
     }
 

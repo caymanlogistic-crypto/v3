@@ -23,9 +23,9 @@ final class ContractorService
         $this->repository->softDelete($id);
     }
 
-    public function create(array $data): void
+    public function create(array $data): int
     {
-        $this->repository->create($data);
+        return $this->repository->create($data);
     }
 
     public function findById(int $id): ?array

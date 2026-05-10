@@ -20,7 +20,7 @@ final class ContractorRepository
 
     public function create(
         array $data
-    ): void {
+    ): int {
 
         $stmt = $this->pdo->prepare("
             INSERT INTO contractors (
@@ -86,6 +86,8 @@ final class ContractorRepository
             'comments' => $data['comments'],
             'status' => $data['status'],
         ]);
+
+        return (int) $this->pdo->lastInsertId();
     }
 
     public function findById(
