@@ -89,7 +89,7 @@
             </tr>
 
             <tr>
-                <td>Phone</td>
+                <td>Primary Contact Phone</td>
                 <td>
 
                     <input
@@ -102,7 +102,7 @@
             </tr>
 
             <tr>
-                <td>Email</td>
+                <td>Primary Contact Email</td>
                 <td>
 
                     <input
@@ -121,7 +121,7 @@
             </tr>
 
             <tr>
-                <td>Contact Name</td>
+                <td>Primary Contact Name</td>
                 <td>
 
                     <input
