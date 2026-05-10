@@ -42,6 +42,10 @@
                         value="<?= e($old['inn'] ?? '') ?>"
                     >
 
+                    <button type="button" id="contractorDadataAutofill" disabled>Автозаполнить</button>
+
+                    <div id="contractorDadataMessage" class="error" style="display:none;"></div>
+
                     <div id="error-inn" class="error">
                         <?= e($errors['inn'] ?? '') ?>
                     </div>
@@ -327,5 +331,6 @@
     </form>
 
     <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/contractor-dadata.js"></script>
 
 </div>

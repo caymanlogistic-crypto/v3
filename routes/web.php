@@ -11,7 +11,7 @@ use App\Core\Middleware\PermissionMiddleware;
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Contractors\Controllers\ContractorsController;
 use App\Modules\Contractors\Controllers\ContractorContactsController;
-use App\Modules\Contractors\Controllers\ContractorFilesController;
+use App\Modules\Contractors\Controllers\ContractorDadataController;
 use App\Modules\Home\Controllers\HomeController;
 
 $router->get(
@@ -254,5 +254,20 @@ $router->post(
         AuthMiddleware::class,
         CsrfMiddleware::class,
         PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/contractors/dadata/lookup',
+    static function (): void {
+
+        (new ContractorDadataController())->lookup(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
     ]
 );
