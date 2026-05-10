@@ -21,11 +21,9 @@
                         value="<?= e($contractor['name'] ?? '') ?>"
                     >
 
-                    <?php if (!empty($errors['name'])): ?>
-                        <div class="error">
-                            <?= e($errors['name']) ?>
-                        </div>
-                    <?php endif; ?>
+                    <div id="error-name" class="error">
+                        <?= e($errors['name'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -40,11 +38,9 @@
                         value="<?= e($contractor['inn'] ?? '') ?>"
                     >
 
-                    <?php if (!empty($errors['inn'])): ?>
-                        <div class="error">
-                            <?= e($errors['inn']) ?>
-                        </div>
-                    <?php endif; ?>
+                    <div id="error-inn" class="error">
+                        <?= e($errors['inn'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -59,6 +55,10 @@
                         value="<?= e($contractor['kpp'] ?? '') ?>"
                     >
 
+                    <div id="error-kpp" class="error">
+                        <?= e($errors['kpp'] ?? '') ?>
+                    </div>
+
                 </td>
             </tr>
 
@@ -72,6 +72,10 @@
                         value="<?= e($contractor['ogrn'] ?? '') ?>"
                     >
 
+                    <div id="error-ogrn" class="error">
+                        <?= e($errors['ogrn'] ?? '') ?>
+                    </div>
+
                 </td>
             </tr>
 
@@ -84,6 +88,10 @@
                         name="okved"
                         value="<?= e($contractor['okved'] ?? '') ?>"
                     >
+
+                    <div id="error-okved" class="error">
+                        <?= e($errors['okved'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -111,11 +119,9 @@
                         value="<?= e($contractor['contact1_email'] ?? '') ?>"
                     >
 
-                    <?php if (!empty($errors['contact1_email'])): ?>
-                        <div class="error">
-                            <?= e($errors['contact1_email']) ?>
-                        </div>
-                    <?php endif; ?>
+                    <div id="error-contact1_email" class="error">
+                        <?= e($errors['contact1_email'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -129,6 +135,10 @@
                         name="contact1_name"
                         value="<?= e($contractor['contact1_name'] ?? '') ?>"
                     >
+
+                    <div id="error-contact1_name" class="error">
+                        <?= e($errors['contact1_name'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -167,6 +177,10 @@
                         value="<?= e($contractor['director'] ?? '') ?>"
                     >
 
+                    <div id="error-director" class="error">
+                        <?= e($errors['director'] ?? '') ?>
+                    </div>
+
                 </td>
             </tr>
 
@@ -193,6 +207,10 @@
                         value="<?= e($contractor['bank_name'] ?? '') ?>"
                     >
 
+                    <div id="error-bank_name" class="error">
+                        <?= e($errors['bank_name'] ?? '') ?>
+                    </div>
+
                 </td>
             </tr>
 
@@ -205,6 +223,10 @@
                         name="bank_account"
                         value="<?= e($contractor['bank_account'] ?? '') ?>"
                     >
+
+                    <div id="error-bank_account" class="error">
+                        <?= e($errors['bank_account'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -219,6 +241,10 @@
                         value="<?= e($contractor['bank_corr_account'] ?? '') ?>"
                     >
 
+                    <div id="error-bank_corr_account" class="error">
+                        <?= e($errors['bank_corr_account'] ?? '') ?>
+                    </div>
+
                 </td>
             </tr>
 
@@ -231,6 +257,10 @@
                         name="bank_bik"
                         value="<?= e($contractor['bank_bik'] ?? '') ?>"
                     >
+
+                    <div id="error-bank_bik" class="error">
+                        <?= e($errors['bank_bik'] ?? '') ?>
+                    </div>
 
                 </td>
             </tr>
@@ -312,6 +342,8 @@
         </div>
 
     </form>
+
+    <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
 
     <div style="margin-top:40px;">
 

@@ -8,9 +8,9 @@ use App\Core\Controller\Controller;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
-
 use App\Modules\Contractors\Services\ContractorContactService;
 use App\Modules\Contractors\Services\ContractorService;
+use App\Modules\Contractors\Support\ContractorInputMapper;
 use App\Modules\Contractors\Validation\ContractorValidator;
 
 final class ContractorsController extends Controller
@@ -98,6 +98,8 @@ final class ContractorsController extends Controller
             'comments' => trim((string) $request->input('comments')),
             'status' => trim((string) $request->input('status')),
         ];
+
+        $data = ContractorInputMapper::map($data);
 
         $errors = $this->validator->validate(
             $data
@@ -193,6 +195,8 @@ final class ContractorsController extends Controller
             'comments' => trim((string) $request->input('comments')),
             'status' => trim((string) $request->input('status')),
         ];
+
+        $data = ContractorInputMapper::map($data);
 
         $errors = $this->validator->validate(
             $data
