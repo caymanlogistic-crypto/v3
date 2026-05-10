@@ -122,6 +122,10 @@ $errorFlash = Flash::getError();
                 Contractors
             </a>
 
+            <a href="<?= config('app.url') ?>/drivers">
+                Drivers
+            </a>
+
         <?php endif; ?>
 
     </nav>
