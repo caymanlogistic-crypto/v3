@@ -242,6 +242,168 @@
 
     </form>
 
+    <div style="margin-top:40px;">
+        <h2>Driver Files</h2>
+
+        <table border="1" width="100%" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Uploaded</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($files)): ?>
+                    <tr>
+                        <td colspan="5">No files uploaded yet.</td>
+                    </tr>
+                <?php endif; ?>
+
+                <?php foreach ($files as $file): ?>
+                    <tr>
+                        <td><?= e($file['file_type'] ?? '') ?></td>
+                        <td><?= e($file['original_name'] ?? '') ?></td>
+                        <td>
+                            <?= e(isset($file['file_size']) ? number_format((int) $file['file_size'] / 1024, 0, '.', ' ') . ' KB' : '') ?>
+                        </td>
+                        <td><?= e($file['created_at'] ?? '') ?></td>
+                        <td>
+                            <a
+                                href="<?= config('app.url') ?>/drivers/files/<?= (int) $file['id'] ?>/download"
+                                class="btn"
+                            >
+                                Download
+                            </a>
+
+                            <form
+                                method="POST"
+                                action="<?= config('app.url') ?>/drivers/files/<?= (int) $file['id'] ?>/delete"
+                                style="display:inline-block; margin-left:8px;"
+                            >
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <div style="margin-top:20px;">
+            <h3>Загрузить паспорт</h3>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+
+                <input type="hidden" name="file_type" value="passport">
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                >
+
+                <div class="error file-error"></div>
+
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin-top:20px;">
+            <h3>Загрузить ВУ</h3>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+
+                <input type="hidden" name="file_type" value="license">
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                >
+
+                <div class="error file-error"></div>
+
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin-top:20px;">
+            <h3>Загрузить СНИЛС</h3>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+
+                <input type="hidden" name="file_type" value="snils">
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                >
+
+                <div class="error file-error"></div>
+
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin-top:20px;">
+            <h3>Прочие файлы</h3>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+
+                <input type="hidden" name="file_type" value="other">
+
+                <textarea
+                    name="comment"
+                    rows="3"
+                    placeholder="Комментарий (необязательно)"
+                ></textarea>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
+                >
+
+                <div class="error file-error"></div>
+
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="<?= config('app.url') ?>/assets/js/drivers-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/driver-files.js"></script>
 
 </div>

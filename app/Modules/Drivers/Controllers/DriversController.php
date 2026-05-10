@@ -8,6 +8,7 @@ use App\Core\Controller\Controller;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
+use App\Modules\Drivers\Services\DriverFileService;
 use App\Modules\Drivers\Services\DriverService;
 use App\Modules\Drivers\Support\DriverInputMapper;
 use App\Modules\Drivers\Validation\DriverValidator;
@@ -144,10 +145,14 @@ final class DriversController extends Controller
             );
         }
 
+        $driverFileService = new DriverFileService();
+        $files = $driverFileService->findByDriverId((int) $params['id']);
+
         $this->view(
             'drivers.edit',
             [
                 'driver' => $driver,
+                'files' => $files,
                 'errors' => [],
             ]
         );

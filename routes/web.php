@@ -12,6 +12,8 @@ use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Contractors\Controllers\ContractorsController;
 use App\Modules\Contractors\Controllers\ContractorContactsController;
 use App\Modules\Contractors\Controllers\ContractorDadataController;
+use App\Modules\Contractors\Controllers\ContractorFilesController;
+use App\Modules\Drivers\Controllers\DriverFilesController;
 use App\Modules\Drivers\Controllers\DriversController;
 use App\Modules\Home\Controllers\HomeController;
 
@@ -352,6 +354,53 @@ $router->post(
     static function (array $params): void {
 
         (new DriversController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/drivers/{id}/files/upload',
+    static function (array $params): void {
+
+        (new DriverFilesController())->upload(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->get(
+    '/drivers/files/{id}/download',
+    static function (array $params): void {
+
+        (new DriverFilesController())->download(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.view',
+    ]
+);
+
+$router->post(
+    '/drivers/files/{id}/delete',
+    static function (array $params): void {
+
+        (new DriverFilesController())->delete(
             new Request(),
             $params
         );
