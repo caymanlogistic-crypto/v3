@@ -168,6 +168,14 @@ final class VehicleFilesController extends Controller
                 'comment' => $data['comment'],
             ]);
 
+            $savedRow = $this->service->findByStoredName($vehicleId, $storage['stored_name']);
+            $savedType = trim((string) ($savedRow['file_type'] ?? ''));
+            $expectedType = trim((string) ($data['file_type'] ?? ''));
+
+            if ($savedRow === null || $savedType !== $expectedType) {
+                return false;
+            }
+
             return true;
         } catch (\Throwable $exception) {
             return false;

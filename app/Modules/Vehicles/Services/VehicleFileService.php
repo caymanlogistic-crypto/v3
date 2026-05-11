@@ -18,6 +18,11 @@ final class VehicleFileService
         return $this->repository->findById($id);
     }
 
+    public function findByStoredName(int $vehicleId, string $storedName): ?array
+    {
+        return $this->repository->findByStoredName($vehicleId, $storedName);
+    }
+
     public function findByVehicleId(int $vehicleId): array
     {
         return $this->repository->findByVehicleId($vehicleId);

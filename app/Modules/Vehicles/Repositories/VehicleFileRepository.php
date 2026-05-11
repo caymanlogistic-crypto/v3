@@ -35,6 +35,28 @@ final class VehicleFileRepository
         return $file ?: null;
     }
 
+    public function findByStoredName(int $vehicleId, string $storedName): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT *
+            FROM vehicle_files
+            WHERE vehicle_id = :vehicle_id
+              AND stored_name = :stored_name
+              AND deleted_at IS NULL
+            ORDER BY id DESC
+            LIMIT 1"
+        );
+
+        $stmt->execute([
+            'vehicle_id' => $vehicleId,
+            'stored_name' => $storedName,
+        ]);
+
+        $file = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $file ?: null;
+    }
+
     public function findByVehicleId(int $vehicleId): array
     {
         $stmt = $this->pdo->prepare(
