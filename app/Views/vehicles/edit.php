@@ -5,26 +5,26 @@
 
     <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/update" class="form-card">
         <?= csrf_field() ?>
-        <div id="vehicleFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">Пожалуйста, исправьте ошибки формы</div>
+        <div id="vehicleFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РёСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё С„РѕСЂРјС‹</div>
 
         <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">Тягач</th></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Truck Plate *</span><button type="button" class="form-help-button" data-help="Госномер тягача. Можно вводить латиницей, форма приведет к русским буквам.">?</button></span></td><td><input type="text" name="truck_plate" value="<?= e($vehicle['truck_plate'] ?? '') ?>"><div class="form-hint">Пример: К816ХК147</div><div id="error-truck_plate" class="error"><?= e($errors['truck_plate'] ?? '') ?></div></td></tr>
+            <tr><th colspan="2" class="form-section-title">РўСЏРіР°С‡</th></tr>
+            <tr><td><span class="form-label"><span class="form-label-text">Truck Plate *</span><button type="button" class="form-help-button" data-help="Р“РѕСЃРЅРѕРјРµСЂ С‚СЏРіР°С‡Р°. РњРѕР¶РЅРѕ РІРІРѕРґРёС‚СЊ Р»Р°С‚РёРЅРёС†РµР№, С„РѕСЂРјР° РїСЂРёРІРµРґРµС‚ Рє СЂСѓСЃСЃРєРёРј Р±СѓРєРІР°Рј.">?</button></span></td><td><input type="text" name="truck_plate" value="<?= e($vehicle['truck_plate'] ?? '') ?>"><div class="form-hint">РџСЂРёРјРµСЂ: Рљ816РҐРљ147</div><div id="error-truck_plate" class="error"><?= e($errors['truck_plate'] ?? '') ?></div></td></tr>
             <tr><td>Truck Brand</td><td><input type="text" name="truck_brand" value="<?= e($vehicle['truck_brand'] ?? '') ?>"><div id="error-truck_brand" class="error"><?= e($errors['truck_brand'] ?? '') ?></div></td></tr>
             <tr><td>Truck Model</td><td><input type="text" name="truck_model" value="<?= e($vehicle['truck_model'] ?? '') ?>"><div id="error-truck_model" class="error"><?= e($errors['truck_model'] ?? '') ?></div></td></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Truck VIN</span><button type="button" class="form-help-button" data-help="VIN состоит из 17 символов, без пробелов.">?</button></span></td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 символов</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
+            <tr><td><span class="form-label"><span class="form-label-text">Truck VIN</span><button type="button" class="form-help-button" data-help="VIN СЃРѕСЃС‚РѕРёС‚ РёР· 17 СЃРёРјРІРѕР»РѕРІ, Р±РµР· РїСЂРѕР±РµР»РѕРІ.">?</button></span></td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 СЃРёРјРІРѕР»РѕРІ</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
 
-            <tr><th colspan="2" class="form-section-title">Прицеп / полуприцеп</th></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Trailer Plate</span><button type="button" class="form-help-button" data-help="Поле необязательное. Для номера прицепа работает мягкая нормализация букв.">?</button></span></td><td><input type="text" name="trailer_plate" value="<?= e($vehicle['trailer_plate'] ?? '') ?>"><div class="form-hint">Пример: ВК432947</div><div id="error-trailer_plate" class="error"><?= e($errors['trailer_plate'] ?? '') ?></div></td></tr>
+            <tr><th colspan="2" class="form-section-title">РџСЂРёС†РµРї / РїРѕР»СѓРїСЂРёС†РµРї</th></tr>
+            <tr><td><span class="form-label"><span class="form-label-text">Trailer Plate</span><button type="button" class="form-help-button" data-help="РџРѕР»Рµ РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕРµ. Р”Р»СЏ РЅРѕРјРµСЂР° РїСЂРёС†РµРїР° СЂР°Р±РѕС‚Р°РµС‚ РјСЏРіРєР°СЏ РЅРѕСЂРјР°Р»РёР·Р°С†РёСЏ Р±СѓРєРІ.">?</button></span></td><td><input type="text" name="trailer_plate" value="<?= e($vehicle['trailer_plate'] ?? '') ?>"><div class="form-hint">РџСЂРёРјРµСЂ: Р’Рљ432947</div><div id="error-trailer_plate" class="error"><?= e($errors['trailer_plate'] ?? '') ?></div></td></tr>
             <tr><td>Trailer Brand</td><td><input type="text" name="trailer_brand" value="<?= e($vehicle['trailer_brand'] ?? '') ?>"><div id="error-trailer_brand" class="error"><?= e($errors['trailer_brand'] ?? '') ?></div></td></tr>
             <tr><td>Trailer Model</td><td><input type="text" name="trailer_model" value="<?= e($vehicle['trailer_model'] ?? '') ?>"><div id="error-trailer_model" class="error"><?= e($errors['trailer_model'] ?? '') ?></div></td></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Trailer VIN</span><button type="button" class="form-help-button" data-help="Если прицепа нет, оставьте поле пустым.">?</button></span></td><td><input type="text" name="trailer_vin" value="<?= e($vehicle['trailer_vin'] ?? '') ?>"><div class="form-hint">17 символов</div><div id="error-trailer_vin" class="error"><?= e($errors['trailer_vin'] ?? '') ?></div></td></tr>
+            <tr><td><span class="form-label"><span class="form-label-text">Trailer VIN</span><button type="button" class="form-help-button" data-help="Р•СЃР»Рё РїСЂРёС†РµРїР° РЅРµС‚, РѕСЃС‚Р°РІСЊС‚Рµ РїРѕР»Рµ РїСѓСЃС‚С‹Рј.">?</button></span></td><td><input type="text" name="trailer_vin" value="<?= e($vehicle['trailer_vin'] ?? '') ?>"><div class="form-hint">17 СЃРёРјРІРѕР»РѕРІ</div><div id="error-trailer_vin" class="error"><?= e($errors['trailer_vin'] ?? '') ?></div></td></tr>
 
-            <tr><th colspan="2" class="form-section-title">Параметры</th></tr>
-            <tr><td>Load Capacity (tons)</td><td><input type="text" name="load_capacity" value="<?= e($vehicle['load_capacity'] ?? '') ?>"><div class="form-hint">Можно: 20,5</div><div id="error-load_capacity" class="error"><?= e($errors['load_capacity'] ?? '') ?></div></td></tr>
-            <tr><td>Body Volume (m³)</td><td><input type="text" name="body_volume" value="<?= e($vehicle['body_volume'] ?? '') ?>"><div class="form-hint">Можно: 90,5</div><div id="error-body_volume" class="error"><?= e($errors['body_volume'] ?? '') ?></div></td></tr>
+            <tr><th colspan="2" class="form-section-title">РџР°СЂР°РјРµС‚СЂС‹</th></tr>
+            <tr><td>Load Capacity (tons)</td><td><input type="text" name="load_capacity" value="<?= e($vehicle['load_capacity'] ?? '') ?>"><div class="form-hint">РњРѕР¶РЅРѕ: 20,5</div><div id="error-load_capacity" class="error"><?= e($errors['load_capacity'] ?? '') ?></div></td></tr>
+            <tr><td>Body Volume (mВі)</td><td><input type="text" name="body_volume" value="<?= e($vehicle['body_volume'] ?? '') ?>"><div class="form-hint">РњРѕР¶РЅРѕ: 90,5</div><div id="error-body_volume" class="error"><?= e($errors['body_volume'] ?? '') ?></div></td></tr>
 
-            <tr><th colspan="2" class="form-section-title">Комментарии и статус</th></tr>
+            <tr><th colspan="2" class="form-section-title">РљРѕРјРјРµРЅС‚Р°СЂРёРё Рё СЃС‚Р°С‚СѓСЃ</th></tr>
             <tr><td>Status *</td><td><select name="status"><option value="active" <?= ($vehicle['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($vehicle['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($vehicle['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><div id="error-status" class="error"><?= e($errors['status'] ?? '') ?></div></td></tr>
             <tr><td>Comments</td><td><textarea name="comments" rows="3"><?= e($vehicle['comments'] ?? '') ?></textarea><div id="error-comments" class="error"><?= e($errors['comments'] ?? '') ?></div></td></tr>
         </table>
@@ -33,11 +33,11 @@
     </form>
 
     <div class="section form-section" style="margin-top: 40px;">
-        <h2 class="form-section-title">Документы</h2>
+        <h2 class="form-section-title">Р”РѕРєСѓРјРµРЅС‚С‹</h2>
 
         <div class="upload-grid">
             <div class="upload-block">
-                <h3 class="upload-title">Загрузить СТС</h3>
+                <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ РЎРўРЎ</h3>
                 <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload" class="vehicle-file-upload-form" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="file_type" value="sts">
@@ -48,7 +48,7 @@
             </div>
 
             <div class="upload-block">
-                <h3 class="upload-title">Загрузить диагностическую карту</h3>
+                <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ РґРёР°РіРЅРѕСЃС‚РёС‡РµСЃРєСѓСЋ РєР°СЂС‚Сѓ</h3>
                 <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload" class="vehicle-file-upload-form" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="file_type" value="diagnostic_card">
@@ -59,13 +59,13 @@
             </div>
 
             <div class="upload-block">
-                <h3 class="upload-title">Прочие файлы</h3>
+                <h3 class="upload-title">РџСЂРѕС‡РёРµ С„Р°Р№Р»С‹</h3>
                 <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload" class="vehicle-file-upload-form" enctype="multipart/form-data">
                     <?= csrf_field() ?>
                     <input type="hidden" name="file_type" value="other">
                     <input type="file" name="file">
                     <div class="error file-error"></div>
-                    <input type="text" name="comment" value="" style="margin-top:8px;" placeholder="Комментарий (необязательно)">
+                    <input type="text" name="comment" value="" style="margin-top:8px;" placeholder="РљРѕРјРјРµРЅС‚Р°СЂРёР№ (РЅРµРѕР±СЏР·Р°С‚РµР»СЊРЅРѕ)">
                     <div style="margin-top: 12px;"><button type="submit" class="btn btn-primary">Upload File</button></div>
                 </form>
             </div>

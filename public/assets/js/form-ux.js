@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     let activeButton = null;
     let activePopup = null;
 
@@ -28,6 +28,15 @@
 
     function normalizeDigits(value) {
         return String(value).replace(/\D/g, '');
+    }
+
+    function normalizeOkved(value) {
+        const trimmed = String(value).trim();
+        if (trimmed === '') {
+            return '';
+        }
+        const noSpaces = trimmed.replace(/\s+/g, '');
+        return noSpaces.replace(/[^0-9.]/g, '');
     }
 
     function formatPhoneFromDigits(digits) {
@@ -222,48 +231,155 @@
         return pad2(parts.day) + '.' + pad2(parts.month) + '.' + String(parts.year);
     }
 
-    function attachNormalizer(selector, normalizer) {
+    function getOrCreateFieldErrorNode(input) {
+        const existing = input.parentNode.querySelector('.form-error[data-form-ux-error="1"]');
+        if (existing) {
+            return existing;
+        }
+
+        const node = document.createElement('div');
+        node.className = 'form-error';
+        node.setAttribute('data-form-ux-error', '1');
+        input.insertAdjacentElement('afterend', node);
+        return node;
+    }
+
+    function setFieldError(input, message) {
+        if (!input || !message) {
+            return;
+        }
+        const node = getOrCreateFieldErrorNode(input);
+        node.textContent = message;
+        node.style.display = 'block';
+    }
+
+    function clearFieldError(input) {
+        if (!input || !input.parentNode) {
+            return;
+        }
+        const node = input.parentNode.querySelector('.form-error[data-form-ux-error="1"]');
+        if (!node) {
+            return;
+        }
+        node.textContent = '';
+        node.style.display = 'none';
+    }
+
+    function attachFieldProcessor(selector, processor) {
         const elements = document.querySelectorAll(selector);
         if (!elements.length) {
             return;
         }
 
+        function handle(element) {
+            const result = processor(element.value);
+            if (result && typeof result.value === 'string' && result.value !== element.value) {
+                element.value = result.value;
+            }
+
+            if (result && result.error) {
+                setFieldError(element, result.error);
+            } else {
+                clearFieldError(element);
+            }
+        }
+
         elements.forEach(function (element) {
             element.addEventListener('blur', function () {
-                const next = normalizer(element.value);
-                if (typeof next === 'string' && next !== element.value) {
-                    element.value = next;
-                }
+                handle(element);
             });
 
             element.addEventListener('paste', function () {
                 window.setTimeout(function () {
-                    const next = normalizer(element.value);
-                    if (typeof next === 'string' && next !== element.value) {
-                        element.value = next;
-                    }
+                    handle(element);
                 }, 0);
             });
         });
     }
 
+    function createNormalizeProcessor(normalizeFn) {
+        return function (value) {
+            return {
+                value: normalizeFn(value),
+                error: ''
+            };
+        };
+    }
+
+    function phoneProcessor(value) {
+        const trimmed = String(value).trim();
+        if (trimmed === '') {
+            return { value: '', error: '' };
+        }
+
+        const digits = normalizeDigits(trimmed);
+        const formatted = formatPhoneFromDigits(digits);
+        if (formatted) {
+            return { value: formatted, error: '' };
+        }
+
+        return {
+            value: digits || trimmed,
+            error: 'Телефон должен содержать 11 цифр и начинаться с 7 или 8'
+        };
+    }
+
+    function dateProcessor(value) {
+        const trimmed = String(value).trim();
+        if (trimmed === '') {
+            return { value: '', error: '' };
+        }
+
+        const normalized = normalizeDateDisplay(trimmed);
+        const parts = parseDateParts(trimmed);
+        const valid = parts && isValidDateParts(parts.year, parts.month, parts.day);
+
+        if (!valid) {
+            return {
+                value: trimmed,
+                error: 'Неверная дата. Пример: 01.01.2025'
+            };
+        }
+
+        return {
+            value: normalized,
+            error: ''
+        };
+    }
+
+    function okvedProcessor(value) {
+        const trimmed = String(value).trim();
+        if (trimmed === '') {
+            return { value: '', error: '' };
+        }
+
+        const hasLetters = /[A-Za-zА-Яа-яЁё]/.test(trimmed);
+        const normalized = normalizeOkved(trimmed);
+
+        return {
+            value: normalized,
+            error: hasLetters ? 'ОКВЭД может содержать только цифры и точки' : ''
+        };
+    }
+
     function attachGlobalNormalizers() {
         const map = [
-            { names: ['full_name', 'contact1_name', 'director'], fn: normalizeFullName },
-            { names: ['email', 'contact1_email', 'contact2_email'], fn: normalizeEmail },
-            { names: ['phone', 'contact1_phone', 'contact2_phone'], fn: normalizePhoneDisplay },
-            { names: ['inn', 'kpp', 'ogrn', 'bank_bik', 'bank_account', 'bank_corr_account'], fn: normalizeDigits },
-            { names: ['snils'], fn: normalizeSnilsDisplay },
-            { names: ['truck_vin', 'trailer_vin'], fn: normalizeVin },
-            { names: ['truck_plate'], fn: normalizeTruckPlate },
-            { names: ['trailer_plate'], fn: normalizeTrailerPlate },
-            { names: ['load_capacity', 'body_volume'], fn: normalizeDecimal },
-            { names: ['passport_issue_date', 'license_issue_date', 'issued_at', 'expires_at'], fn: normalizeDateDisplay }
+            { names: ['full_name', 'contact1_name', 'director'], fn: createNormalizeProcessor(normalizeFullName) },
+            { names: ['email', 'contact1_email', 'contact2_email'], fn: createNormalizeProcessor(normalizeEmail) },
+            { names: ['phone', 'contact1_phone', 'contact2_phone'], fn: phoneProcessor },
+            { names: ['inn', 'kpp', 'ogrn', 'bank_bik', 'bank_account', 'bank_corr_account'], fn: createNormalizeProcessor(normalizeDigits) },
+            { names: ['okved'], fn: okvedProcessor },
+            { names: ['snils'], fn: createNormalizeProcessor(normalizeSnilsDisplay) },
+            { names: ['truck_vin', 'trailer_vin'], fn: createNormalizeProcessor(normalizeVin) },
+            { names: ['truck_plate'], fn: createNormalizeProcessor(normalizeTruckPlate) },
+            { names: ['trailer_plate'], fn: createNormalizeProcessor(normalizeTrailerPlate) },
+            { names: ['load_capacity', 'body_volume'], fn: createNormalizeProcessor(normalizeDecimal) },
+            { names: ['passport_issue_date', 'license_issue_date', 'issued_at', 'expires_at'], fn: dateProcessor }
         ];
 
         map.forEach(function (item) {
             item.names.forEach(function (name) {
-                attachNormalizer('[name="' + name + '"]', item.fn);
+                attachFieldProcessor('[name="' + name + '"]', item.fn);
             });
         });
     }
@@ -342,6 +458,7 @@
             fullName: normalizeFullName,
             email: normalizeEmail,
             digits: normalizeDigits,
+            okved: normalizeOkved,
             phoneDisplay: normalizePhoneDisplay,
             snilsDisplay: normalizeSnilsDisplay,
             vin: normalizeVin,
@@ -350,6 +467,8 @@
             truckPlate: normalizeTruckPlate,
             trailerPlate: normalizeTrailerPlate
         },
+        setFieldError: setFieldError,
+        clearFieldError: clearFieldError,
         showFormAlert: function (alertNode, message) {
             if (!alertNode) {
                 return;
