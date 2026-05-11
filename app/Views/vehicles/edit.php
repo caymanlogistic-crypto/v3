@@ -246,46 +246,97 @@
     <div class="section" style="margin-top: 40px;">
         <h2>Vehicle Files</h2>
 
-        <form
-            method="POST"
-            action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload"
-            class="vehicle-file-upload-form"
-            enctype="multipart/form-data"
-        >
-            <?= csrf_field() ?>
+        <div class="vehicle-file-upload-sections" style="display: grid; gap: 20px;">
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload"
+                class="vehicle-file-upload-form"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+                <input type="hidden" name="file_type" value="sts">
 
-            <table class="form-table">
-                <tr>
-                    <td>File</td>
-                    <td>
-                        <input type="file" name="file">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Type</td>
-                    <td>
-                        <select name="file_type">
-                            <option value="">Select file type</option>
-                            <option value="sts">STS</option>
-                            <option value="diagnostic_card">Diagnostic card</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Comment</td>
-                    <td>
-                        <input type="text" name="comment" value="">
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button type="submit" class="btn btn-primary">Upload File</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
+                <table class="form-table" style="margin-bottom: 0;">
+                    <tr>
+                        <th colspan="2">Загрузить СТС</th>
+                    </tr>
+                    <tr>
+                        <td>Файл</td>
+                        <td>
+                            <input type="file" name="file">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Upload STS</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload"
+                class="vehicle-file-upload-form"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+                <input type="hidden" name="file_type" value="diagnostic_card">
+
+                <table class="form-table" style="margin-bottom: 0;">
+                    <tr>
+                        <th colspan="2">Загрузить диагностическую карту</th>
+                    </tr>
+                    <tr>
+                        <td>Файл</td>
+                        <td>
+                            <input type="file" name="file">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Upload Diagnostic Card</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+            <form
+                method="POST"
+                action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload"
+                class="vehicle-file-upload-form"
+                enctype="multipart/form-data"
+            >
+                <?= csrf_field() ?>
+                <input type="hidden" name="file_type" value="other">
+
+                <table class="form-table" style="margin-bottom: 0;">
+                    <tr>
+                        <th colspan="2">Прочие файлы</th>
+                    </tr>
+                    <tr>
+                        <td>Файл</td>
+                        <td>
+                            <input type="file" name="file">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Комментарий</td>
+                        <td>
+                            <input type="text" name="comment" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Upload File</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
 
         <?php if (!empty($files)): ?>
             <table class="table" style="margin-top: 24px; width:100%; border-collapse: collapse;">
