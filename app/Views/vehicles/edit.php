@@ -43,6 +43,8 @@
         <?php
             $hasSts = false;
             $hasDiagnosticCard = false;
+            $hasTrailerSts = false;
+            $hasTrailerDiagnosticCard = false;
             $hasTruckPhoto = false;
             $hasTrailerPhoto = false;
 
@@ -50,6 +52,8 @@
                 $type = (string) ($fileItem['file_type'] ?? '');
                 if ($type === 'sts') { $hasSts = true; }
                 if ($type === 'diagnostic_card') { $hasDiagnosticCard = true; }
+                if ($type === 'trailer_sts') { $hasTrailerSts = true; }
+                if ($type === 'trailer_diagnostic_card') { $hasTrailerDiagnosticCard = true; }
                 if ($type === 'truck_photo') { $hasTruckPhoto = true; }
                 if ($type === 'trailer_photo') { $hasTrailerPhoto = true; }
             }
@@ -82,6 +86,22 @@
                     </div>
                 <?php endif; ?>
 
+                <?php if ($isTrailerActive && !$hasTrailerSts): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">Загрузить СТС полуприцепа</h3>
+                        <input type="file" name="typed_files[trailer_sts][]" multiple>
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($isTrailerActive && !$hasTrailerDiagnosticCard): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">Загрузить диагностическую карту полуприцепа</h3>
+                        <input type="file" name="typed_files[trailer_diagnostic_card][]" multiple>
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
                 <?php if (!$hasTruckPhoto): ?>
                     <div class="upload-block">
                         <h3 class="upload-title">Загрузить фото машины</h3>
@@ -110,6 +130,7 @@
                 <button type="submit" class="btn btn-primary">Upload</button>
             </div>
         </form>
+
         <?php if (!empty($files)): ?>
             <table class="table" style="margin-top: 24px; width:100%; border-collapse: collapse;">
                 <thead><tr><th>Uploaded</th><th>Name</th><th>Type</th><th>Size</th><th>Comment</th><th>Actions</th></tr></thead>
@@ -123,9 +144,11 @@
                                 $fileTypeLabels = [
                                     'sts' => 'СТС',
                                     'diagnostic_card' => 'Диагностическая карта',
+                                    'trailer_sts' => 'СТС полуприцепа',
+                                    'trailer_diagnostic_card' => 'Диагностическая карта полуприцепа',
                                     'truck_photo' => 'Фото машины',
                                     'trailer_photo' => 'Фото полуприцепа',
-                                    'other' => 'Прочие',
+                                    'other' => 'Прочее',
                                 ];
                                 echo e($fileTypeLabels[$fileType] ?? $fileType);
                             ?></td>
@@ -144,4 +167,3 @@
     <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js"></script>
     <script src="<?= config('app.url') ?>/assets/js/vehicle-files.js"></script>
 </div>
-

@@ -216,7 +216,7 @@ final class VehiclesController extends Controller
         Flash::success('Vehicle updated successfully');
 
         Response::redirect(
-            config('app.url') . '/vehicles/' . $vehicleId . '/edit'
+            config('app.url') . '/vehicles'
         );
     }
 

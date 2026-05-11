@@ -21,6 +21,8 @@ final class VehicleFileValidator
     private const ALLOWED_TYPES = [
         'sts',
         'diagnostic_card',
+        'trailer_sts',
+        'trailer_diagnostic_card',
         'truck_photo',
         'trailer_photo',
         'other',
