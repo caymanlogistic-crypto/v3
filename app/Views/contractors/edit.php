@@ -10,30 +10,30 @@
         <?= csrf_field() ?>
 
         <div id="contractorFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
-            Пожалуйста, исправьте ошибки формы
+            РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РёСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё С„РѕСЂРјС‹
         </div>
 
         <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">Основные данные</th></tr>
+            <tr><th colspan="2" class="form-section-title">РћСЃРЅРѕРІРЅС‹Рµ РґР°РЅРЅС‹Рµ</th></tr>
             <tr>
                 <td>
-                    <span class="form-label"><span class="form-label-text">Name</span><button type="button" class="form-help-button" data-help="Юридическое наименование компании или ФИО ИП.">?</button></span>
+                    <span class="form-label"><span class="form-label-text">Name</span><button type="button" class="form-help-button" data-help="Р®СЂРёРґРёС‡РµСЃРєРѕРµ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РєРѕРјРїР°РЅРёРё РёР»Рё Р¤РРћ РРџ.">?</button></span>
                 </td>
                 <td>
                     <input type="text" name="name" value="<?= e($contractor['name'] ?? '') ?>">
-                    <div class="form-hint">Пример: ООО "Ромашка"</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: РћРћРћ "Р РѕРјР°С€РєР°"</div>
                     <div id="error-name" class="error"><?= e($errors['name'] ?? '') ?></div>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <span class="form-label"><span class="form-label-text">INN</span><button type="button" class="form-help-button" data-help="Введите ИНН компании или ИП. Можно вставлять с пробелами, форма нормализует значение.">?</button></span>
+                    <span class="form-label"><span class="form-label-text">INN</span><button type="button" class="form-help-button" data-help="Р’РІРµРґРёС‚Рµ РРќРќ РєРѕРјРїР°РЅРёРё РёР»Рё РРџ. РњРѕР¶РЅРѕ РІСЃС‚Р°РІР»СЏС‚СЊ СЃ РїСЂРѕР±РµР»Р°РјРё, С„РѕСЂРјР° РЅРѕСЂРјР°Р»РёР·СѓРµС‚ Р·РЅР°С‡РµРЅРёРµ.">?</button></span>
                 </td>
                 <td>
                     <input type="text" name="inn" value="<?= e($contractor['inn'] ?? '') ?>">
-                    <button type="button" id="contractorDadataAutofill" disabled>Автозаполнить</button>
+                    <button type="button" id="contractorDadataAutofill" disabled>РђРІС‚РѕР·Р°РїРѕР»РЅРёС‚СЊ</button>
                     <div id="contractorDadataMessage" class="error" style="display:none;"></div>
-                    <div class="form-hint">10 цифр для юрлица, 12 цифр для ИП</div>
+                    <div class="form-hint">10 С†РёС„СЂ РґР»СЏ СЋСЂР»РёС†Р°, 12 С†РёС„СЂ РґР»СЏ РРџ</div>
                     <div id="error-inn" class="error"><?= e($errors['inn'] ?? '') ?></div>
                 </td>
             </tr>
@@ -41,7 +41,7 @@
                 <td>KPP</td>
                 <td>
                     <input type="text" name="kpp" value="<?= e($contractor['kpp'] ?? '') ?>">
-                    <div class="form-hint">Пример: 773601001</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: 773601001</div>
                     <div id="error-kpp" class="error"><?= e($errors['kpp'] ?? '') ?></div>
                 </td>
             </tr>
@@ -49,7 +49,7 @@
                 <td>OGRN</td>
                 <td>
                     <input type="text" name="ogrn" value="<?= e($contractor['ogrn'] ?? '') ?>">
-                    <div class="form-hint">Пример: 1027700132195</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: 1027700132195</div>
                     <div id="error-ogrn" class="error"><?= e($errors['ogrn'] ?? '') ?></div>
                 </td>
             </tr>
@@ -57,24 +57,24 @@
                 <td>OKVED</td>
                 <td>
                     <input type="text" name="okved" value="<?= e($contractor['okved'] ?? '') ?>">
-                    <div class="form-hint">Пример: 52.29</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: 52.29</div>
                     <div id="error-okved" class="error"><?= e($errors['okved'] ?? '') ?></div>
                 </td>
             </tr>
 
-            <tr><th colspan="2" class="form-section-title">Контакты</th></tr>
+            <tr><th colspan="2" class="form-section-title">РљРѕРЅС‚Р°РєС‚С‹</th></tr>
             <tr>
                 <td>Primary Contact Phone</td>
                 <td>
                     <input type="text" name="contact1_phone" value="<?= e($contractor['contact1_phone'] ?? '') ?>">
-                    <div class="form-hint">Можно вставить: 8 (999) 123-45-67</div>
+                    <div class="form-hint">РњРѕР¶РЅРѕ РІСЃС‚Р°РІРёС‚СЊ: 8 (999) 123-45-67</div>
                 </td>
             </tr>
             <tr>
                 <td>Primary Contact Email</td>
                 <td>
                     <input type="text" name="contact1_email" value="<?= e($contractor['contact1_email'] ?? '') ?>">
-                    <div class="form-hint">Пример: test@test.ru</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: test@test.ru</div>
                     <div id="error-contact1_email" class="error"><?= e($errors['contact1_email'] ?? '') ?></div>
                 </td>
             </tr>
@@ -82,12 +82,12 @@
                 <td>Primary Contact Name</td>
                 <td>
                     <input type="text" name="contact1_name" value="<?= e($contractor['contact1_name'] ?? '') ?>">
-                    <div class="form-hint">Пример: Иванов Иван Иванович</div>
+                    <div class="form-hint">РџСЂРёРјРµСЂ: РРІР°РЅРѕРІ РРІР°РЅ РРІР°РЅРѕРІРёС‡</div>
                     <div id="error-contact1_name" class="error"><?= e($errors['contact1_name'] ?? '') ?></div>
                 </td>
             </tr>
 
-            <tr><th colspan="2" class="form-section-title">Адреса</th></tr>
+            <tr><th colspan="2" class="form-section-title">РђРґСЂРµСЃР°</th></tr>
             <tr>
                 <td>Legal Address</td>
                 <td><textarea name="legal_address" rows="4"><?= e($contractor['legal_address'] ?? '') ?></textarea></td>
@@ -97,7 +97,7 @@
                 <td><textarea name="actual_address" rows="4"><?= e($contractor['actual_address'] ?? '') ?></textarea></td>
             </tr>
 
-            <tr><th colspan="2" class="form-section-title">Реквизиты</th></tr>
+            <tr><th colspan="2" class="form-section-title">Р РµРєРІРёР·РёС‚С‹</th></tr>
             <tr>
                 <td>Director</td>
                 <td>
@@ -110,7 +110,7 @@
                 <td><input type="text" name="director_post" value="<?= e($contractor['director_post'] ?? '') ?>"></td>
             </tr>
 
-            <tr><th colspan="2" class="form-section-title">Банк</th></tr>
+            <tr><th colspan="2" class="form-section-title">Р‘Р°РЅРє</th></tr>
             <tr>
                 <td>Bank Name</td>
                 <td>
@@ -122,7 +122,7 @@
                 <td>Bank Account</td>
                 <td>
                     <input type="text" name="bank_account" value="<?= e($contractor['bank_account'] ?? '') ?>">
-                    <div class="form-hint">20 цифр</div>
+                    <div class="form-hint">20 С†РёС„СЂ</div>
                     <div id="error-bank_account" class="error"><?= e($errors['bank_account'] ?? '') ?></div>
                 </td>
             </tr>
@@ -137,12 +137,12 @@
                 <td>Bank BIK</td>
                 <td>
                     <input type="text" name="bank_bik" value="<?= e($contractor['bank_bik'] ?? '') ?>">
-                    <div class="form-hint">9 цифр</div>
+                    <div class="form-hint">9 С†РёС„СЂ</div>
                     <div id="error-bank_bik" class="error"><?= e($errors['bank_bik'] ?? '') ?></div>
                 </td>
             </tr>
 
-            <tr><th colspan="2" class="form-section-title">Комментарии и статус</th></tr>
+            <tr><th colspan="2" class="form-section-title">РљРѕРјРјРµРЅС‚Р°СЂРёРё Рё СЃС‚Р°С‚СѓСЃ</th></tr>
             <tr>
                 <td>Comments</td>
                 <td><textarea name="comments" rows="4"><?= e($contractor['comments'] ?? '') ?></textarea></td>
@@ -180,7 +180,7 @@
     <div style="margin-top:40px;" class="form-section">
 
         <div id="contractorContactValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
-            Пожалуйста, исправьте ошибки контакта
+            РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РёСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё РєРѕРЅС‚Р°РєС‚Р°
         </div>
 
         <h2 class="form-section-title">Contacts</h2>
@@ -291,42 +291,50 @@
                 </tbody>
             </table>
 
-            <div class="upload-grid" style="margin-top:20px;">
-                <div class="upload-block">
-                    <h3 class="upload-title">Загрузить договор</h3>
-                    <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload" enctype="multipart/form-data">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="file_type" value="contract">
-                        <input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                        <?php
+                $hasContract = false;
+                $hasCompanyCard = false;
+                foreach ($files as $fileItem) {
+                    $type = (string) ($fileItem['file_type'] ?? '');
+                    if ($type === 'contract') { $hasContract = true; }
+                    if ($type === 'company_card') { $hasCompanyCard = true; }
+                }
+            ?>
+
+            <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload" enctype="multipart/form-data" class="contractor-file-upload-form">
+                <?= csrf_field() ?>
+
+                <div class="upload-grid" style="margin-top:20px;">
+                    <?php if (!$hasContract): ?>
+                        <div class="upload-block">
+                            <h3 class="upload-title">Загрузить договор</h3>
+                            <input type="file" name="typed_files[contract][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                            <div class="error file-error"></div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!$hasCompanyCard): ?>
+                        <div class="upload-block">
+                            <h3 class="upload-title">Загрузить карточку компании</h3>
+                            <input type="file" name="typed_files[company_card][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                            <div class="error file-error"></div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="upload-block">
+                        <h3 class="upload-title">Прочие файлы</h3>
+                        <textarea name="comments[other]" rows="3" placeholder="Комментарий (необязательно)"></textarea>
+                        <input type="file" name="typed_files[other][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
-                        <div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div>
-                    </form>
+                    </div>
                 </div>
 
-                <div class="upload-block">
-                    <h3 class="upload-title">Загрузить карточку компании</h3>
-                    <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload" enctype="multipart/form-data">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="file_type" value="company_card">
-                        <input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                        <div class="error file-error"></div>
-                        <div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div>
-                    </form>
+                <div style="margin-top:15px;">
+                    <button type="submit" class="btn btn-primary">Upload</button>
                 </div>
-
-                <div class="upload-block">
-                    <h3 class="upload-title">Прочие файлы</h3>
-                    <form method="POST" action="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/files/upload" enctype="multipart/form-data">
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="file_type" value="other">
-                        <textarea name="comment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
-                        <input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                        <div class="error file-error"></div>
-                        <div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div>
-                    </form>
-                </div>
-            </div>
+            </form>
         </div>
+    </div>
     </div>
 
 </div>

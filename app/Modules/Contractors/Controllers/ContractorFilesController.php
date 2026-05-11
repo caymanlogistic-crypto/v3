@@ -27,51 +27,46 @@ final class ContractorFilesController extends Controller
     public function upload(Request $request, array $params): void
     {
         $contractorId = (int) $params['id'];
-
-        $data = [
-            'file_type' => trim((string) $request->input('file_type')),
-            'comment' => trim((string) $request->input('comment')),
-        ];
-
-        $uploadedFiles = $this->normalizeUploadedFiles($_FILES);
-
-        if ($uploadedFiles === []) {
-            Flash::error('Файл не выбран');
-            Response::redirect(config('app.url') . '/contractors/' . $contractorId . '/edit');
-        }
-
         $successCount = 0;
         $errorCount = 0;
 
-        foreach ($uploadedFiles as $file) {
-            $errors = $this->validator->validate($data, $file);
+        $typedFiles = $this->normalizeUploadedFilesByType($_FILES, 'typed_files');
 
-            if (!empty($errors)) {
-                $errorCount++;
-                continue;
+        if ($typedFiles !== []) {
+            $comments = isset($_POST['comments']) && is_array($_POST['comments']) ? $_POST['comments'] : [];
+
+            foreach ($typedFiles as $fileType => $files) {
+                $data = [
+                    'file_type' => trim((string) $fileType),
+                    'comment' => trim((string) ($comments[$fileType] ?? '')),
+                ];
+
+                foreach ($files as $file) {
+                    if ($this->saveUploadedFile($contractorId, $data, $file)) {
+                        $successCount++;
+                    } else {
+                        $errorCount++;
+                    }
+                }
+            }
+        } else {
+            $data = [
+                'file_type' => trim((string) $request->input('file_type')),
+                'comment' => trim((string) $request->input('comment')),
+            ];
+            $uploadedFiles = $this->normalizeUploadedFiles($_FILES);
+
+            if ($uploadedFiles === []) {
+                Flash::error('Файл не выбран');
+                Response::redirect(config('app.url') . '/contractors/' . $contractorId . '/edit');
             }
 
-            try {
-                $storage = ContractorFileStorage::moveUploadedFile($file, $contractorId);
-
-                $mimeType = $file['type'] ?? 'application/octet-stream';
-                if (empty($mimeType) && is_file($storage['file_path'])) {
-                    $mimeType = mime_content_type($storage['file_path']) ?: 'application/octet-stream';
+            foreach ($uploadedFiles as $file) {
+                if ($this->saveUploadedFile($contractorId, $data, $file)) {
+                    $successCount++;
+                } else {
+                    $errorCount++;
                 }
-
-                $this->service->create($contractorId, [
-                    'original_name' => (string) $file['name'],
-                    'stored_name' => $storage['stored_name'],
-                    'file_path' => $storage['file_path'],
-                    'mime_type' => $mimeType,
-                    'file_extension' => strtolower(pathinfo((string) $file['name'], PATHINFO_EXTENSION)),
-                    'file_size' => (int) $file['size'],
-                    'comment' => $data['comment'],
-                ]);
-
-                $successCount++;
-            } catch (\Throwable $exception) {
-                $errorCount++;
             }
         }
 
@@ -133,11 +128,47 @@ final class ContractorFilesController extends Controller
         ContractorFileStorage::deleteFile((string) $file['file_path']);
         $this->service->softDelete($fileId);
 
-        Flash::success('Р¤Р°Р№Р» СѓРґР°Р»С‘РЅ');
+        Flash::success('Файл удалён');
 
         Response::redirect(
             config('app.url') . '/contractors/' . $contractorId . '/edit'
         );
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @param array{name:string,type:string,tmp_name:string,error:int,size:int} $file
+     */
+    private function saveUploadedFile(int $contractorId, array $data, array $file): bool
+    {
+        $errors = $this->validator->validate($data, $file);
+
+        if (!empty($errors)) {
+            return false;
+        }
+
+        try {
+            $storage = ContractorFileStorage::moveUploadedFile($file, $contractorId);
+
+            $mimeType = $file['type'] ?? 'application/octet-stream';
+            if (empty($mimeType) && is_file($storage['file_path'])) {
+                $mimeType = mime_content_type($storage['file_path']) ?: 'application/octet-stream';
+            }
+
+            $this->service->create($contractorId, [
+                'original_name' => (string) $file['name'],
+                'stored_name' => $storage['stored_name'],
+                'file_path' => $storage['file_path'],
+                'mime_type' => $mimeType,
+                'file_extension' => strtolower(pathinfo((string) $file['name'], PATHINFO_EXTENSION)),
+                'file_size' => (int) $file['size'],
+                'comment' => $data['comment'],
+            ]);
+
+            return true;
+        } catch (\Throwable $exception) {
+            return false;
+        }
     }
 
     /**
@@ -190,5 +221,48 @@ final class ContractorFilesController extends Controller
         $normalized[] = $file;
 
         return $normalized;
+    }
+
+    /**
+     * @param array<string, mixed> $files
+     * @return array<string, array<int, array{name:string,type:string,tmp_name:string,error:int,size:int}>>
+     */
+    private function normalizeUploadedFilesByType(array $files, string $rootKey): array
+    {
+        $raw = $files[$rootKey] ?? null;
+        $result = [];
+
+        if (!is_array($raw) || !isset($raw['name']) || !is_array($raw['name'])) {
+            return $result;
+        }
+
+        foreach ($raw['name'] as $fileType => $names) {
+            if (!is_array($names)) {
+                continue;
+            }
+
+            foreach ($names as $index => $name) {
+                $file = [
+                    'name' => (string) $name,
+                    'type' => (string) ($raw['type'][$fileType][$index] ?? ''),
+                    'tmp_name' => (string) ($raw['tmp_name'][$fileType][$index] ?? ''),
+                    'error' => (int) ($raw['error'][$fileType][$index] ?? UPLOAD_ERR_NO_FILE),
+                    'size' => (int) ($raw['size'][$fileType][$index] ?? 0),
+                ];
+
+                if ($file['error'] === UPLOAD_ERR_NO_FILE || $file['name'] === '') {
+                    continue;
+                }
+
+                $typeKey = (string) $fileType;
+                if (!isset($result[$typeKey])) {
+                    $result[$typeKey] = [];
+                }
+
+                $result[$typeKey][] = $file;
+            }
+        }
+
+        return $result;
     }
 }

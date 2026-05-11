@@ -53,12 +53,58 @@
             </tbody>
         </table>
 
-        <div class="upload-grid" style="margin-top:20px;">
-            <div class="upload-block"><h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1087;&#1072;&#1089;&#1087;&#1086;&#1088;&#1090;</h3><form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data"><?= csrf_field() ?><input type="hidden" name="file_type" value="passport"><input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"><div class="error file-error"></div><div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div></form></div>
-            <div class="upload-block"><h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1042;&#1059;</h3><form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data"><?= csrf_field() ?><input type="hidden" name="file_type" value="license"><input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"><div class="error file-error"></div><div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div></form></div>
-            <div class="upload-block"><h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1057;&#1053;&#1048;&#1051;&#1057;</h3><form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data"><?= csrf_field() ?><input type="hidden" name="file_type" value="snils"><input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"><div class="error file-error"></div><div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div></form></div>
-            <div class="upload-block"><h3 class="upload-title">&#1055;&#1088;&#1086;&#1095;&#1080;&#1077; &#1092;&#1072;&#1081;&#1083;&#1099;</h3><form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data"><?= csrf_field() ?><input type="hidden" name="file_type" value="other"><textarea name="comment" rows="3" placeholder="&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1081; (&#1085;&#1077;&#1086;&#1073;&#1103;&#1079;&#1072;&#1090;&#1077;&#1083;&#1100;&#1085;&#1086;)"></textarea><input type="file" name="files[]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"><div class="error file-error"></div><div style="margin-top:15px;"><button type="submit" class="btn btn-primary">Upload</button></div></form></div>
-        </div>
+                <?php
+            $hasPassport = false;
+            $hasLicense = false;
+            $hasSnils = false;
+            foreach ($files as $fileItem) {
+                $type = (string) ($fileItem['file_type'] ?? '');
+                if ($type === 'passport') { $hasPassport = true; }
+                if ($type === 'license') { $hasLicense = true; }
+                if ($type === 'snils') { $hasSnils = true; }
+            }
+        ?>
+
+        <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data" class="driver-file-upload-form">
+            <?= csrf_field() ?>
+
+            <div class="upload-grid" style="margin-top:20px;">
+                <?php if (!$hasPassport): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1087;&#1072;&#1089;&#1087;&#1086;&#1088;&#1090;</h3>
+                        <input type="file" name="typed_files[passport][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$hasLicense): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1042;&#1059;</h3>
+                        <input type="file" name="typed_files[license][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$hasSnils): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1057;&#1053;&#1048;&#1051;&#1057;</h3>
+                        <input type="file" name="typed_files[snils][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <div class="upload-block">
+                    <h3 class="upload-title">&#1055;&#1088;&#1086;&#1095;&#1080;&#1077; &#1092;&#1072;&#1081;&#1083;&#1099;</h3>
+                    <textarea name="comments[other]" rows="3" placeholder="&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1081; (&#1085;&#1077;&#1086;&#1073;&#1103;&#1079;&#1072;&#1090;&#1077;&#1083;&#1100;&#1085;&#1086;)"></textarea>
+                    <input type="file" name="typed_files[other][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
+                    <div class="error file-error"></div>
+                </div>
+            </div>
+
+            <div style="margin-top:15px;">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
     </div>
 
     <script src="<?= config('app.url') ?>/assets/js/drivers-form.js"></script>
