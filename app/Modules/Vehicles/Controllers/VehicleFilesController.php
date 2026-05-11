@@ -37,13 +37,11 @@ final class VehicleFilesController extends Controller
             $comments = isset($_POST['comments']) && is_array($_POST['comments']) ? $_POST['comments'] : [];
 
             foreach ($typedFiles as $fileType => $files) {
-                $data = [
-                    'file_type' => trim((string) $fileType),
-                    'comment' => trim((string) ($comments[$fileType] ?? '')),
-                ];
+                $currentFileType = trim((string) $fileType);
+                $comment = trim((string) ($comments[$currentFileType] ?? ''));
 
                 foreach ($files as $file) {
-                    if ($this->saveUploadedFile($vehicleId, $data, $file)) {
+                    if ($this->saveUploadedFile($vehicleId, $currentFileType, $comment, $file)) {
                         $successCount++;
                     } else {
                         $errorCount++;
@@ -51,10 +49,8 @@ final class VehicleFilesController extends Controller
                 }
             }
         } else {
-            $data = [
-                'file_type' => trim((string) $request->input('file_type')),
-                'comment' => trim((string) $request->input('comment')),
-            ];
+            $currentFileType = trim((string) $request->input('file_type'));
+            $comment = trim((string) $request->input('comment'));
             $uploadedFiles = $this->normalizeUploadedFiles($_FILES);
 
             if ($uploadedFiles === []) {
@@ -63,7 +59,7 @@ final class VehicleFilesController extends Controller
             }
 
             foreach ($uploadedFiles as $file) {
-                if ($this->saveUploadedFile($vehicleId, $data, $file)) {
+                if ($this->saveUploadedFile($vehicleId, $currentFileType, $comment, $file)) {
                     $successCount++;
                 } else {
                     $errorCount++;
@@ -137,11 +133,15 @@ final class VehicleFilesController extends Controller
     }
 
     /**
-     * @param array<string, mixed> $data
      * @param array{name:string,type:string,tmp_name:string,error:int,size:int} $file
      */
-    private function saveUploadedFile(int $vehicleId, array $data, array $file): bool
+    private function saveUploadedFile(int $vehicleId, string $fileType, string $comment, array $file): bool
     {
+        $data = [
+            'file_type' => $fileType,
+            'comment' => $comment,
+        ];
+
         $errors = $this->validator->validate($data, $file);
 
         if (!empty($errors)) {
@@ -163,18 +163,10 @@ final class VehicleFilesController extends Controller
                 'mime_type' => $mimeType,
                 'file_extension' => strtolower(pathinfo((string) $file['name'], PATHINFO_EXTENSION)),
                 'file_size' => (int) $file['size'],
-                'file_type' => $data['file_type'],
+                'file_type' => $fileType,
                 'uploaded_by' => Auth::id(),
-                'comment' => $data['comment'],
+                'comment' => $comment,
             ]);
-
-            $savedRow = $this->service->findByStoredName($vehicleId, $storage['stored_name']);
-            $savedType = trim((string) ($savedRow['file_type'] ?? ''));
-            $expectedType = trim((string) ($data['file_type'] ?? ''));
-
-            if ($savedRow === null || $savedType !== $expectedType) {
-                return false;
-            }
 
             return true;
         } catch (\Throwable $exception) {
