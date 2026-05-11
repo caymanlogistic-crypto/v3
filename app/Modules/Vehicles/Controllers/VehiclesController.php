@@ -1,0 +1,216 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Vehicles\Controllers;
+
+use App\Core\Controller\Controller;
+use App\Core\Http\Request;
+use App\Core\Http\Response;
+use App\Core\Session\Flash;
+use App\Modules\Vehicles\Services\VehicleService;
+use App\Modules\Vehicles\Support\VehicleInputMapper;
+use App\Modules\Vehicles\Validation\VehicleValidator;
+
+final class VehiclesController extends Controller
+{
+    private VehicleService $service;
+
+    private VehicleValidator $validator;
+
+    public function __construct()
+    {
+        $this->service = new VehicleService();
+
+        $this->validator = new VehicleValidator();
+    }
+
+    public function index(
+        Request $request
+    ): void {
+
+        $page = max(
+            1,
+            (int) $request->input(
+                'page',
+                1
+            )
+        );
+
+        $search = trim(
+            (string) $request->input(
+                'search',
+                ''
+            )
+        );
+
+        $result = $this->service->paginate(
+            $page,
+            20,
+            $search
+        );
+
+        $this->view(
+            'vehicles.index',
+            [
+                'vehicles' => $result['data'],
+                'pagination' => $result['pagination'],
+                'search' => $search,
+            ]
+        );
+    }
+
+    public function create(
+        Request $request
+    ): void {
+
+        $this->view(
+            'vehicles.create',
+            [
+                'errors' => [],
+                'old' => [],
+            ]
+        );
+    }
+
+    public function store(
+        Request $request
+    ): void {
+
+        $data = [
+            'truck_brand' => trim((string) $request->input('truck_brand')),
+            'truck_model' => trim((string) $request->input('truck_model')),
+            'truck_plate' => trim((string) $request->input('truck_plate')),
+            'truck_vin' => trim((string) $request->input('truck_vin')),
+            'trailer_brand' => trim((string) $request->input('trailer_brand')),
+            'trailer_model' => trim((string) $request->input('trailer_model')),
+            'trailer_plate' => trim((string) $request->input('trailer_plate')),
+            'trailer_vin' => trim((string) $request->input('trailer_vin')),
+            'load_capacity' => trim((string) $request->input('load_capacity')),
+            'body_volume' => trim((string) $request->input('body_volume')),
+            'comments' => trim((string) $request->input('comments')),
+            'status' => trim((string) $request->input('status')),
+        ];
+
+        $data = VehicleInputMapper::map($data);
+
+        $errors = $this->validator->validate(
+            $data
+        );
+
+        if (!empty($errors)) {
+            foreach ($data as $key => $value) {
+                $_SESSION['old_' . $key] = $value;
+            }
+
+            Flash::error('Ошибка валидации формы');
+
+            Response::redirect(
+                config('app.url') . '/vehicles/create'
+            );
+        }
+
+        $vehicleId = $this->service->create($data);
+
+        Flash::success('Транспортное средство создано');
+
+        Response::redirect(
+            config('app.url') . '/vehicles/' . $vehicleId . '/edit'
+        );
+    }
+
+    public function edit(
+        Request $request,
+        array $params
+    ): void {
+
+        $vehicle = $this->service->findById(
+            (int) $params['id']
+        );
+
+        if (!$vehicle) {
+            Response::abort(404, 'Vehicle not found');
+        }
+
+        $this->view(
+            'vehicles.edit',
+            [
+                'vehicle' => $vehicle,
+                'errors' => [],
+            ]
+        );
+    }
+
+    public function update(
+        Request $request,
+        array $params
+    ): void {
+
+        $vehicleId = (int) $params['id'];
+
+        $vehicle = $this->service->findById($vehicleId);
+
+        if (!$vehicle) {
+            Response::abort(404, 'Vehicle not found');
+        }
+
+        $data = [
+            'truck_brand' => trim((string) $request->input('truck_brand')),
+            'truck_model' => trim((string) $request->input('truck_model')),
+            'truck_plate' => trim((string) $request->input('truck_plate')),
+            'truck_vin' => trim((string) $request->input('truck_vin')),
+            'trailer_brand' => trim((string) $request->input('trailer_brand')),
+            'trailer_model' => trim((string) $request->input('trailer_model')),
+            'trailer_plate' => trim((string) $request->input('trailer_plate')),
+            'trailer_vin' => trim((string) $request->input('trailer_vin')),
+            'load_capacity' => trim((string) $request->input('load_capacity')),
+            'body_volume' => trim((string) $request->input('body_volume')),
+            'comments' => trim((string) $request->input('comments')),
+            'status' => trim((string) $request->input('status')),
+        ];
+
+        $data = VehicleInputMapper::map($data);
+
+        $errors = $this->validator->validate(
+            $data
+        );
+
+        if (!empty($errors)) {
+            Flash::error('Ошибка валидации формы');
+
+            Response::redirect(
+                config('app.url') . '/vehicles/' . $vehicleId . '/edit'
+            );
+        }
+
+        $this->service->update($vehicleId, $data);
+
+        Flash::success('Транспортное средство обновлено');
+
+        Response::redirect(
+            config('app.url') . '/vehicles/' . $vehicleId . '/edit'
+        );
+    }
+
+    public function delete(
+        Request $request,
+        array $params
+    ): void {
+
+        $vehicleId = (int) $params['id'];
+
+        $vehicle = $this->service->findById($vehicleId);
+
+        if (!$vehicle) {
+            Response::abort(404, 'Vehicle not found');
+        }
+
+        $this->service->softDelete($vehicleId);
+
+        Flash::success('Транспортное средство удалено');
+
+        Response::redirect(
+            config('app.url') . '/vehicles'
+        );
+    }
+}

@@ -16,6 +16,7 @@ use App\Modules\Contractors\Controllers\ContractorFilesController;
 use App\Modules\Drivers\Controllers\DriverFilesController;
 use App\Modules\Drivers\Controllers\DriversController;
 use App\Modules\Home\Controllers\HomeController;
+use App\Modules\Vehicles\Controllers\VehiclesController;
 
 $router->get(
     '/',
@@ -401,6 +402,96 @@ $router->post(
     static function (array $params): void {
 
         (new DriverFilesController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->get(
+    '/vehicles',
+    static function (): void {
+
+        (new VehiclesController())->index(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.view',
+    ]
+);
+
+$router->get(
+    '/vehicles/create',
+    static function (): void {
+
+        (new VehiclesController())->create(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->post(
+    '/vehicles/store',
+    static function (): void {
+
+        (new VehiclesController())->store(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->get(
+    '/vehicles/{id}/edit',
+    static function (array $params): void {
+
+        (new VehiclesController())->edit(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/vehicles/{id}/update',
+    static function (array $params): void {
+
+        (new VehiclesController())->update(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/vehicles/{id}/delete',
+    static function (array $params): void {
+
+        (new VehiclesController())->delete(
             new Request(),
             $params
         );
