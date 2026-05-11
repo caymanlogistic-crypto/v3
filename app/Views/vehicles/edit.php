@@ -150,6 +150,15 @@
                                     'trailer_photo' => 'Фото полуприцепа',
                                     'other' => 'Прочее',
                                 ];
+                                $fileTypeLabels = [
+                                    'sts' => json_decode('"\u0421\u0422\u0421"', true),
+                                    'diagnostic_card' => json_decode('"\u0414\u0438\u0430\u0433\u043d\u043e\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u0430\u0440\u0442\u0430"', true),
+                                    'trailer_sts' => json_decode('"\u0421\u0422\u0421 \u043f\u043e\u043b\u0443\u043f\u0440\u0438\u0446\u0435\u043f\u0430"', true),
+                                    'trailer_diagnostic_card' => json_decode('"\u0414\u0438\u0430\u0433\u043d\u043e\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043a\u0430\u0440\u0442\u0430 \u043f\u043e\u043b\u0443\u043f\u0440\u0438\u0446\u0435\u043f\u0430"', true),
+                                    'truck_photo' => json_decode('"\u0424\u043e\u0442\u043e \u043c\u0430\u0448\u0438\u043d\u044b"', true),
+                                    'trailer_photo' => json_decode('"\u0424\u043e\u0442\u043e \u043f\u043e\u043b\u0443\u043f\u0440\u0438\u0446\u0435\u043f\u0430"', true),
+                                    'other' => json_decode('"\u041f\u0440\u043e\u0447\u0435\u0435"', true),
+                                ];
                                 echo e($fileTypeLabels[$fileType] ?? $fileType);
                             ?></td>
                             <td><?= e(isset($file['file_size']) ? round((int) $file['file_size'] / 1024, 2) . ' KB' : '') ?></td>
