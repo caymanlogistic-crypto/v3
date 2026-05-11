@@ -40,14 +40,26 @@
     <div class="section form-section" style="margin-top: 40px;">
         <h2 class="form-section-title">&#1044;&#1086;&#1082;&#1091;&#1084;&#1077;&#1085;&#1090;&#1099;</h2>
 
-                <?php
+        <?php
             $hasSts = false;
             $hasDiagnosticCard = false;
+            $hasTruckPhoto = false;
+            $hasTrailerPhoto = false;
+
             foreach ($files as $fileItem) {
                 $type = (string) ($fileItem['file_type'] ?? '');
                 if ($type === 'sts') { $hasSts = true; }
                 if ($type === 'diagnostic_card') { $hasDiagnosticCard = true; }
+                if ($type === 'truck_photo') { $hasTruckPhoto = true; }
+                if ($type === 'trailer_photo') { $hasTrailerPhoto = true; }
             }
+
+            $isTrailerActive = trim((string) ($vehicle['trailer_brand'] ?? '')) !== ''
+                || trim((string) ($vehicle['trailer_model'] ?? '')) !== ''
+                || trim((string) ($vehicle['trailer_plate'] ?? '')) !== ''
+                || trim((string) ($vehicle['trailer_vin'] ?? '')) !== ''
+                || trim((string) ($vehicle['trailer_load_capacity'] ?? '')) !== ''
+                || trim((string) ($vehicle['trailer_body_volume'] ?? '')) !== '';
         ?>
 
         <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload" class="vehicle-file-upload-form" enctype="multipart/form-data">
@@ -66,6 +78,22 @@
                     <div class="upload-block">
                         <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1076;&#1080;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1091;&#1102; &#1082;&#1072;&#1088;&#1090;&#1091;</h3>
                         <input type="file" name="typed_files[diagnostic_card][]" multiple>
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!$hasTruckPhoto): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">Загрузить фото машины</h3>
+                        <input type="file" name="typed_files[truck_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
+                        <div class="error file-error"></div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($isTrailerActive && !$hasTrailerPhoto): ?>
+                    <div class="upload-block">
+                        <h3 class="upload-title">Загрузить фото полуприцепа</h3>
+                        <input type="file" name="typed_files[trailer_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
                     </div>
                 <?php endif; ?>
@@ -90,7 +118,17 @@
                         <tr>
                             <td><?= e($file['created_at'] ?? '') ?></td>
                             <td><?= e($file['original_name'] ?? '') ?></td>
-                            <td><?= e($file['file_type'] ?? '') ?></td>
+                            <td><?php
+                                $fileType = (string) ($file['file_type'] ?? '');
+                                $fileTypeLabels = [
+                                    'sts' => 'СТС',
+                                    'diagnostic_card' => 'Диагностическая карта',
+                                    'truck_photo' => 'Фото машины',
+                                    'trailer_photo' => 'Фото полуприцепа',
+                                    'other' => 'Прочие',
+                                ];
+                                echo e($fileTypeLabels[$fileType] ?? $fileType);
+                            ?></td>
                             <td><?= e(isset($file['file_size']) ? round((int) $file['file_size'] / 1024, 2) . ' KB' : '') ?></td>
                             <td><?= e($file['comment'] ?? '') ?></td>
                             <td><a href="<?= config('app.url') ?>/vehicles/files/<?= (int) $file['id'] ?>/download">Download</a><form method="POST" action="<?= config('app.url') ?>/vehicles/files/<?= (int) $file['id'] ?>/delete" style="display:inline; margin-left: 12px;"><?= csrf_field() ?><button type="submit" class="btn btn-link" style="padding:0;">Delete</button></form></td>
