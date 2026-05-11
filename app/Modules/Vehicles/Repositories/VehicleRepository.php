@@ -210,7 +210,7 @@ final class VehicleRepository
 
         return [
             'data' => $data,
-            'pagination' => $paginator,
+            'pagination' => $paginator->toArray(),
         ];
     }
 
