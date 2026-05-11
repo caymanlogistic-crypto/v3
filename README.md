@@ -1,36 +1,359 @@
 # TRANSPORT ERP v3
 
-Custom transport/logistics ERP platform built on a lightweight PHP modular core.
+Lightweight modular transport/logistics ERP platform built on a custom PHP core.
 
-## Project overview
+---
 
-- Stack: PHP 8.4, MySQL, PDO, custom MVC-like architecture.
-- Structure: lightweight modular monolith with core framework pieces in `app/Core`.
-- Public entrypoint: `/v3/public`.
-- Current active module: Contractors.
+# Project Overview
 
-## Architecture summary
+Transport ERP v3 is a stabilization-first operational ERP system focused on:
 
-- Core components in `app/Core`: Router, Controllers, Repositories, Services, Validation, Auth, RBAC, Middleware, Flash, View rendering, Pagination.
-- Modules in `app/Modules`, each module contains its own Controllers, Repositories, Services, Validation, DTO, Views.
-- Routes are defined in `routes/web.php` and dispatched by `app/Core/Routing/Router.php`.
+* transport logistics
+* contractors
+* drivers
+* vehicles
+* operational document workflows
+* logistics onboarding
+* runtime-safe modular architecture
 
-## Setup basics
+The project is designed for:
 
-1. Ensure PHP 8.4 is used on the host environment.
-2. Install dependencies via Composer: `php8.4 composer.phar install` or `php8.4 /usr/bin/composer install`.
-3. Configure environment variables in `.env` at `APP_ROOT`.
-4. Use `public/index.php` as the web entry point behind the public path.
+* PHP 8.4
+* shared hosting
+* MySQL + PDO
+* desktop-first operational workflows
+* lightweight runtime behavior
 
-## Deployment basics
+---
 
-- Project is designed for shared hosting.
-- Keep `app/Core` lightweight and avoid introducing heavy frameworks.
-- Use Git deployment and keep documentation updated alongside code.
+# Current Implemented Modules
 
-## Project philosophy
+## Contractors
 
-- Stabilization-first: improve consistency and reliability gradually.
-- Preserve current modular structure.
-- Avoid overengineering and unnecessary complexity.
-- Document real technical debt honestly.
+* CRUD
+* contractor contacts
+* contractor files
+* DaData autofill by INN
+* realtime validation
+* InputMapper normalization
+* grouped multiple uploads
+* operational upload workflow
+
+## Drivers
+
+* CRUD
+* driver files
+* realtime validation
+* human-friendly dates
+* grouped multiple uploads
+* operational upload workflow
+
+## Vehicles
+
+* CRUD
+* vehicle files
+* truck + optional trailer model
+* trailer documents
+* truck/trailer photos
+* grouped multiple uploads
+* operational upload workflow
+
+---
+
+# Current UX Features
+
+Implemented:
+
+* global ERP form UX system
+* tooltips and hints
+* realtime validation
+* human-friendly normalization
+* keyboard-layout correction
+* grouped Upload workflow
+* hide completed document blocks
+* compact desktop-first ERP UI
+
+Examples:
+
+```text id="jlwmhk"
+K816XK147 → К816ХК147
+```
+
+```text id="’winihl"
+иванов иван иванович → Иванов Иван Иванович
+```
+
+```text id="jlwmin"
+8 (999) 123-45-67 → +7 (999) 123-45-67
+```
+
+---
+
+# Architecture Summary
+
+## Core
+
+```text id="jlwmio"
+app/Core
+```
+
+Contains:
+
+* Router
+* Middleware
+* Auth
+* RBAC
+* Flash
+* Validation helpers
+* View rendering
+* Pagination
+* Exception handling
+
+## Modules
+
+```text id="jwmwip"
+app/Modules
+```
+
+Each module contains:
+
+* Controllers
+* Repositories
+* Services
+* Validation
+* Support
+* DTO (optional)
+
+## Views
+
+```text id="jlwmiq"
+app/Views
+```
+
+Desktop-first compact ERP views.
+
+---
+
+# Runtime Philosophy
+
+Main project philosophy:
+
+```text id="jlwmir"
+predictable boring stability
+```
+
+over:
+
+```text id="jlwmis"
+architectural purity
+```
+
+This project intentionally avoids:
+
+* Laravel rewrite
+* Symfony rewrite
+* ORM migration
+* SPA frontend
+* overengineering
+* framework-style abstractions
+
+---
+
+# Storage Structure
+
+```text id="jlwmit"
+/storage/uploads/contractors
+/storage/uploads/drivers
+/storage/uploads/vehicles
+```
+
+Files are NOT public.
+
+Downloads always go through backend controllers.
+
+---
+
+# File Workflow
+
+Operational upload UX:
+
+* multiple file upload
+* grouped Upload button
+* predefined operational upload blocks
+* completed required document blocks disappear
+* `other` uploads always available
+
+Examples:
+
+Contractors:
+
+* contract
+* company card
+* other
+
+Drivers:
+
+* passport
+* license
+* snils
+* other
+
+Vehicles:
+
+* sts
+* diagnostic card
+* trailer sts
+* trailer diagnostic card
+* truck photo
+* trailer photo
+* other
+
+---
+
+# Current Validation / Mapping
+
+Implemented:
+
+* InputMapper normalization
+* realtime frontend validation
+* authoritative backend validation
+* UTF-8 normalization
+* Excel-tolerant input handling
+
+Accepted formats:
+
+* human-friendly dates
+* multiple phone formats
+* keyboard layout correction
+* multiple decimal formats
+
+---
+
+# Deployment
+
+## Shared hosting
+
+The project is designed for shared hosting deployment.
+
+## Public entrypoint
+
+```text id="jlwmiu"
+public/index.php
+```
+
+## Server PHP
+
+Use:
+
+```bash id="jlwmiv"
+php8.4
+```
+
+## Local Windows environment
+
+Use:
+
+```bash id="jlwmiw"
+php
+```
+
+---
+
+# Git Workflow
+
+```text id="jlwmix"
+local changes
+→ git add
+→ git commit
+→ git push
+→ server git pull
+→ runtime verification
+```
+
+---
+
+# AI Toolchain
+
+## ChatGPT / Claude
+
+Used for:
+
+* architecture
+* stabilization
+* ERP planning
+* runtime review
+* anti-hallucination guidance
+
+## GitHub Copilot
+
+Primary implementation engine.
+
+## Local Codex
+
+Used for:
+
+* heavy scaffolding
+* multi-file implementation
+* repetitive operational tasks
+
+---
+
+# AI Safety Rules
+
+Never invent methods.
+
+Use ONLY methods documented in:
+
+```text id="jlwmiy"
+docs/COPILOT_API_REFERENCE.md
+```
+
+Known hallucination risks:
+
+* fake paginator methods
+* wrong controller imports
+* window.location.origin
+* hardcoded /v3/public
+* false push completion reports
+
+---
+
+# Important Documentation
+
+Main runtime truth layer:
+
+```text id="jlwmiz"
+docs/MASTER_CONTEXT.md
+```
+
+Expanded Russian operational context:
+
+```text id="jlwmj0"
+docs/RUSSIAN_MASTER_DOCS_ERP_V3.md
+```
+
+Additional:
+
+* AI_RULES.md
+* AI_CONTEXT_RULES.md
+* UI_GUIDELINES.md
+* DEVELOPMENT_WORKFLOW.md
+* MODULE_STANDARDS.md
+
+---
+
+# Current Stage
+
+Current stage:
+
+```text id="jlwmj1"
+real operational ERP stabilization
+```
+
+Current next phase:
+
+* operational linking layer
+* contractor_drivers
+* contractor_vehicles
+* driver_vehicle_assignments
+* tandem onboarding workflow
