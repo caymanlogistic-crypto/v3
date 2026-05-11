@@ -1,34 +1,28 @@
-# UI Guidelines
+﻿# UI GUIDELINES (ERP v3)
 
-## ERP UI principles
+## Цель интерфейса
+Компактный operational UI для desktop usage, без лишней декоративности.
 
-- Desktop-first interface designed for back-office work.
-- Operational interface with focus on productivity.
-- Compact tables with clear labels and dense layout.
-- Compact forms that minimize vertical space.
-- Fast workflows with predictable actions and navigation.
-- Lightweight CSS and reusable UI components.
-- Consistent spacing, typography, and button behavior.
+## Текущее UX-ядро
+- `public/assets/css/app.css`
+- `public/assets/js/form-ux.js`
+- tooltip help
+- inline validation messages
+- normalization on blur/paste
 
-## Forbidden UI patterns
+## Формы
+- сохранять плотную структуру таблиц/секций
+- избегать агрессивных перестроений DOM
+- required markers только для реально required полей
 
-- No giant Bootstrap templates or random admin themes.
-- No random third-party dashboards that do not fit ERP flow.
-- No excessive animations or decorative flourishes.
-- No inconsistent spacing, font sizes, or color usage.
-- No inline styling chaos or copy/paste visual hacks.
+## Upload UX
+- блоки по типам документов (не dropdown)
+- multiple file input
+- один общий `Upload`
+- скрытие уже закрытых обязательных блоков
+- `other` всегда видим
 
-## Tables
-
-- Optimize tables for operations, not decorative purposes.
-- Keep rows dense but readable.
-- Support clear column labels and row actions.
-- Favor stable table structures over dynamic UI complexity.
-
-## Forms
-
-- Use compact labels and aligned inputs.
-- Keep validation UX clear and consistent.
-- Show errors near the affected fields.
-- Keep form layouts consistent across modules.
-- Prefer simple reusable field styling over bespoke form widgets.
+## Запрещено
+- `window.location.origin`
+- hardcode `/v3/public`
+- SPA/AJAX upload redesign

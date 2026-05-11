@@ -1,84 +1,75 @@
+﻿# MASTER CONTEXT — Transport ERP v3
 
-# MASTER CONTEXT FULL — TRANSPORT ERP v3
-# Updated: 2026-05-11
+## Текущее состояние (runtime)
+Проект находится в **stabilization-first** режиме. Приоритет: предсказуемость runtime, простота сопровождения, совместимость с shared hosting.
 
-Transport ERP v3 is a lightweight modular transport/logistics ERP platform.
+## Реализованные модули
 
-Current implemented modules:
-- Contractors
-- Drivers
-- Vehicles
+### Contractors
+- CRUD подрядчиков
+- Контакты подрядчиков
+- Файлы подрядчиков
+- DaData автозаполнение по ИНН
+- Multiple upload
+- Групповой один `Upload` для блоков документов
+- Скрытие предзаполненных блоков после успешной загрузки (`contract`, `company_card`)
+- Поле `other` всегда доступно
+- Required policy: только `name`, `inn`
 
-All modules now include:
-- CRUD
-- validation
-- realtime validation
-- InputMapper normalization
-- file subsystems
-- upload/download/delete
-- soft delete
-- compact ERP workflows
+### Drivers
+- CRUD водителей
+- Файлы водителей
+- Multiple upload
+- Групповой один `Upload`
+- Скрытие блоков `passport`, `license`, `snils` после загрузки
+- `other` всегда доступно
+- Человеко-дружественные даты в UI + backend-normalization
+- Required policy:
+  - `full_name`
+  - `phone`
+  - `email`
+  - `passport_number`
+  - `passport_issue_date`
+  - `passport_issued_by`
+  - `license_number`
+  - `license_issue_date`
+  - `snils`
 
-Current architecture pattern:
+### Vehicles
+- CRUD транспорта
+- Модель: тягач + опциональный полуприцеп
+- Раздельные поля параметров:
+  - `truck_load_capacity`, `truck_body_volume`
+  - `trailer_load_capacity`, `trailer_body_volume`
+- Коллапс/раскрытие блока полуприцепа
+- Файлы транспорта
+- Multiple upload
+- Групповой один `Upload`
+- Скрытие закрытых чек-листом блоков документов
+- Фото тягача и полуприцепа
+- Документы полуприцепа: `trailer_sts`, `trailer_diagnostic_card`
+- Успешный update редиректит на `/vehicles`
+- Required policy:
+  - Тягач: `truck_plate`, `truck_brand`, `truck_vin`, `truck_load_capacity`, `truck_body_volume`
+  - Если полуприцеп активен: `trailer_plate`, `trailer_brand`, `trailer_vin`, `trailer_load_capacity`, `trailer_body_volume`
 
-Request
-→ InputMapper
-→ Validator
-→ Repository
-→ Service
-→ Controller
-→ View
+## Vehicle file_type (требование текущего кода)
+- `sts`
+- `diagnostic_card`
+- `trailer_sts`
+- `trailer_diagnostic_card`
+- `truck_photo`
+- `trailer_photo`
+- `other`
 
-Frontend validation:
-- UX helper only
+## UX/Foundation
+- `public/assets/css/app.css` — базовый UX слой форм
+- `public/assets/js/form-ux.js` — tooltip + normalization engine
+- Подсказки, валидационные сообщения, компактный desktop-first ERP UI
 
-Backend validation:
-- authoritative
-
-Vehicle model:
-truck + optional trailer combination
-
-Storage:
-/storage/uploads/contractors
-/storage/uploads/drivers
-/storage/uploads/vehicles
-
-Files are NOT public.
-
-Use:
-config('app.url')
-
-Never use:
-window.location.origin
-/v3/public hardcoding
-
-Critical hallucinations to avoid:
-- Flash::setOld()
-- Flash::getOld()
-- Flash::setError()
-- redirectBack()
-- back()
-- Paginator::build()
-- previousPage()
-- nextPage()
-- currentPage()
-- lastPage()
-
-Correct controller import:
-use App\Core\Controller\Controller;
-
-Wrong:
-use App\Core\Controller;
-
-Do not report completed unless:
-- git add succeeded
-- git commit succeeded
-- git push succeeded
-- git status clean
-- branch up to date with origin
-
-Current next phase:
-- operational linking layer
-- contractor_drivers
-- contractor_vehicles
-- driver_vehicle_assignments
+## Строгие ограничения
+- Без framework rewrite
+- Без ORM/DI
+- Без AJAX/upload redesign
+- Без build tools
+- Без изменения DB schema в стабилизационных хотфиксах

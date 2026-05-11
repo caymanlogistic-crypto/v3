@@ -1,66 +1,26 @@
-# CONTRACTORS_MODULE.md
+﻿# CONTRACTORS MODULE
 
-## Current Status
+## Реализовано
+- CRUD подрядчиков
+- Контакты (create/update/delete)
+- Файлы (upload/download/delete)
+- DaData lookup
+- multiple upload + grouped upload submit
+- скрытие блоков `contract`/`company_card` после загрузки
 
-Contractors module is canonical operational ERP module.
+## Required policy
+Required only:
+- `name`
+- `inn`
 
-Implemented:
-- CRUD
-- pagination
-- search
-- soft delete
-- contractor_contacts
-- backend validation
-- realtime validation
-- normalization
-- UTF-8 normalization
+Остальные поля optional, но если заполнены — валидируются по формату.
 
-## contractor_contacts
+## Документы contractors file_type
+- `contract`
+- `company_card`
+- `other`
 
-Implemented.
-
-Fields:
-- full_name
-- position
-- role
-- phone
-- email
-- is_primary
-- is_payment_recipient
-- is_document_recipient
-- status
-- comment
-
-Roles:
-- director
-- manager
-- accounting
-- dispatcher
-- owner
-- other
-
-Statuses:
-- active
-- inactive
-
-## InputMapper
-
-ContractorInputMapper implemented.
-
-Normalizes:
-- names
-- emails
-- numeric fields
-- whitespace
-- Excel-pasted input
-
-## Realtime Validation
-
-Implemented using vanilla JS.
-
-Features:
-- inline errors
-- visible alert
-- blocked invalid submit
-- autofocus invalid field
-- realtime validation
+## UX
+- operational блоки загрузки
+- inline ошибки
+- `other` всегда доступен

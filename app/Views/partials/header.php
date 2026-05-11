@@ -6,13 +6,13 @@
 
     <nav>
 
-        <a href="/v3/public/">
+        <a href="<?= config('app.url') ?>/">
             Home
         </a>
 
         |
 
-        <a href="/v3/public/contractors">
+        <a href="<?= config('app.url') ?>/contractors">
             Contractors
         </a>
 

@@ -1,26 +1,28 @@
-# MODULE_STANDARDS.md
+﻿# MODULE STANDARDS
 
-## Approved Lightweight Patterns
+## Общие правила модулей
+- Controller -> Service -> Repository
+- PDO prepared statements
+- no framework abstractions
+- no invented helpers
 
-### InputMapper
+## File subsystem standard
+Каждый модуль (Contractors/Drivers/Vehicles) использует:
+- Controller
+- Service
+- Repository
+- Validator
+- Storage
+- edit-view upload blocks
+- download/delete через controller routes
 
-Approved lightweight normalization pattern.
+## Upload behavior standard
+- multiple files в input
+- grouped submit
+- per-file validation (20MB limit)
+- file_type сохраняется на каждую запись
+- predefined blocks скрываются после загрузки
+- `other` не скрывается
 
-Purpose:
-- normalize Excel-pasted input
-- normalize UTF-8
-- normalize numeric fields
-- normalize names and emails
-
-Flow:
-
-Request
-→ InputMapper
-→ Validator
-→ Repository
-
-Do NOT turn InputMapper into framework infrastructure.
-
-## Contractors
-
-Contractors module is canonical implementation reference.
+## Required field standard (runtime)
+См. `docs/MASTER_CONTEXT.md` как source of truth.
