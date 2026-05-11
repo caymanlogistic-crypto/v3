@@ -243,6 +243,87 @@
 
     </form>
 
+    <div class="section" style="margin-top: 40px;">
+        <h2>Vehicle Files</h2>
+
+        <form
+            method="POST"
+            action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload"
+            class="vehicle-file-upload-form"
+            enctype="multipart/form-data"
+        >
+            <?= csrf_field() ?>
+
+            <table class="form-table">
+                <tr>
+                    <td>File</td>
+                    <td>
+                        <input type="file" name="file">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>
+                        <select name="file_type">
+                            <option value="">Select file type</option>
+                            <option value="sts">STS</option>
+                            <option value="diagnostic_card">Diagnostic card</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comment</td>
+                    <td>
+                        <input type="text" name="comment" value="">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">Upload File</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <?php if (!empty($files)): ?>
+            <table class="table" style="margin-top: 24px; width:100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Uploaded</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Comment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($files as $file): ?>
+                        <tr>
+                            <td><?= e($file['created_at'] ?? '') ?></td>
+                            <td><?= e($file['original_name'] ?? '') ?></td>
+                            <td><?= e($file['file_type'] ?? '') ?></td>
+                            <td><?= e(isset($file['file_size']) ? round((int) $file['file_size'] / 1024, 2) . ' KB' : '') ?></td>
+                            <td><?= e($file['comment'] ?? '') ?></td>
+                            <td>
+                                <a href="<?= config('app.url') ?>/vehicles/files/<?= (int) $file['id'] ?>/download">Download</a>
+                                <form method="POST" action="<?= config('app.url') ?>/vehicles/files/<?= (int) $file['id'] ?>/delete" style="display:inline; margin-left: 12px;">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn btn-link" style="padding:0;">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No files uploaded yet.</p>
+        <?php endif; ?>
+    </div>
+
     <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/vehicle-files.js"></script>
 
 </div>

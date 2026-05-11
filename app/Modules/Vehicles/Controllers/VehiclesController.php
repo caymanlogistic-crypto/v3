@@ -8,6 +8,7 @@ use App\Core\Controller\Controller;
 use App\Core\Http\Request;
 use App\Core\Http\Response;
 use App\Core\Session\Flash;
+use App\Modules\Vehicles\Services\VehicleFileService;
 use App\Modules\Vehicles\Services\VehicleService;
 use App\Modules\Vehicles\Support\VehicleInputMapper;
 use App\Modules\Vehicles\Validation\VehicleValidator;
@@ -16,11 +17,14 @@ final class VehiclesController extends Controller
 {
     private VehicleService $service;
 
+    private VehicleFileService $fileService;
+
     private VehicleValidator $validator;
 
     public function __construct()
     {
         $this->service = new VehicleService();
+        $this->fileService = new VehicleFileService();
 
         $this->validator = new VehicleValidator();
     }
@@ -132,11 +136,14 @@ final class VehiclesController extends Controller
             Response::abort(404, 'Vehicle not found');
         }
 
+        $files = $this->fileService->findByVehicleId((int) $params['id']);
+
         $this->view(
             'vehicles.edit',
             [
                 'vehicle' => $vehicle,
                 'errors' => [],
+                'files' => $files,
             ]
         );
     }

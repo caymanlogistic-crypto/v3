@@ -16,6 +16,7 @@ use App\Modules\Contractors\Controllers\ContractorFilesController;
 use App\Modules\Drivers\Controllers\DriverFilesController;
 use App\Modules\Drivers\Controllers\DriversController;
 use App\Modules\Home\Controllers\HomeController;
+use App\Modules\Vehicles\Controllers\VehicleFilesController;
 use App\Modules\Vehicles\Controllers\VehiclesController;
 
 $router->get(
@@ -492,6 +493,53 @@ $router->post(
     static function (array $params): void {
 
         (new VehiclesController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/vehicles/{id}/files/upload',
+    static function (array $params): void {
+
+        (new VehicleFilesController())->upload(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->get(
+    '/vehicles/files/{id}/download',
+    static function (array $params): void {
+
+        (new VehicleFilesController())->download(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.view',
+    ]
+);
+
+$router->post(
+    '/vehicles/files/{id}/delete',
+    static function (array $params): void {
+
+        (new VehicleFilesController())->delete(
             new Request(),
             $params
         );
