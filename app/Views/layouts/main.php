@@ -14,6 +14,7 @@ $errorFlash = Flash::getError();
 <head>
 
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="<?= config('app.url') ?>/assets/css/app.css">
 
     <title>
         Transport ERP Platform v3
@@ -157,6 +158,8 @@ $errorFlash = Flash::getError();
     <?= $content ?>
 
 </div>
+
+<script src="<?= config('app.url') ?>/assets/js/form-ux.js"></script>
 
 </body>
 </html>
