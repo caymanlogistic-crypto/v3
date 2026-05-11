@@ -65,88 +65,50 @@
         }
     }
 
-    if (fullNameInput) {
-        fullNameInput.addEventListener('blur', function() {
-            validateField(this, validateFullName, 'ФИО должно быть в формате: Фамилия Имя Отчество');
-        });
+    const MSG_FIO = '\u0424\u0418\u041e \u0434\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432 \u0444\u043e\u0440\u043c\u0430\u0442\u0435: \u0424\u0430\u043c\u0438\u043b\u0438\u044f \u0418\u043c\u044f \u041e\u0442\u0447\u0435\u0441\u0442\u0432\u043e';
+    const MSG_EMAIL = '\u041d\u0435\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u044b\u0439 email';
+    const MSG_PASSPORT = '\u041d\u043e\u043c\u0435\u0440 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 10 \u0446\u0438\u0444\u0440';
+    const MSG_LICENSE = '\u041d\u043e\u043c\u0435\u0440 \u0412\u0423 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 10 \u0446\u0438\u0444\u0440';
+    const MSG_SNILS = '\u0421\u041d\u0418\u041b\u0421 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 11 \u0446\u0438\u0444\u0440';
 
-        fullNameInput.addEventListener('input', function() {
-            clearError(this);
-        });
+    if (fullNameInput) {
+        fullNameInput.addEventListener('blur', function() { validateField(this, validateFullName, MSG_FIO); });
+        fullNameInput.addEventListener('input', function() { clearError(this); });
     }
 
     if (emailInput) {
-        emailInput.addEventListener('blur', function() {
-            validateField(this, validateEmail, 'Некорректный email');
-        });
-
-        emailInput.addEventListener('input', function() {
-            clearError(this);
-        });
+        emailInput.addEventListener('blur', function() { validateField(this, validateEmail, MSG_EMAIL); });
+        emailInput.addEventListener('input', function() { clearError(this); });
     }
 
     if (passportInput) {
-        passportInput.addEventListener('blur', function() {
-            validateField(this, validatePassportNumber, 'Номер паспорта должен содержать 10 цифр');
-        });
-
-        passportInput.addEventListener('input', function() {
-            clearError(this);
-        });
+        passportInput.addEventListener('blur', function() { validateField(this, validatePassportNumber, MSG_PASSPORT); });
+        passportInput.addEventListener('input', function() { clearError(this); });
     }
 
     if (licenseInput) {
-        licenseInput.addEventListener('blur', function() {
-            validateField(this, validateLicenseNumber, 'Номер ВУ должен содержать 10 цифр');
-        });
-
-        licenseInput.addEventListener('input', function() {
-            clearError(this);
-        });
+        licenseInput.addEventListener('blur', function() { validateField(this, validateLicenseNumber, MSG_LICENSE); });
+        licenseInput.addEventListener('input', function() { clearError(this); });
     }
 
     if (snilsInput) {
-        snilsInput.addEventListener('blur', function() {
-            validateField(this, validateSnils, 'СНИЛС должен содержать 11 цифр');
-        });
-
-        snilsInput.addEventListener('input', function() {
-            clearError(this);
-        });
+        snilsInput.addEventListener('blur', function() { validateField(this, validateSnils, MSG_SNILS); });
+        snilsInput.addEventListener('input', function() { clearError(this); });
     }
 
     form.addEventListener('submit', function(e) {
         let isValid = true;
-
-        if (fullNameInput && !validateField(fullNameInput, validateFullName, 'ФИО должно быть в формате: Фамилия Имя Отчество')) {
-            isValid = false;
-        }
-
-        if (emailInput && !validateField(emailInput, validateEmail, 'Некорректный email')) {
-            isValid = false;
-        }
-
-        if (passportInput && !validateField(passportInput, validatePassportNumber, 'Номер паспорта должен содержать 10 цифр')) {
-            isValid = false;
-        }
-
-        if (licenseInput && !validateField(licenseInput, validateLicenseNumber, 'Номер ВУ должен содержать 10 цифр')) {
-            isValid = false;
-        }
-
-        if (snilsInput && !validateField(snilsInput, validateSnils, 'СНИЛС должен содержать 11 цифр')) {
-            isValid = false;
-        }
+        if (fullNameInput && !validateField(fullNameInput, validateFullName, MSG_FIO)) isValid = false;
+        if (emailInput && !validateField(emailInput, validateEmail, MSG_EMAIL)) isValid = false;
+        if (passportInput && !validateField(passportInput, validatePassportNumber, MSG_PASSPORT)) isValid = false;
+        if (licenseInput && !validateField(licenseInput, validateLicenseNumber, MSG_LICENSE)) isValid = false;
+        if (snilsInput && !validateField(snilsInput, validateSnils, MSG_SNILS)) isValid = false;
 
         if (!isValid) {
             e.preventDefault();
-            if (validationAlert) {
-                validationAlert.style.display = 'block';
-            }
+            if (validationAlert) validationAlert.style.display = 'block';
             const firstInvalid = form.querySelector('.error:not(:empty)');
-            if (firstInvalid && firstInvalid.previousElementSibling) {
-                firstInvalid.previousElementSibling.focus();
-            }
+            if (firstInvalid && firstInvalid.previousElementSibling) firstInvalid.previousElementSibling.focus();
         }
     });
 });
