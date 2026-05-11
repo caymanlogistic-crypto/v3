@@ -17,7 +17,7 @@
             <tr><th colspan="2" class="form-section-title">Основные данные</th></tr>
             <tr>
                 <td>
-                    <span class="form-label"><span class="form-label-text">Name</span><button type="button" class="form-help-button" data-help="Юридическое наименование компании или ФИО ИП.">?</button></span>
+                    <span class="form-label"><span class="form-label-text">Name *</span><button type="button" class="form-help-button" data-help="Юридическое наименование компании или ФИО ИП.">?</button></span>
                 </td>
                 <td>
                     <input type="text" name="name" value="<?= e($old['name'] ?? '') ?>">
@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td>
-                    <span class="form-label"><span class="form-label-text">INN</span><button type="button" class="form-help-button" data-help="Введите ИНН компании или ИП. Можно вставлять с пробелами, форма нормализует значение.">?</button></span>
+                    <span class="form-label"><span class="form-label-text">INN *</span><button type="button" class="form-help-button" data-help="Введите ИНН компании или ИП. Можно вставлять с пробелами, форма нормализует значение.">?</button></span>
                 </td>
                 <td>
                     <input type="text" name="inn" value="<?= e($old['inn'] ?? '') ?>">

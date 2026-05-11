@@ -57,20 +57,16 @@
 
     function setError(form, name, message) {
         const container = findErrorContainer(form, name);
-        if (!container) {
-            return;
+        if (container) {
+            container.textContent = message;
         }
-
-        container.textContent = message;
     }
 
     function clearError(form, name) {
         const container = findErrorContainer(form, name);
-        if (!container) {
-            return;
+        if (container) {
+            container.textContent = '';
         }
-
-        container.textContent = '';
     }
 
     function normalizeFullName(value) {

@@ -16,7 +16,15 @@
     const validationAlert = document.getElementById('contractorFormValidationAlert');
 
     const fields = {
+        name: {
+            required: true,
+            validator: function (value) {
+                return value.length > 0 && value.length <= 255;
+            },
+            message: 'Название подрядчика обязательно',
+        },
         inn: {
+            required: true,
             validator: function (value) {
                 const digits = value.replace(/\D/g, '');
                 return digits.length === 10 || digits.length === 12;
@@ -28,8 +36,7 @@
                 if (value === '') {
                     return true;
                 }
-                const digits = value.replace(/\D/g, '');
-                return digits.length === 9;
+                return value.replace(/\D/g, '').length === 9;
             },
             message: 'КПП должен содержать 9 цифр',
         },
@@ -43,13 +50,21 @@
             },
             message: 'ОГРН должен содержать 13 или 15 цифр',
         },
+        okved: {
+            validator: function (value) {
+                if (value === '') {
+                    return true;
+                }
+                return /^\d{2}(?:\.\d{1,4})*$/.test(value);
+            },
+            message: 'ОКВЭД может содержать только цифры и точки',
+        },
         bank_bik: {
             validator: function (value) {
                 if (value === '') {
                     return true;
                 }
-                const digits = value.replace(/\D/g, '');
-                return digits.length === 9;
+                return value.replace(/\D/g, '').length === 9;
             },
             message: 'БИК должен содержать 9 цифр',
         },
@@ -58,8 +73,7 @@
                 if (value === '') {
                     return true;
                 }
-                const digits = value.replace(/\D/g, '');
-                return digits.length === 20;
+                return value.replace(/\D/g, '').length === 20;
             },
             message: 'Номер счета должен содержать 20 цифр',
         },
@@ -68,10 +82,9 @@
                 if (value === '') {
                     return true;
                 }
-                const digits = value.replace(/\D/g, '');
-                return digits.length === 20;
+                return value.replace(/\D/g, '').length === 20;
             },
-            message: 'Корр. счет должен содержать 20 цифр',
+            message: 'Корреспондентский счет должен содержать 20 цифр',
         },
         contact1_email: {
             validator: function (value) {
@@ -114,18 +127,16 @@
 
     function setError(name, message) {
         const container = findErrorContainer(name);
-        if (!container) {
-            return;
+        if (container) {
+            container.textContent = message;
         }
-        container.textContent = message;
     }
 
     function clearError(name) {
         const container = findErrorContainer(name);
-        if (!container) {
-            return;
+        if (container) {
+            container.textContent = '';
         }
-        container.textContent = '';
     }
 
     function validateField(name, value) {
@@ -135,6 +146,12 @@
         }
 
         const normalized = value.trim().replace(/\s+/g, ' ');
+
+        if (rule.required && normalized === '') {
+            setError(name, rule.message);
+            return false;
+        }
+
         if (!rule.validator(normalized)) {
             setError(name, rule.message);
             return false;
@@ -144,55 +161,19 @@
         return true;
     }
 
-    Object.keys(fields).forEach(function (name) {
-        const input = document.querySelector('[name="' + name + '"]');
-        if (!input) {
-            return;
-        }
-
-        input.addEventListener('input', function () {
-            validateField(name, input.value);
-        });
-    });
-
-    function hasFormValidationErrors(form) {
-        let foundInvalid = false;
-
+    forms.forEach(function (form) {
         Object.keys(fields).forEach(function (name) {
             const input = form.querySelector('[name="' + name + '"]');
             if (!input) {
                 return;
             }
-            const fieldValid = validateField(name, input.value);
-            if (!fieldValid) {
-                foundInvalid = true;
-            }
-        });
 
-        return foundInvalid;
-    }
-
-    function updateValidationAlert() {
-        if (!validationAlert) {
-            return;
-        }
-
-        const anyInvalid = forms.some(function (form) {
-            return hasFormValidationErrors(form);
-        });
-
-        validationAlert.style.display = anyInvalid ? 'block' : 'none';
-    }
-
-    forms.forEach(function (form) {
-        const inputs = Object.keys(fields).map(function (name) {
-            return form.querySelector('[name="' + name + '"]');
-        }).filter(Boolean);
-
-        inputs.forEach(function (input) {
             input.addEventListener('input', function () {
-                validateField(input.name, input.value);
-                updateValidationAlert();
+                validateField(name, input.value);
+
+                if (validationAlert) {
+                    validationAlert.style.display = 'none';
+                }
             });
         });
 
@@ -205,6 +186,7 @@
                 if (!input) {
                     return;
                 }
+
                 const fieldValid = validateField(name, input.value);
                 if (!fieldValid && firstInvalidField === null) {
                     firstInvalidField = input;
@@ -225,8 +207,6 @@
                 if (firstInvalidField && typeof firstInvalidField.focus === 'function') {
                     firstInvalidField.focus();
                 }
-            } else if (validationAlert) {
-                validationAlert.style.display = 'none';
             }
         });
     });

@@ -10,11 +10,11 @@
         <table class="form-table">
             <tr><th colspan="2" class="form-section-title">&#1058;&#1103;&#1075;&#1072;&#1095;</th></tr>
             <tr><td>Truck Plate *</td><td><input type="text" name="truck_plate" value="<?= e($vehicle['truck_plate'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: &#1050;816&#1061;&#1050;147</div><div id="error-truck_plate" class="error"><?= e($errors['truck_plate'] ?? '') ?></div></td></tr>
-            <tr><td>Truck Brand</td><td><input type="text" name="truck_brand" value="<?= e($vehicle['truck_brand'] ?? '') ?>"><div id="error-truck_brand" class="error"><?= e($errors['truck_brand'] ?? '') ?></div></td></tr>
+            <tr><td>Truck Brand *</td><td><input type="text" name="truck_brand" value="<?= e($vehicle['truck_brand'] ?? '') ?>"><div id="error-truck_brand" class="error"><?= e($errors['truck_brand'] ?? '') ?></div></td></tr>
             <tr><td>Truck Model</td><td><input type="text" name="truck_model" value="<?= e($vehicle['truck_model'] ?? '') ?>"><div id="error-truck_model" class="error"><?= e($errors['truck_model'] ?? '') ?></div></td></tr>
-            <tr><td>Truck VIN</td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 &#1089;&#1080;&#1084;&#1074;&#1086;&#1083;&#1086;&#1074;</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
-            <tr><td>Truck Load Capacity (tons)</td><td><input type="text" name="truck_load_capacity" value="<?= e($vehicle['truck_load_capacity'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 20,5</div><div id="error-truck_load_capacity" class="error"><?= e($errors['truck_load_capacity'] ?? '') ?></div></td></tr>
-            <tr><td>Truck Body Volume (m3)</td><td><input type="text" name="truck_body_volume" value="<?= e($vehicle['truck_body_volume'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 90,5</div><div id="error-truck_body_volume" class="error"><?= e($errors['truck_body_volume'] ?? '') ?></div></td></tr>
+            <tr><td>Truck VIN *</td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 &#1089;&#1080;&#1084;&#1074;&#1086;&#1083;&#1086;&#1074;</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
+            <tr><td>Truck Load Capacity (tons) *</td><td><input type="text" name="truck_load_capacity" value="<?= e($vehicle['truck_load_capacity'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 20,5</div><div id="error-truck_load_capacity" class="error"><?= e($errors['truck_load_capacity'] ?? '') ?></div></td></tr>
+            <tr><td>Truck Body Volume (m3) *</td><td><input type="text" name="truck_body_volume" value="<?= e($vehicle['truck_body_volume'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 90,5</div><div id="error-truck_body_volume" class="error"><?= e($errors['truck_body_volume'] ?? '') ?></div></td></tr>
             <tr><td colspan="2"><button type="button" class="btn btn-secondary" id="toggleTrailerSection">&#1047;&#1072;&#1087;&#1086;&#1083;&#1085;&#1080;&#1090;&#1100; &#1076;&#1072;&#1085;&#1085;&#1099;&#1077; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;</button></td></tr>
         </table>
 
@@ -30,7 +30,7 @@
 
         <table class="form-table" style="margin-top: 12px;">
             <tr><th colspan="2" class="form-section-title">&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1080; &#1080; &#1089;&#1090;&#1072;&#1090;&#1091;&#1089;</th></tr>
-            <tr><td>Status *</td><td><select name="status"><option value="active" <?= ($vehicle['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($vehicle['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($vehicle['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><div id="error-status" class="error"><?= e($errors['status'] ?? '') ?></div></td></tr>
+            <tr><td>Status</td><td><select name="status"><option value="active" <?= ($vehicle['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($vehicle['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($vehicle['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><div id="error-status" class="error"><?= e($errors['status'] ?? '') ?></div></td></tr>
             <tr><td>Comments</td><td><textarea name="comments" rows="3"><?= e($vehicle['comments'] ?? '') ?></textarea><div id="error-comments" class="error"><?= e($errors['comments'] ?? '') ?></div></td></tr>
         </table>
 
@@ -88,7 +88,7 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerSts): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">Загрузить СТС полуприцепа</h3>
+                        <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ РЎРўРЎ РїРѕР»СѓРїСЂРёС†РµРїР°</h3>
                         <input type="file" name="typed_files[trailer_sts][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -96,7 +96,7 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerDiagnosticCard): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">Загрузить диагностическую карту полуприцепа</h3>
+                        <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ РґРёР°РіРЅРѕСЃС‚РёС‡РµСЃРєСѓСЋ РєР°СЂС‚Сѓ РїРѕР»СѓРїСЂРёС†РµРїР°</h3>
                         <input type="file" name="typed_files[trailer_diagnostic_card][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -104,7 +104,7 @@
 
                 <?php if (!$hasTruckPhoto): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">Загрузить фото машины</h3>
+                        <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚Рѕ РјР°С€РёРЅС‹</h3>
                         <input type="file" name="typed_files[truck_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
                     </div>
@@ -112,7 +112,7 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerPhoto): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">Загрузить фото полуприцепа</h3>
+                        <h3 class="upload-title">Р—Р°РіСЂСѓР·РёС‚СЊ С„РѕС‚Рѕ РїРѕР»СѓРїСЂРёС†РµРїР°</h3>
                         <input type="file" name="typed_files[trailer_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
                     </div>
@@ -142,13 +142,13 @@
                             <td><?php
                                 $fileType = (string) ($file['file_type'] ?? '');
                                 $fileTypeLabels = [
-                                    'sts' => 'СТС',
-                                    'diagnostic_card' => 'Диагностическая карта',
-                                    'trailer_sts' => 'СТС полуприцепа',
-                                    'trailer_diagnostic_card' => 'Диагностическая карта полуприцепа',
-                                    'truck_photo' => 'Фото машины',
-                                    'trailer_photo' => 'Фото полуприцепа',
-                                    'other' => 'Прочее',
+                                    'sts' => 'РЎРўРЎ',
+                                    'diagnostic_card' => 'Р”РёР°РіРЅРѕСЃС‚РёС‡РµСЃРєР°СЏ РєР°СЂС‚Р°',
+                                    'trailer_sts' => 'РЎРўРЎ РїРѕР»СѓРїСЂРёС†РµРїР°',
+                                    'trailer_diagnostic_card' => 'Р”РёР°РіРЅРѕСЃС‚РёС‡РµСЃРєР°СЏ РєР°СЂС‚Р° РїРѕР»СѓРїСЂРёС†РµРїР°',
+                                    'truck_photo' => 'Р¤РѕС‚Рѕ РјР°С€РёРЅС‹',
+                                    'trailer_photo' => 'Р¤РѕС‚Рѕ РїРѕР»СѓРїСЂРёС†РµРїР°',
+                                    'other' => 'РџСЂРѕС‡РµРµ',
                                 ];
                                 echo e($fileTypeLabels[$fileType] ?? $fileType);
                             ?></td>

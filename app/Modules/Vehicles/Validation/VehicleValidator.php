@@ -12,42 +12,102 @@ final class VehicleValidator
 
         if (empty($data['truck_plate'])) {
             $errors['truck_plate'] = 'Госномер тягача обязателен';
-        } elseif (mb_strlen($data['truck_plate']) < 6 || mb_strlen($data['truck_plate']) > 20) {
+        } elseif (mb_strlen((string) $data['truck_plate']) < 6 || mb_strlen((string) $data['truck_plate']) > 20) {
             $errors['truck_plate'] = 'Госномер тягача должен содержать от 6 до 20 символов';
         }
 
-        if (!empty($data['truck_brand']) && mb_strlen($data['truck_brand']) > 100) {
+        if (empty($data['truck_brand'])) {
+            $errors['truck_brand'] = 'Марка тягача обязательна';
+        } elseif (mb_strlen((string) $data['truck_brand']) > 100) {
             $errors['truck_brand'] = 'Марка тягача не должна превышать 100 символов';
         }
 
-        if (!empty($data['truck_model']) && mb_strlen($data['truck_model']) > 100) {
+        if (!empty($data['truck_model']) && mb_strlen((string) $data['truck_model']) > 100) {
             $errors['truck_model'] = 'Модель тягача не должна превышать 100 символов';
         }
 
-        if (!empty($data['truck_vin']) && mb_strlen($data['truck_vin']) > 50) {
+        if (empty($data['truck_vin'])) {
+            $errors['truck_vin'] = 'VIN тягача обязателен';
+        } elseif (mb_strlen((string) $data['truck_vin']) > 50) {
             $errors['truck_vin'] = 'VIN тягача не должен превышать 50 символов';
         }
 
-        if (!empty($data['trailer_brand']) && mb_strlen($data['trailer_brand']) > 100) {
-            $errors['trailer_brand'] = 'Марка прицепа не должна превышать 100 символов';
-        }
+        $this->validateRequiredDecimalRange(
+            $data,
+            $errors,
+            'truck_load_capacity',
+            'Грузоподъёмность тягача обязательна',
+            'Грузоподъёмность тягача должна быть числом',
+            'Грузоподъёмность тягача не должна превышать 60',
+            60
+        );
 
-        if (!empty($data['trailer_model']) && mb_strlen($data['trailer_model']) > 100) {
-            $errors['trailer_model'] = 'Модель прицепа не должна превышать 100 символов';
-        }
+        $this->validateRequiredDecimalRange(
+            $data,
+            $errors,
+            'truck_body_volume',
+            'Объём кузова тягача обязателен',
+            'Объём кузова тягача должен быть числом',
+            'Объём кузова тягача не должен превышать 150',
+            150
+        );
 
-        if (!empty($data['trailer_plate']) && (mb_strlen($data['trailer_plate']) < 6 || mb_strlen($data['trailer_plate']) > 20)) {
-            $errors['trailer_plate'] = 'Госномер прицепа должен содержать от 6 до 20 символов';
-        }
+        $trailerActive = $this->isTrailerActive($data);
 
-        if (!empty($data['trailer_vin']) && mb_strlen($data['trailer_vin']) > 50) {
-            $errors['trailer_vin'] = 'VIN прицепа не должен превышать 50 символов';
-        }
+        if ($trailerActive) {
+            if (empty($data['trailer_plate'])) {
+                $errors['trailer_plate'] = 'Если заполнен полуприцеп, укажите его госномер';
+            } elseif (mb_strlen((string) $data['trailer_plate']) < 6 || mb_strlen((string) $data['trailer_plate']) > 20) {
+                $errors['trailer_plate'] = 'Госномер полуприцепа должен содержать от 6 до 20 символов';
+            }
 
-        $this->validateDecimalRange($data, $errors, 'truck_load_capacity', 'Грузоподъемность тягача должна быть числом', 'Грузоподъемность тягача не должна превышать 60');
-        $this->validateDecimalRange($data, $errors, 'truck_body_volume', 'Объем кузова тягача должен быть числом', 'Объем кузова тягача не должен превышать 150');
-        $this->validateDecimalRange($data, $errors, 'trailer_load_capacity', 'Грузоподъемность прицепа должна быть числом', 'Грузоподъемность прицепа не должна превышать 60');
-        $this->validateDecimalRange($data, $errors, 'trailer_body_volume', 'Объем кузова прицепа должен быть числом', 'Объем кузова прицепа не должен превышать 150');
+            if (empty($data['trailer_brand'])) {
+                $errors['trailer_brand'] = 'Если заполнен полуприцеп, укажите его марку';
+            } elseif (mb_strlen((string) $data['trailer_brand']) > 100) {
+                $errors['trailer_brand'] = 'Марка полуприцепа не должна превышать 100 символов';
+            }
+
+            if (empty($data['trailer_vin'])) {
+                $errors['trailer_vin'] = 'Если заполнен полуприцеп, укажите его VIN';
+            } elseif (mb_strlen((string) $data['trailer_vin']) > 50) {
+                $errors['trailer_vin'] = 'VIN полуприцепа не должен превышать 50 символов';
+            }
+
+            $this->validateRequiredDecimalRange(
+                $data,
+                $errors,
+                'trailer_load_capacity',
+                'Если заполнен полуприцеп, укажите его грузоподъёмность',
+                'Грузоподъёмность полуприцепа должна быть числом',
+                'Грузоподъёмность полуприцепа не должна превышать 60',
+                60
+            );
+
+            $this->validateRequiredDecimalRange(
+                $data,
+                $errors,
+                'trailer_body_volume',
+                'Если заполнен полуприцеп, укажите его объём кузова',
+                'Объём кузова полуприцепа должен быть числом',
+                'Объём кузова полуприцепа не должен превышать 150',
+                150
+            );
+        } else {
+            if (!empty($data['trailer_brand']) && mb_strlen((string) $data['trailer_brand']) > 100) {
+                $errors['trailer_brand'] = 'Марка полуприцепа не должна превышать 100 символов';
+            }
+            if (!empty($data['trailer_model']) && mb_strlen((string) $data['trailer_model']) > 100) {
+                $errors['trailer_model'] = 'Модель полуприцепа не должна превышать 100 символов';
+            }
+            if (!empty($data['trailer_plate']) && (mb_strlen((string) $data['trailer_plate']) < 6 || mb_strlen((string) $data['trailer_plate']) > 20)) {
+                $errors['trailer_plate'] = 'Госномер полуприцепа должен содержать от 6 до 20 символов';
+            }
+            if (!empty($data['trailer_vin']) && mb_strlen((string) $data['trailer_vin']) > 50) {
+                $errors['trailer_vin'] = 'VIN полуприцепа не должен превышать 50 символов';
+            }
+            $this->validateOptionalDecimalRange($data, $errors, 'trailer_load_capacity', 'Грузоподъёмность полуприцепа должна быть числом', 'Грузоподъёмность полуприцепа не должна превышать 60', 60);
+            $this->validateOptionalDecimalRange($data, $errors, 'trailer_body_volume', 'Объём кузова полуприцепа должен быть числом', 'Объём кузова полуприцепа не должен превышать 150', 150);
+        }
 
         if (empty($data['status']) || !in_array($data['status'], ['active', 'blocked', 'archive'], true)) {
             $errors['status'] = 'Некорректный статус';
@@ -56,31 +116,59 @@ final class VehicleValidator
         return $errors;
     }
 
-    private function validateDecimalRange(array $data, array &$errors, string $field, string $numericMessage, string $maxMessage): void
+    private function isTrailerActive(array $data): bool
     {
-        if (empty($data[$field])) {
+        $fields = [
+            'trailer_plate',
+            'trailer_brand',
+            'trailer_model',
+            'trailer_vin',
+            'trailer_load_capacity',
+            'trailer_body_volume',
+        ];
+
+        foreach ($fields as $field) {
+            if (trim((string) ($data[$field] ?? '')) !== '') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function validateRequiredDecimalRange(array $data, array &$errors, string $field, string $requiredMessage, string $numericMessage, string $maxMessage, float $max): void
+    {
+        $value = trim((string) ($data[$field] ?? ''));
+        if ($value === '') {
+            $errors[$field] = $requiredMessage;
             return;
         }
 
-        $value = str_replace([',', ' '], ['.', ''], (string) $data[$field]);
-
-        if (!is_numeric($value) || (float) $value < 0) {
+        $normalized = str_replace([',', ' '], ['.', ''], $value);
+        if (!is_numeric($normalized) || (float) $normalized < 0) {
             $errors[$field] = $numericMessage;
             return;
         }
 
-        if (
-            ($field === 'truck_load_capacity' || $field === 'trailer_load_capacity')
-            && (float) $value > 60
-        ) {
+        if ((float) $normalized > $max) {
             $errors[$field] = $maxMessage;
+        }
+    }
+
+    private function validateOptionalDecimalRange(array $data, array &$errors, string $field, string $numericMessage, string $maxMessage, float $max): void
+    {
+        $value = trim((string) ($data[$field] ?? ''));
+        if ($value === '') {
             return;
         }
 
-        if (
-            ($field === 'truck_body_volume' || $field === 'trailer_body_volume')
-            && (float) $value > 150
-        ) {
+        $normalized = str_replace([',', ' '], ['.', ''], $value);
+        if (!is_numeric($normalized) || (float) $normalized < 0) {
+            $errors[$field] = $numericMessage;
+            return;
+        }
+
+        if ((float) $normalized > $max) {
             $errors[$field] = $maxMessage;
         }
     }

@@ -1,114 +1,165 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
-    const fullNameInput = document.querySelector('input[name="full_name"]');
-    const emailInput = document.querySelector('input[name="email"]');
-    const passportInput = document.querySelector('input[name="passport_number"]');
-    const licenseInput = document.querySelector('input[name="license_number"]');
-    const snilsInput = document.querySelector('input[name="snils"]');
+    if (!form) {
+        return;
+    }
+
     const validationAlert = document.getElementById('driverFormValidationAlert');
 
-    if (!form) return;
+    const fields = {
+        full_name: {
+            required: true,
+            validate: function (value) {
+                const normalized = value.trim().replace(/\s+/g, ' ');
+                const parts = normalized.split(' ').filter(function (part) { return part.length > 0; });
+                return parts.length === 3 && parts.every(function (part) { return part.length >= 2; });
+            },
+            message: 'ФИО должно быть в формате: Фамилия Имя Отчество',
+        },
+        phone: {
+            required: true,
+            validate: function (value) {
+                const digits = value.replace(/\D/g, '');
+                return /^(7|8)\d{10}$/.test(digits);
+            },
+            message: 'Телефон должен содержать 11 цифр и начинаться с 7 или 8',
+        },
+        email: {
+            required: true,
+            validate: function (value) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+            },
+            message: 'Некорректный email',
+        },
+        passport_number: {
+            required: true,
+            validate: function (value) {
+                return value.replace(/\D/g, '').length === 10;
+            },
+            message: 'Номер паспорта должен содержать 10 цифр',
+        },
+        passport_issue_date: {
+            required: true,
+            validate: function (value) {
+                return value.trim() !== '';
+            },
+            message: 'Дата выдачи паспорта обязательна',
+        },
+        passport_issued_by: {
+            required: true,
+            validate: function (value) {
+                return value.trim() !== '';
+            },
+            message: 'Кем выдан паспорт — обязательное поле',
+        },
+        license_number: {
+            required: true,
+            validate: function (value) {
+                return value.replace(/\D/g, '').length === 10;
+            },
+            message: 'Номер ВУ должен содержать 10 цифр',
+        },
+        license_issue_date: {
+            required: true,
+            validate: function (value) {
+                return value.trim() !== '';
+            },
+            message: 'Дата выдачи ВУ обязательна',
+        },
+        snils: {
+            required: true,
+            validate: function (value) {
+                return value.replace(/\D/g, '').length === 11;
+            },
+            message: 'СНИЛС должен содержать 11 цифр',
+        },
+    };
 
-    function validateFullName(value) {
-        const normalized = value.trim().replace(/\s+/g, ' ');
-        const parts = normalized.split(' ').filter(p => p.length > 0);
-        if (parts.length !== 3) return false;
-        for (let part of parts) {
-            if (part.length < 2) return false;
+    function getInput(name) {
+        return form.querySelector('[name="' + name + '"]');
+    }
+
+    function getErrorNode(name) {
+        return document.getElementById('error-' + name);
+    }
+
+    function setError(name, message) {
+        const node = getErrorNode(name);
+        if (node) {
+            node.textContent = message;
         }
+    }
+
+    function clearError(name) {
+        const node = getErrorNode(name);
+        if (node) {
+            node.textContent = '';
+        }
+    }
+
+    function validateField(name) {
+        const rule = fields[name];
+        const input = getInput(name);
+        if (!rule || !input) {
+            return true;
+        }
+
+        const value = input.value || '';
+        const trimmed = value.trim();
+
+        if (rule.required && trimmed === '') {
+            setError(name, name === 'email' ? 'Email обязателен' : rule.message);
+            return false;
+        }
+
+        if (!rule.validate(value)) {
+            setError(name, rule.message);
+            return false;
+        }
+
+        clearError(name);
         return true;
     }
 
-    function validateEmail(value) {
-        if (!value) return true;
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    }
-
-    function validatePassportNumber(value) {
-        if (!value) return true;
-        const digits = value.replace(/\D/g, '');
-        return digits.length === 10;
-    }
-
-    function validateLicenseNumber(value) {
-        const digits = value.replace(/\D/g, '');
-        return digits.length === 10;
-    }
-
-    function validateSnils(value) {
-        if (!value) return true;
-        const digits = value.replace(/\D/g, '');
-        return digits.length === 11;
-    }
-
-    function showError(input, message) {
-        const errorDiv = input.nextElementSibling;
-        if (errorDiv && errorDiv.classList.contains('error')) {
-            errorDiv.textContent = message;
+    Object.keys(fields).forEach(function (name) {
+        const input = getInput(name);
+        if (!input) {
+            return;
         }
-    }
 
-    function clearError(input) {
-        const errorDiv = input.nextElementSibling;
-        if (errorDiv && errorDiv.classList.contains('error')) {
-            errorDiv.textContent = '';
-        }
-    }
+        input.addEventListener('input', function () {
+            clearError(name);
+            if (validationAlert) {
+                validationAlert.style.display = 'none';
+            }
+        });
 
-    function validateField(input, validationFn, errorMsg) {
-        if (!validationFn(input.value)) {
-            showError(input, errorMsg);
-            return false;
-        } else {
-            clearError(input);
-            return true;
-        }
-    }
+        input.addEventListener('blur', function () {
+            validateField(name);
+        });
+    });
 
-    const MSG_FIO = '\u0424\u0418\u041e \u0434\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432 \u0444\u043e\u0440\u043c\u0430\u0442\u0435: \u0424\u0430\u043c\u0438\u043b\u0438\u044f \u0418\u043c\u044f \u041e\u0442\u0447\u0435\u0441\u0442\u0432\u043e';
-    const MSG_EMAIL = '\u041d\u0435\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u044b\u0439 email';
-    const MSG_PASSPORT = '\u041d\u043e\u043c\u0435\u0440 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 10 \u0446\u0438\u0444\u0440';
-    const MSG_LICENSE = '\u041d\u043e\u043c\u0435\u0440 \u0412\u0423 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 10 \u0446\u0438\u0444\u0440';
-    const MSG_SNILS = '\u0421\u041d\u0418\u041b\u0421 \u0434\u043e\u043b\u0436\u0435\u043d \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u0442\u044c 11 \u0446\u0438\u0444\u0440';
+    form.addEventListener('submit', function (event) {
+        let valid = true;
+        let firstInvalid = null;
 
-    if (fullNameInput) {
-        fullNameInput.addEventListener('blur', function() { validateField(this, validateFullName, MSG_FIO); });
-        fullNameInput.addEventListener('input', function() { clearError(this); });
-    }
+        Object.keys(fields).forEach(function (name) {
+            const fieldValid = validateField(name);
+            if (!fieldValid && firstInvalid === null) {
+                firstInvalid = getInput(name);
+            }
+            valid = valid && fieldValid;
+        });
 
-    if (emailInput) {
-        emailInput.addEventListener('blur', function() { validateField(this, validateEmail, MSG_EMAIL); });
-        emailInput.addEventListener('input', function() { clearError(this); });
-    }
-
-    if (passportInput) {
-        passportInput.addEventListener('blur', function() { validateField(this, validatePassportNumber, MSG_PASSPORT); });
-        passportInput.addEventListener('input', function() { clearError(this); });
-    }
-
-    if (licenseInput) {
-        licenseInput.addEventListener('blur', function() { validateField(this, validateLicenseNumber, MSG_LICENSE); });
-        licenseInput.addEventListener('input', function() { clearError(this); });
-    }
-
-    if (snilsInput) {
-        snilsInput.addEventListener('blur', function() { validateField(this, validateSnils, MSG_SNILS); });
-        snilsInput.addEventListener('input', function() { clearError(this); });
-    }
-
-    form.addEventListener('submit', function(e) {
-        let isValid = true;
-        if (fullNameInput && !validateField(fullNameInput, validateFullName, MSG_FIO)) isValid = false;
-        if (emailInput && !validateField(emailInput, validateEmail, MSG_EMAIL)) isValid = false;
-        if (passportInput && !validateField(passportInput, validatePassportNumber, MSG_PASSPORT)) isValid = false;
-        if (licenseInput && !validateField(licenseInput, validateLicenseNumber, MSG_LICENSE)) isValid = false;
-        if (snilsInput && !validateField(snilsInput, validateSnils, MSG_SNILS)) isValid = false;
-
-        if (!isValid) {
-            e.preventDefault();
-            if (validationAlert) validationAlert.style.display = 'block';
-            const firstInvalid = form.querySelector('.error:not(:empty)');
-            if (firstInvalid && firstInvalid.previousElementSibling) firstInvalid.previousElementSibling.focus();
+        if (!valid) {
+            event.preventDefault();
+            if (validationAlert) {
+                validationAlert.style.display = 'block';
+                validationAlert.scrollIntoView({ block: 'center' });
+            }
+            if (firstInvalid && typeof firstInvalid.focus === 'function') {
+                firstInvalid.focus();
+            }
         }
     });
 });
