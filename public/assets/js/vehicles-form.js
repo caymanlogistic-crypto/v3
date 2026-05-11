@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+﻿document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const truckPlateInput = document.querySelector('input[name="truck_plate"]');
     const trailerPlateInput = document.querySelector('input[name="trailer_plate"]');
@@ -58,23 +58,23 @@ document.addEventListener('DOMContentLoaded', function() {
         let isValid = true;
 
         if (truckPlateInput) {
-            isValid &= validateField(truckPlateInput, validateTruckPlate, 'Госномер тягача должен содержать от 6 до 20 символов');
+            isValid = validateField(truckPlateInput, validateTruckPlate, 'Госномер тягача должен содержать от 6 до 20 символов') && isValid;
         }
 
         if (trailerPlateInput) {
-            isValid &= validateField(trailerPlateInput, validateTrailerPlate, 'Госномер прицепа должен содержать от 6 до 20 символов');
+            isValid = validateField(trailerPlateInput, validateTrailerPlate, 'Госномер прицепа должен содержать от 6 до 20 символов') && isValid;
         }
 
         if (loadCapacityInput) {
-            isValid &= validateField(loadCapacityInput, validateNumeric, 'Грузоподъёмность должна быть числом');
+            isValid = validateField(loadCapacityInput, validateNumeric, 'Грузоподъемность должна быть числом') && isValid;
         }
 
         if (bodyVolumeInput) {
-            isValid &= validateField(bodyVolumeInput, validateNumeric, 'Объём кузова должен быть числом');
+            isValid = validateField(bodyVolumeInput, validateNumeric, 'Объем кузова должен быть числом') && isValid;
         }
 
         if (statusSelect) {
-            isValid &= validateField(statusSelect, validateStatus, 'Некорректный статус');
+            isValid = validateField(statusSelect, validateStatus, 'Некорректный статус') && isValid;
         }
 
         if (validationAlert) {
@@ -87,56 +87,44 @@ document.addEventListener('DOMContentLoaded', function() {
     if (truckPlateInput) {
         truckPlateInput.addEventListener('blur', function() {
             validateField(this, validateTruckPlate, 'Госномер тягача должен содержать от 6 до 20 символов');
+            this.value = this.value.toUpperCase().replace(/\s/g, '');
         });
 
         truckPlateInput.addEventListener('input', function() {
             clearError(this);
-        });
-
-        truckPlateInput.addEventListener('blur', function() {
-            this.value = this.value.toUpperCase().replace(/\s/g, '');
         });
     }
 
     if (trailerPlateInput) {
         trailerPlateInput.addEventListener('blur', function() {
             validateField(this, validateTrailerPlate, 'Госномер прицепа должен содержать от 6 до 20 символов');
+            this.value = this.value.toUpperCase().replace(/\s/g, '');
         });
 
         trailerPlateInput.addEventListener('input', function() {
             clearError(this);
         });
-
-        trailerPlateInput.addEventListener('blur', function() {
-            this.value = this.value.toUpperCase().replace(/\s/g, '');
-        });
     }
 
     if (loadCapacityInput) {
         loadCapacityInput.addEventListener('blur', function() {
-            validateField(this, validateNumeric, 'Грузоподъёмность должна быть числом');
+            validateField(this, validateNumeric, 'Грузоподъемность должна быть числом');
+            this.value = this.value.replace(/,/g, '.');
         });
 
         loadCapacityInput.addEventListener('input', function() {
             clearError(this);
         });
-
-        loadCapacityInput.addEventListener('blur', function() {
-            this.value = this.value.replace(/,/g, '.');
-        });
     }
 
     if (bodyVolumeInput) {
         bodyVolumeInput.addEventListener('blur', function() {
-            validateField(this, validateNumeric, 'Объём кузова должен быть числом');
+            validateField(this, validateNumeric, 'Объем кузова должен быть числом');
+            this.value = this.value.replace(/,/g, '.');
         });
 
         bodyVolumeInput.addEventListener('input', function() {
             clearError(this);
-        });
-
-        bodyVolumeInput.addEventListener('blur', function() {
-            this.value = this.value.replace(/,/g, '.');
         });
     }
 
@@ -150,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateForm()) {
             e.preventDefault();
             const firstInvalid = form.querySelector('.error:not(:empty)');
-            if (firstInvalid) {
+            if (firstInvalid && firstInvalid.previousElementSibling) {
                 firstInvalid.previousElementSibling.focus();
             }
         }

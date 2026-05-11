@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+﻿document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const fullNameInput = document.querySelector('input[name="full_name"]');
     const emailInput = document.querySelector('input[name="email"]');
@@ -140,7 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!isValid) {
             e.preventDefault();
-            validationAlert.style.display = 'block';
+            if (validationAlert) {
+                validationAlert.style.display = 'block';
+            }
             const firstInvalid = form.querySelector('.error:not(:empty)');
             if (firstInvalid && firstInvalid.previousElementSibling) {
                 firstInvalid.previousElementSibling.focus();
