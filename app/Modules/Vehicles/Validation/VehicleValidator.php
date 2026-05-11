@@ -36,34 +36,52 @@ final class VehicleValidator
             $errors['trailer_model'] = 'Модель прицепа не должна превышать 100 символов';
         }
 
-        if (!empty($data['trailer_plate'])) {
-            if (mb_strlen($data['trailer_plate']) < 6 || mb_strlen($data['trailer_plate']) > 20) {
-                $errors['trailer_plate'] = 'Госномер прицепа должен содержать от 6 до 20 символов';
-            }
+        if (!empty($data['trailer_plate']) && (mb_strlen($data['trailer_plate']) < 6 || mb_strlen($data['trailer_plate']) > 20)) {
+            $errors['trailer_plate'] = 'Госномер прицепа должен содержать от 6 до 20 символов';
         }
 
         if (!empty($data['trailer_vin']) && mb_strlen($data['trailer_vin']) > 50) {
             $errors['trailer_vin'] = 'VIN прицепа не должен превышать 50 символов';
         }
 
-        if (!empty($data['load_capacity'])) {
-            $loadCapacity = str_replace([',', ' '], ['.', ''], $data['load_capacity']);
-            if (!is_numeric($loadCapacity) || (float) $loadCapacity < 0) {
-                $errors['load_capacity'] = 'Грузоподъёмность должна быть числом';
-            }
-        }
-
-        if (!empty($data['body_volume'])) {
-            $bodyVolume = str_replace([',', ' '], ['.', ''], $data['body_volume']);
-            if (!is_numeric($bodyVolume) || (float) $bodyVolume < 0) {
-                $errors['body_volume'] = 'Объём кузова должен быть числом';
-            }
-        }
+        $this->validateDecimalRange($data, $errors, 'truck_load_capacity', 'Грузоподъемность тягача должна быть числом', 'Грузоподъемность тягача не должна превышать 60');
+        $this->validateDecimalRange($data, $errors, 'truck_body_volume', 'Объем кузова тягача должен быть числом', 'Объем кузова тягача не должен превышать 150');
+        $this->validateDecimalRange($data, $errors, 'trailer_load_capacity', 'Грузоподъемность прицепа должна быть числом', 'Грузоподъемность прицепа не должна превышать 60');
+        $this->validateDecimalRange($data, $errors, 'trailer_body_volume', 'Объем кузова прицепа должен быть числом', 'Объем кузова прицепа не должен превышать 150');
 
         if (empty($data['status']) || !in_array($data['status'], ['active', 'blocked', 'archive'], true)) {
             $errors['status'] = 'Некорректный статус';
         }
 
         return $errors;
+    }
+
+    private function validateDecimalRange(array $data, array &$errors, string $field, string $numericMessage, string $maxMessage): void
+    {
+        if (empty($data[$field])) {
+            return;
+        }
+
+        $value = str_replace([',', ' '], ['.', ''], (string) $data[$field]);
+
+        if (!is_numeric($value) || (float) $value < 0) {
+            $errors[$field] = $numericMessage;
+            return;
+        }
+
+        if (
+            ($field === 'truck_load_capacity' || $field === 'trailer_load_capacity')
+            && (float) $value > 60
+        ) {
+            $errors[$field] = $maxMessage;
+            return;
+        }
+
+        if (
+            ($field === 'truck_body_volume' || $field === 'trailer_body_volume')
+            && (float) $value > 150
+        ) {
+            $errors[$field] = $maxMessage;
+        }
     }
 }

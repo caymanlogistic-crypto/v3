@@ -373,7 +373,7 @@
             { names: ['truck_vin', 'trailer_vin'], fn: createNormalizeProcessor(normalizeVin) },
             { names: ['truck_plate'], fn: createNormalizeProcessor(normalizeTruckPlate) },
             { names: ['trailer_plate'], fn: createNormalizeProcessor(normalizeTrailerPlate) },
-            { names: ['load_capacity', 'body_volume'], fn: createNormalizeProcessor(normalizeDecimal) },
+            { names: ['truck_load_capacity', 'truck_body_volume', 'trailer_load_capacity', 'trailer_body_volume'], fn: createNormalizeProcessor(normalizeDecimal) },
             { names: ['passport_issue_date', 'license_issue_date', 'issued_at', 'expires_at'], fn: dateProcessor }
         ];
 

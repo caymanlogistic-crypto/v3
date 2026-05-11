@@ -36,12 +36,20 @@ final class VehicleInputMapper
             $data['trailer_vin'] = preg_replace('/\s+/', '', $data['trailer_vin']);
         }
 
-        if (!empty($data['load_capacity'])) {
-            $data['load_capacity'] = self::normalizeNumeric($data['load_capacity']);
+        if (!empty($data['truck_load_capacity'])) {
+            $data['truck_load_capacity'] = self::normalizeNumeric($data['truck_load_capacity']);
         }
 
-        if (!empty($data['body_volume'])) {
-            $data['body_volume'] = self::normalizeNumeric($data['body_volume']);
+        if (!empty($data['truck_body_volume'])) {
+            $data['truck_body_volume'] = self::normalizeNumeric($data['truck_body_volume']);
+        }
+
+        if (!empty($data['trailer_load_capacity'])) {
+            $data['trailer_load_capacity'] = self::normalizeNumeric($data['trailer_load_capacity']);
+        }
+
+        if (!empty($data['trailer_body_volume'])) {
+            $data['trailer_body_volume'] = self::normalizeNumeric($data['trailer_body_volume']);
         }
 
         return $data;
