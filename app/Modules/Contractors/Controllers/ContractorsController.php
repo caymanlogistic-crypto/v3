@@ -216,6 +216,14 @@ final class ContractorsController extends Controller
                 'Validation failed'
             );
 
+            $contactService = new ContractorContactService();
+
+            $contacts = $contactService->findByContractorId($id);
+
+            $fileService = new ContractorFileService();
+
+            $files = $fileService->findByContractorId($id);
+
             $this->view(
                 'contractors.edit',
                 [
@@ -224,6 +232,8 @@ final class ContractorsController extends Controller
                         $data
                     ),
                     'errors' => $errors,
+                    'contacts' => $contacts,
+                    'files' => $files,
                 ]
             );
 

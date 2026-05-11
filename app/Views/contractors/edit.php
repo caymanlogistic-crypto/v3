@@ -341,7 +341,7 @@
             </button>
 
             <a
-                href="/v3/public/contractors"
+                href="<?= config('app.url') ?>/contractors"
                 class="btn"
             >
                 Cancel

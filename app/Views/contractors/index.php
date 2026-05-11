@@ -21,7 +21,7 @@
                     Search
                 </button>
 
-                <a href="/v3/public/contractors/create">
+                <a href="<?= config('app.url') ?>/contractors/create">
                     Create Contractor
                 </a>
 
@@ -79,7 +79,7 @@
 
                 <td>
 
-                    <a href="/v3/public/contractors/<?= (int) $contractor['id'] ?>/edit">
+                    <a href="<?= config('app.url') ?>/contractors/<?= (int) $contractor['id'] ?>/edit">
                         Edit
                     </a>
 

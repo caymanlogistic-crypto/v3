@@ -191,6 +191,9 @@ final class DriversController extends Controller
                 'Validation failed'
             );
 
+            $driverFileService = new DriverFileService();
+            $files = $driverFileService->findByDriverId($id);
+
             $this->view(
                 'drivers.edit',
                 [
@@ -199,6 +202,7 @@ final class DriversController extends Controller
                         $data
                     ),
                     'errors' => $errors,
+                    'files' => $files,
                 ]
             );
 

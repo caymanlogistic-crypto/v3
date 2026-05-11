@@ -25,7 +25,6 @@ final class VehiclesController extends Controller
     {
         $this->service = new VehicleService();
         $this->fileService = new VehicleFileService();
-
         $this->validator = new VehicleValidator();
     }
 
@@ -103,20 +102,24 @@ final class VehiclesController extends Controller
         );
 
         if (!empty($errors)) {
-            foreach ($data as $key => $value) {
-                $_SESSION['old_' . $key] = $value;
-            }
-
-            Flash::error('Ошибка валидации формы');
-
-            Response::redirect(
-                config('app.url') . '/vehicles/create'
+            Flash::error(
+                'Validation failed'
             );
+
+            $this->view(
+                'vehicles.create',
+                [
+                    'errors' => $errors,
+                    'old' => $data,
+                ]
+            );
+
+            return;
         }
 
         $vehicleId = $this->service->create($data);
 
-        Flash::success('Транспортное средство создано');
+        Flash::success('Vehicle created successfully');
 
         Response::redirect(
             config('app.url') . '/vehicles/' . $vehicleId . '/edit'
@@ -183,16 +186,30 @@ final class VehiclesController extends Controller
         );
 
         if (!empty($errors)) {
-            Flash::error('Ошибка валидации формы');
-
-            Response::redirect(
-                config('app.url') . '/vehicles/' . $vehicleId . '/edit'
+            Flash::error(
+                'Validation failed'
             );
+
+            $files = $this->fileService->findByVehicleId($vehicleId);
+
+            $this->view(
+                'vehicles.edit',
+                [
+                    'vehicle' => array_merge(
+                        ['id' => $vehicleId],
+                        $data
+                    ),
+                    'errors' => $errors,
+                    'files' => $files,
+                ]
+            );
+
+            return;
         }
 
         $this->service->update($vehicleId, $data);
 
-        Flash::success('Транспортное средство обновлено');
+        Flash::success('Vehicle updated successfully');
 
         Response::redirect(
             config('app.url') . '/vehicles/' . $vehicleId . '/edit'
@@ -214,7 +231,7 @@ final class VehiclesController extends Controller
 
         $this->service->softDelete($vehicleId);
 
-        Flash::success('Транспортное средство удалено');
+        Flash::success('Vehicle deleted successfully');
 
         Response::redirect(
             config('app.url') . '/vehicles'

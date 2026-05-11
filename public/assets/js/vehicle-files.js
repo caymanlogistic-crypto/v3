@@ -1,45 +1,53 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var uploadForms = document.querySelectorAll('.vehicle-file-upload-form');
+    const maxSize = 20 * 1024 * 1024; // 20 MB
+    const errorMsg = 'Файл слишком большой. Максимальный размер: 20 MB';
 
-    if (!uploadForms.length) {
-        return;
+    function getErrorContainer(fileInput) {
+        return fileInput.parentElement.querySelector('.file-error');
     }
 
-    uploadForms.forEach(function (form) {
-        var fileInput = form.querySelector('input[type="file"]');
-        var submitButton = form.querySelector('button[type="submit"]');
-        var fileTypeSelect = form.querySelector('select[name="file_type"]');
+    function showError(fileInput, message) {
+        const errorDiv = getErrorContainer(fileInput);
+        if (errorDiv) {
+            errorDiv.textContent = message;
+        }
+    }
+
+    function clearError(fileInput) {
+        const errorDiv = getErrorContainer(fileInput);
+        if (errorDiv) {
+            errorDiv.textContent = '';
+        }
+    }
+
+    function validateFileInput(fileInput) {
+        const file = fileInput.files[0];
+
+        if (file && file.size > maxSize) {
+            showError(fileInput, errorMsg);
+            return false;
+        }
+
+        clearError(fileInput);
+        return true;
+    }
+
+    const forms = document.querySelectorAll('form[action*="/vehicles/"][action*="/files/upload"]');
+
+    forms.forEach(function (form) {
+        const fileInput = form.querySelector('input[type="file"][name="file"]');
+
+        if (!fileInput) {
+            return;
+        }
+
+        fileInput.addEventListener('change', function () {
+            validateFileInput(fileInput);
+        });
 
         form.addEventListener('submit', function (event) {
-            if (!fileInput || !fileInput.value) {
+            if (!validateFileInput(fileInput)) {
                 event.preventDefault();
-                return;
-            }
-
-            var allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'jpg', 'jpeg', 'png', 'webp'];
-            var fileName = fileInput.value.toLowerCase();
-            var extension = fileName.split('.').pop();
-
-            if (!allowedExtensions.includes(extension)) {
-                event.preventDefault();
-                alert('Недопустимое расширение файла. Разрешены: pdf, doc, docx, xls, xlsx, jpg, jpeg, png, webp.');
-                return;
-            }
-
-            if (fileInput.files && fileInput.files[0] && fileInput.files[0].size > 20971520) {
-                event.preventDefault();
-                alert('Файл слишком большой. Максимальный размер: 20 MB.');
-                return;
-            }
-
-            if (fileTypeSelect && !fileTypeSelect.value) {
-                event.preventDefault();
-                alert('Пожалуйста, выберите тип файла.');
-                return;
-            }
-
-            if (submitButton) {
-                submitButton.disabled = true;
             }
         });
     });

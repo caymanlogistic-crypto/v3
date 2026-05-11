@@ -109,7 +109,7 @@ $errorFlash = Flash::getError();
 
     <nav>
 
-        <a href="/v3/public/">
+        <a href="<?= config('app.url') ?>/">
             Home
         </a>
 
@@ -118,7 +118,7 @@ $errorFlash = Flash::getError();
             && Auth::can('contractors.view')
         ): ?>
 
-            <a href="/v3/public/contractors">
+            <a href="<?= config('app.url') ?>/contractors">
                 Contractors
             </a>
 

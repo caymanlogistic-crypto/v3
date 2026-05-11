@@ -263,7 +263,7 @@
                     <tr>
                         <td>Файл</td>
                         <td>
-                            <input type="file" name="file">
+                            <input type="file" name="file">`r`n                            <div class="error file-error"></div>
                         </td>
                     </tr>
                     <tr>
@@ -291,7 +291,7 @@
                     <tr>
                         <td>Файл</td>
                         <td>
-                            <input type="file" name="file">
+                            <input type="file" name="file">`r`n                            <div class="error file-error"></div>
                         </td>
                     </tr>
                     <tr>
@@ -319,7 +319,7 @@
                     <tr>
                         <td>Файл</td>
                         <td>
-                            <input type="file" name="file">
+                            <input type="file" name="file">`r`n                            <div class="error file-error"></div>
                         </td>
                     </tr>
                     <tr>

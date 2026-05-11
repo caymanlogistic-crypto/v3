@@ -242,7 +242,7 @@ $router->get(
     },
     [
         AuthMiddleware::class,
-        PermissionMiddleware::class . ':contractors.edit',
+        PermissionMiddleware::class . ':contractors.view',
     ]
 );
 
