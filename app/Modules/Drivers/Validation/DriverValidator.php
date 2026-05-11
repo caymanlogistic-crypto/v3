@@ -35,10 +35,8 @@ final class DriverValidator
             $errors['passport_number'] = 'Номер паспорта должен содержать 10 цифр';
         }
 
-        if (!empty($data['passport_issue_date'])) {
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['passport_issue_date'])) {
-                $errors['passport_issue_date'] = 'Дата выдачи паспорта должна быть в формате YYYY-MM-DD';
-            }
+        if (!empty($data['passport_issue_date']) && !$this->isValidIsoDate((string) $data['passport_issue_date'])) {
+            $errors['passport_issue_date'] = 'Дата должна быть корректной. Пример: 10.01.2019';
         }
 
         if (empty($data['license_number'])) {
@@ -47,10 +45,8 @@ final class DriverValidator
             $errors['license_number'] = 'Номер ВУ должен содержать 10 цифр';
         }
 
-        if (!empty($data['license_issue_date'])) {
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['license_issue_date'])) {
-                $errors['license_issue_date'] = 'Дата выдачи ВУ должна быть в формате YYYY-MM-DD';
-            }
+        if (!empty($data['license_issue_date']) && !$this->isValidIsoDate((string) $data['license_issue_date'])) {
+            $errors['license_issue_date'] = 'Дата должна быть корректной. Пример: 10.01.2019';
         }
 
         if (!empty($data['snils']) && !preg_match('/^\d{11}$/', $data['snils'])) {
@@ -62,5 +58,16 @@ final class DriverValidator
         }
 
         return $errors;
+    }
+
+    private function isValidIsoDate(string $value): bool
+    {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value) !== 1) {
+            return false;
+        }
+
+        [$year, $month, $day] = array_map('intval', explode('-', $value));
+
+        return checkdate($month, $day, $year);
     }
 }
