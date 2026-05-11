@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const maxSize = 20 * 1024 * 1024; // 20 MB
-    const errorMsg = 'Файл слишком большой. Максимальный размер: 20 MB';
+    const errorMsg = 'Один или несколько файлов слишком большие. Максимальный размер одного файла: 20 MB';
 
     function getErrorContainer(fileInput) {
         return fileInput.parentElement.querySelector('.file-error');
@@ -21,11 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validateFileInput(fileInput) {
-        const file = fileInput.files[0];
+        const files = fileInput.files || [];
 
-        if (file && file.size > maxSize) {
-            showError(fileInput, errorMsg);
-            return false;
+        for (let index = 0; index < files.length; index += 1) {
+            if (files[index].size > maxSize) {
+                showError(fileInput, errorMsg);
+                return false;
+            }
         }
 
         clearError(fileInput);
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const forms = document.querySelectorAll('form[action*="/drivers/"][action*="/files/upload"]');
 
     forms.forEach(function (form) {
-        const fileInput = form.querySelector('input[type="file"][name="file"]');
+        const fileInput = form.querySelector('input[type="file"][name="files[]"], input[type="file"][name="file"]');
 
         if (!fileInput) {
             return;

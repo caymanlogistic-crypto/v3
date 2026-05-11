@@ -33,44 +33,57 @@ final class ContractorFilesController extends Controller
             'comment' => trim((string) $request->input('comment')),
         ];
 
-        $file = $_FILES['file'] ?? [];
+        $uploadedFiles = $this->normalizeUploadedFiles($_FILES);
 
-        $errors = $this->validator->validate($data, $file);
-
-        if (!empty($errors)) {
-            Flash::error('Ошибка загрузки файла');
-
-            Response::redirect(
-                config('app.url') . '/contractors/' . $contractorId . '/edit'
-            );
+        if ($uploadedFiles === []) {
+            Flash::error('Файл не выбран');
+            Response::redirect(config('app.url') . '/contractors/' . $contractorId . '/edit');
         }
 
-        try {
-            $storage = ContractorFileStorage::moveUploadedFile($file, $contractorId);
+        $successCount = 0;
+        $errorCount = 0;
 
-            $mimeType = $file['type'] ?? 'application/octet-stream';
-            if (empty($mimeType) && is_file($storage['file_path'])) {
-                $mimeType = mime_content_type($storage['file_path']) ?: 'application/octet-stream';
+        foreach ($uploadedFiles as $file) {
+            $errors = $this->validator->validate($data, $file);
+
+            if (!empty($errors)) {
+                $errorCount++;
+                continue;
             }
 
-            $this->service->create($contractorId, [
-                'original_name' => (string) $file['name'],
-                'stored_name' => $storage['stored_name'],
-                'file_path' => $storage['file_path'],
-                'mime_type' => $mimeType,
-                'file_extension' => strtolower(pathinfo((string) $file['name'], PATHINFO_EXTENSION)),
-                'file_size' => (int) $file['size'],
-                'comment' => $data['comment'],
-            ]);
+            try {
+                $storage = ContractorFileStorage::moveUploadedFile($file, $contractorId);
 
-            Flash::success('Файл успешно загружен');
-        } catch (\Throwable $exception) {
-            Flash::error('Не удалось сохранить файл');
+                $mimeType = $file['type'] ?? 'application/octet-stream';
+                if (empty($mimeType) && is_file($storage['file_path'])) {
+                    $mimeType = mime_content_type($storage['file_path']) ?: 'application/octet-stream';
+                }
+
+                $this->service->create($contractorId, [
+                    'original_name' => (string) $file['name'],
+                    'stored_name' => $storage['stored_name'],
+                    'file_path' => $storage['file_path'],
+                    'mime_type' => $mimeType,
+                    'file_extension' => strtolower(pathinfo((string) $file['name'], PATHINFO_EXTENSION)),
+                    'file_size' => (int) $file['size'],
+                    'comment' => $data['comment'],
+                ]);
+
+                $successCount++;
+            } catch (\Throwable $exception) {
+                $errorCount++;
+            }
         }
 
-        Response::redirect(
-            config('app.url') . '/contractors/' . $contractorId . '/edit'
-        );
+        if ($successCount > 0 && $errorCount === 0) {
+            Flash::success('Успешно загружено файлов: ' . $successCount);
+        } elseif ($successCount > 0) {
+            Flash::error('Загружено файлов: ' . $successCount . '. Ошибок: ' . $errorCount);
+        } else {
+            Flash::error('Не удалось загрузить файлы');
+        }
+
+        Response::redirect(config('app.url') . '/contractors/' . $contractorId . '/edit');
     }
 
     public function download(Request $request, array $params): void
@@ -120,10 +133,62 @@ final class ContractorFilesController extends Controller
         ContractorFileStorage::deleteFile((string) $file['file_path']);
         $this->service->softDelete($fileId);
 
-        Flash::success('Файл удалён');
+        Flash::success('Р¤Р°Р№Р» СѓРґР°Р»С‘РЅ');
 
         Response::redirect(
             config('app.url') . '/contractors/' . $contractorId . '/edit'
         );
+    }
+
+    /**
+     * @param array<string, mixed> $files
+     * @return array<int, array{name:string,type:string,tmp_name:string,error:int,size:int}>
+     */
+    private function normalizeUploadedFiles(array $files): array
+    {
+        $normalized = [];
+        $rawFiles = $files['files'] ?? $files['file'] ?? null;
+
+        if (!is_array($rawFiles)) {
+            return [];
+        }
+
+        if (isset($rawFiles['name']) && is_array($rawFiles['name'])) {
+            $count = count($rawFiles['name']);
+
+            for ($index = 0; $index < $count; $index++) {
+                $file = [
+                    'name' => (string) ($rawFiles['name'][$index] ?? ''),
+                    'type' => (string) ($rawFiles['type'][$index] ?? ''),
+                    'tmp_name' => (string) ($rawFiles['tmp_name'][$index] ?? ''),
+                    'error' => (int) ($rawFiles['error'][$index] ?? UPLOAD_ERR_NO_FILE),
+                    'size' => (int) ($rawFiles['size'][$index] ?? 0),
+                ];
+
+                if ($file['error'] === UPLOAD_ERR_NO_FILE || $file['name'] === '') {
+                    continue;
+                }
+
+                $normalized[] = $file;
+            }
+
+            return $normalized;
+        }
+
+        $file = [
+            'name' => (string) ($rawFiles['name'] ?? ''),
+            'type' => (string) ($rawFiles['type'] ?? ''),
+            'tmp_name' => (string) ($rawFiles['tmp_name'] ?? ''),
+            'error' => (int) ($rawFiles['error'] ?? UPLOAD_ERR_NO_FILE),
+            'size' => (int) ($rawFiles['size'] ?? 0),
+        ];
+
+        if ($file['error'] === UPLOAD_ERR_NO_FILE || $file['name'] === '') {
+            return [];
+        }
+
+        $normalized[] = $file;
+
+        return $normalized;
     }
 }
