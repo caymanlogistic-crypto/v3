@@ -5,31 +5,31 @@
 
     <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/update" class="form-card" id="vehicleForm">
         <?= csrf_field() ?>
-        <div id="vehicleFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">&#1055;&#1086;&#1078;&#1072;&#1083;&#1091;&#1081;&#1089;&#1090;&#1072;, &#1080;&#1089;&#1087;&#1088;&#1072;&#1074;&#1100;&#1090;&#1077; &#1086;&#1096;&#1080;&#1073;&#1082;&#1080; &#1092;&#1086;&#1088;&#1084;&#1099;</div>
+        <div id="vehicleFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">Пожалуйста, исправьте ошибки формы</div>
 
         <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">&#1058;&#1103;&#1075;&#1072;&#1095;</th></tr>
-            <tr><td>Truck Plate *</td><td><input type="text" name="truck_plate" value="<?= e($vehicle['truck_plate'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: &#1050;816&#1061;&#1050;147</div><div id="error-truck_plate" class="error"><?= e($errors['truck_plate'] ?? '') ?></div></td></tr>
+            <tr><th colspan="2" class="form-section-title">Тягач</th></tr>
+            <tr><td>Truck Plate *</td><td><input type="text" name="truck_plate" value="<?= e($vehicle['truck_plate'] ?? '') ?>"><div class="form-hint">Пример: К816ХК147</div><div id="error-truck_plate" class="error"><?= e($errors['truck_plate'] ?? '') ?></div></td></tr>
             <tr><td>Truck Brand *</td><td><input type="text" name="truck_brand" value="<?= e($vehicle['truck_brand'] ?? '') ?>"><div id="error-truck_brand" class="error"><?= e($errors['truck_brand'] ?? '') ?></div></td></tr>
             <tr><td>Truck Model</td><td><input type="text" name="truck_model" value="<?= e($vehicle['truck_model'] ?? '') ?>"><div id="error-truck_model" class="error"><?= e($errors['truck_model'] ?? '') ?></div></td></tr>
-            <tr><td>Truck VIN *</td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 &#1089;&#1080;&#1084;&#1074;&#1086;&#1083;&#1086;&#1074;</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
-            <tr><td>Truck Load Capacity (tons) *</td><td><input type="text" name="truck_load_capacity" value="<?= e($vehicle['truck_load_capacity'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 20,5</div><div id="error-truck_load_capacity" class="error"><?= e($errors['truck_load_capacity'] ?? '') ?></div></td></tr>
-            <tr><td>Truck Body Volume (m3) *</td><td><input type="text" name="truck_body_volume" value="<?= e($vehicle['truck_body_volume'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 90,5</div><div id="error-truck_body_volume" class="error"><?= e($errors['truck_body_volume'] ?? '') ?></div></td></tr>
-            <tr><td colspan="2"><button type="button" class="btn btn-secondary" id="toggleTrailerSection">&#1047;&#1072;&#1087;&#1086;&#1083;&#1085;&#1080;&#1090;&#1100; &#1076;&#1072;&#1085;&#1085;&#1099;&#1077; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;</button></td></tr>
+            <tr><td>Truck VIN *</td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 символов</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
+            <tr><td>Truck Load Capacity (tons) *</td><td><input type="text" name="truck_load_capacity" value="<?= e($vehicle['truck_load_capacity'] ?? '') ?>"><div class="form-hint">Можно: 20,5</div><div id="error-truck_load_capacity" class="error"><?= e($errors['truck_load_capacity'] ?? '') ?></div></td></tr>
+            <tr><td>Truck Body Volume (m3) *</td><td><input type="text" name="truck_body_volume" value="<?= e($vehicle['truck_body_volume'] ?? '') ?>"><div class="form-hint">Можно: 90,5</div><div id="error-truck_body_volume" class="error"><?= e($errors['truck_body_volume'] ?? '') ?></div></td></tr>
+            <tr><td colspan="2"><button type="button" class="btn btn-secondary" id="toggleTrailerSection">Заполнить данные полуприцепа</button></td></tr>
         </table>
 
         <table class="form-table" id="trailerSection" style="display:none; margin-top: 12px;">
-            <tr><th colspan="2" class="form-section-title">&#1055;&#1088;&#1080;&#1094;&#1077;&#1087; / &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;</th></tr>
-            <tr><td>Trailer Plate</td><td><input type="text" name="trailer_plate" value="<?= e($vehicle['trailer_plate'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: &#1042;&#1050;432947</div><div id="error-trailer_plate" class="error"><?= e($errors['trailer_plate'] ?? '') ?></div></td></tr>
+            <tr><th colspan="2" class="form-section-title">Прицеп / полуприцеп</th></tr>
+            <tr><td>Trailer Plate</td><td><input type="text" name="trailer_plate" value="<?= e($vehicle['trailer_plate'] ?? '') ?>"><div class="form-hint">Пример: ВК432947</div><div id="error-trailer_plate" class="error"><?= e($errors['trailer_plate'] ?? '') ?></div></td></tr>
             <tr><td>Trailer Brand</td><td><input type="text" name="trailer_brand" value="<?= e($vehicle['trailer_brand'] ?? '') ?>"><div id="error-trailer_brand" class="error"><?= e($errors['trailer_brand'] ?? '') ?></div></td></tr>
             <tr><td>Trailer Model</td><td><input type="text" name="trailer_model" value="<?= e($vehicle['trailer_model'] ?? '') ?>"><div id="error-trailer_model" class="error"><?= e($errors['trailer_model'] ?? '') ?></div></td></tr>
-            <tr><td>Trailer VIN</td><td><input type="text" name="trailer_vin" value="<?= e($vehicle['trailer_vin'] ?? '') ?>"><div class="form-hint">17 &#1089;&#1080;&#1084;&#1074;&#1086;&#1083;&#1086;&#1074;</div><div id="error-trailer_vin" class="error"><?= e($errors['trailer_vin'] ?? '') ?></div></td></tr>
-            <tr><td>Trailer Load Capacity (tons)</td><td><input type="text" name="trailer_load_capacity" value="<?= e($vehicle['trailer_load_capacity'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 20,5</div><div id="error-trailer_load_capacity" class="error"><?= e($errors['trailer_load_capacity'] ?? '') ?></div></td></tr>
-            <tr><td>Trailer Body Volume (m3)</td><td><input type="text" name="trailer_body_volume" value="<?= e($vehicle['trailer_body_volume'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086;: 90,5</div><div id="error-trailer_body_volume" class="error"><?= e($errors['trailer_body_volume'] ?? '') ?></div></td></tr>
+            <tr><td>Trailer VIN</td><td><input type="text" name="trailer_vin" value="<?= e($vehicle['trailer_vin'] ?? '') ?>"><div class="form-hint">17 символов</div><div id="error-trailer_vin" class="error"><?= e($errors['trailer_vin'] ?? '') ?></div></td></tr>
+            <tr><td>Trailer Load Capacity (tons)</td><td><input type="text" name="trailer_load_capacity" value="<?= e($vehicle['trailer_load_capacity'] ?? '') ?>"><div class="form-hint">Можно: 20,5</div><div id="error-trailer_load_capacity" class="error"><?= e($errors['trailer_load_capacity'] ?? '') ?></div></td></tr>
+            <tr><td>Trailer Body Volume (m3)</td><td><input type="text" name="trailer_body_volume" value="<?= e($vehicle['trailer_body_volume'] ?? '') ?>"><div class="form-hint">Можно: 90,5</div><div id="error-trailer_body_volume" class="error"><?= e($errors['trailer_body_volume'] ?? '') ?></div></td></tr>
         </table>
 
         <table class="form-table" style="margin-top: 12px;">
-            <tr><th colspan="2" class="form-section-title">&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1080; &#1080; &#1089;&#1090;&#1072;&#1090;&#1091;&#1089;</th></tr>
+            <tr><th colspan="2" class="form-section-title">Комментарии и статус</th></tr>
             <tr><td>Status</td><td><select name="status"><option value="active" <?= ($vehicle['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($vehicle['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($vehicle['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><div id="error-status" class="error"><?= e($errors['status'] ?? '') ?></div></td></tr>
             <tr><td>Comments</td><td><textarea name="comments" rows="3"><?= e($vehicle['comments'] ?? '') ?></textarea><div id="error-comments" class="error"><?= e($errors['comments'] ?? '') ?></div></td></tr>
         </table>
@@ -38,7 +38,7 @@
     </form>
 
     <div class="section form-section" style="margin-top: 40px;">
-        <h2 class="form-section-title">&#1044;&#1086;&#1082;&#1091;&#1084;&#1077;&#1085;&#1090;&#1099;</h2>
+        <h2 class="form-section-title">Документы</h2>
 
         <?php
             $hasSts = false;
@@ -72,7 +72,7 @@
             <div class="upload-grid">
                 <?php if (!$hasSts): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1057;&#1058;&#1057;</h3>
+                        <h3 class="upload-title">Загрузить СТС</h3>
                         <input type="file" name="typed_files[sts][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -80,7 +80,7 @@
 
                 <?php if (!$hasDiagnosticCard): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1076;&#1080;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1091;&#1102; &#1082;&#1072;&#1088;&#1090;&#1091;</h3>
+                        <h3 class="upload-title">Загрузить диагностическую карту</h3>
                         <input type="file" name="typed_files[diagnostic_card][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -88,7 +88,7 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerSts): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1057;&#1058;&#1057; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;</h3>
+                        <h3 class="upload-title">Загрузить СТС полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_sts][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -96,7 +96,7 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerDiagnosticCard): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1076;&#1080;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1091;&#1102; &#1082;&#1072;&#1088;&#1090;&#1091; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;</h3>
+                        <h3 class="upload-title">Загрузить диагностическую карту полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_diagnostic_card][]" multiple>
                         <div class="error file-error"></div>
                     </div>
@@ -104,7 +104,7 @@
 
                 <?php if (!$hasTruckPhoto): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1092;&#1086;&#1090;&#1086; &#1084;&#1072;&#1096;&#1080;&#1085;&#1099;</h3>
+                        <h3 class="upload-title">Загрузить фото машины</h3>
                         <input type="file" name="typed_files[truck_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
                     </div>
@@ -112,17 +112,17 @@
 
                 <?php if ($isTrailerActive && !$hasTrailerPhoto): ?>
                     <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1092;&#1086;&#1090;&#1086; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;</h3>
+                        <h3 class="upload-title">Загрузить фото полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
                         <div class="error file-error"></div>
                     </div>
                 <?php endif; ?>
 
                 <div class="upload-block">
-                    <h3 class="upload-title">&#1055;&#1088;&#1086;&#1095;&#1080;&#1077; &#1092;&#1072;&#1081;&#1083;&#1099;</h3>
+                    <h3 class="upload-title">Прочие файлы</h3>
                     <input type="file" name="typed_files[other][]" multiple>
                     <div class="error file-error"></div>
-                    <input type="text" name="comments[other]" value="" style="margin-top:8px;" placeholder="&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1081; (&#1085;&#1077;&#1086;&#1073;&#1103;&#1079;&#1072;&#1090;&#1077;&#1083;&#1100;&#1085;&#1086;)">
+                    <input type="text" name="comments[other]" value="" style="margin-top:8px;" placeholder="Комментарий (необязательно)">
                 </div>
             </div>
 
@@ -142,13 +142,13 @@
                             <td><?php
                                 $fileType = (string) ($file['file_type'] ?? '');
                                 $fileTypeLabels = [
-                                    'sts' => '&#1057;&#1058;&#1057;',
-                                    'diagnostic_card' => '&#1044;&#1080;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1072;&#1103; &#1082;&#1072;&#1088;&#1090;&#1072;',
-                                    'trailer_sts' => '&#1057;&#1058;&#1057; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;',
-                                    'trailer_diagnostic_card' => '&#1044;&#1080;&#1072;&#1075;&#1085;&#1086;&#1089;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1072;&#1103; &#1082;&#1072;&#1088;&#1090;&#1072; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;',
-                                    'truck_photo' => '&#1060;&#1086;&#1090;&#1086; &#1084;&#1072;&#1096;&#1080;&#1085;&#1099;',
-                                    'trailer_photo' => '&#1060;&#1086;&#1090;&#1086; &#1087;&#1086;&#1083;&#1091;&#1087;&#1088;&#1080;&#1094;&#1077;&#1087;&#1072;',
-                                    'other' => '&#1055;&#1088;&#1086;&#1095;&#1077;&#1077;',
+                                    'sts' => 'СТС',
+                                    'diagnostic_card' => 'Диагностическая карта',
+                                    'trailer_sts' => 'СТС полуприцепа',
+                                    'trailer_diagnostic_card' => 'Диагностическая карта полуприцепа',
+                                    'truck_photo' => 'Фото машины',
+                                    'trailer_photo' => 'Фото полуприцепа',
+                                    'other' => 'Прочее',
                                 ];
                                 echo e($fileTypeLabels[$fileType] ?? $fileType);
                             ?></td>
