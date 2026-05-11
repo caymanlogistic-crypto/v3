@@ -183,6 +183,12 @@ final class VehicleRepository
         $countStmt->execute($params);
         $total = (int) $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
+        $paginator = new Paginator(
+            $page,
+            $perPage,
+            $total
+        );
+
         $stmt = $this->pdo->prepare("
             SELECT *
             FROM vehicles
@@ -204,7 +210,7 @@ final class VehicleRepository
 
         return [
             'data' => $data,
-            'pagination' => Paginator::build($total, $page, $perPage),
+            'pagination' => $paginator,
         ];
     }
 
