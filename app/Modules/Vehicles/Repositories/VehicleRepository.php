@@ -24,6 +24,7 @@ final class VehicleRepository
 
         $stmt = $this->pdo->prepare("
             INSERT INTO vehicles (
+                has_trailer,
                 truck_brand,
                 truck_model,
                 truck_plate,
@@ -42,6 +43,7 @@ final class VehicleRepository
                 status,
                 created_at
             ) VALUES (
+                :has_trailer,
                 :truck_brand,
                 :truck_model,
                 :truck_plate,
@@ -64,6 +66,7 @@ final class VehicleRepository
 
         $stmt->execute([
             'truck_brand' => $data['truck_brand'],
+            'has_trailer' => (int) ($data['has_trailer'] ?? 0),
             'truck_model' => $data['truck_model'],
             'truck_plate' => $data['truck_plate'],
             'truck_vin' => $data['truck_vin'],
@@ -114,7 +117,8 @@ final class VehicleRepository
 
         $stmt = $this->pdo->prepare("
             UPDATE vehicles
-            SET truck_brand = :truck_brand,
+            SET has_trailer = :has_trailer,
+                truck_brand = :truck_brand,
                 truck_model = :truck_model,
                 truck_plate = :truck_plate,
                 truck_vin = :truck_vin,
@@ -137,6 +141,7 @@ final class VehicleRepository
 
         $stmt->execute([
             'id' => $id,
+            'has_trailer' => (int) ($data['has_trailer'] ?? 0),
             'truck_brand' => $data['truck_brand'],
             'truck_model' => $data['truck_model'],
             'truck_plate' => $data['truck_plate'],

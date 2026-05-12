@@ -52,7 +52,7 @@ final class VehicleValidator
             150
         );
 
-        $trailerActive = $this->isTrailerActive($data);
+        $trailerActive = ((int) ($data['has_trailer'] ?? 0)) === 1;
 
         if ($trailerActive) {
             if (empty($data['trailer_plate'])) {
@@ -118,26 +118,6 @@ final class VehicleValidator
         }
 
         return $errors;
-    }
-
-    private function isTrailerActive(array $data): bool
-    {
-        $fields = [
-            'trailer_plate',
-            'trailer_brand',
-            'trailer_model',
-            'trailer_vin',
-            'trailer_load_capacity',
-            'trailer_body_volume',
-        ];
-
-        foreach ($fields as $field) {
-            if (trim((string) ($data[$field] ?? '')) !== '') {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function validateRequiredDecimalRange(array $data, array &$errors, string $field, string $requiredMessage, string $numericMessage, string $maxMessage, float $max): void

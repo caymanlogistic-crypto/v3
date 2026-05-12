@@ -1,4 +1,5 @@
 <?php declare(strict_types=1); ?>
+<?php $hasTrailer = ((int) ($vehicle['has_trailer'] ?? 0)) === 1; ?>
 
 <div class="page form-page">
     <div class="page-header"><h1>Edit Vehicle</h1></div>
@@ -15,10 +16,10 @@
             <tr><td>Truck VIN *</td><td><input type="text" name="truck_vin" value="<?= e($vehicle['truck_vin'] ?? '') ?>"><div class="form-hint">17 символов</div><div id="error-truck_vin" class="error"><?= e($errors['truck_vin'] ?? '') ?></div></td></tr>
             <tr><td>Truck Load Capacity (tons) *</td><td><input type="text" name="truck_load_capacity" value="<?= e($vehicle['truck_load_capacity'] ?? '') ?>"><div class="form-hint">Можно: 20,5</div><div id="error-truck_load_capacity" class="error"><?= e($errors['truck_load_capacity'] ?? '') ?></div></td></tr>
             <tr><td>Truck Body Volume (m3) *</td><td><input type="text" name="truck_body_volume" value="<?= e($vehicle['truck_body_volume'] ?? '') ?>"><div class="form-hint">Можно: 90,5</div><div id="error-truck_body_volume" class="error"><?= e($errors['truck_body_volume'] ?? '') ?></div></td></tr>
-            <tr><td colspan="2"><button type="button" class="btn btn-secondary" id="toggleTrailerSection">Заполнить данные полуприцепа</button></td></tr>
+            <tr><td colspan="2"><label><input type="checkbox" id="hasTrailerCheckbox" name="has_trailer" value="1" <?= $hasTrailer ? 'checked' : '' ?>> Есть полуприцеп</label></td></tr>
         </table>
 
-        <table class="form-table" id="trailerSection" style="display:none; margin-top: 12px;">
+        <table class="form-table" id="trailerSection" style="display:<?= $hasTrailer ? '' : 'none' ?>; margin-top: 12px;">
             <tr><th colspan="2" class="form-section-title">Прицеп / полуприцеп</th></tr>
             <tr><td>Trailer Plate</td><td><input type="text" name="trailer_plate" value="<?= e($vehicle['trailer_plate'] ?? '') ?>"><div class="form-hint">Пример: ВК432947</div><div id="error-trailer_plate" class="error"><?= e($errors['trailer_plate'] ?? '') ?></div></td></tr>
             <tr><td>Trailer Brand</td><td><input type="text" name="trailer_brand" value="<?= e($vehicle['trailer_brand'] ?? '') ?>"><div id="error-trailer_brand" class="error"><?= e($errors['trailer_brand'] ?? '') ?></div></td></tr>
@@ -58,12 +59,6 @@
                 if ($type === 'trailer_photo') { $hasTrailerPhoto = true; }
             }
 
-            $isTrailerActive = trim((string) ($vehicle['trailer_brand'] ?? '')) !== ''
-                || trim((string) ($vehicle['trailer_model'] ?? '')) !== ''
-                || trim((string) ($vehicle['trailer_plate'] ?? '')) !== ''
-                || trim((string) ($vehicle['trailer_vin'] ?? '')) !== ''
-                || trim((string) ($vehicle['trailer_load_capacity'] ?? '')) !== ''
-                || trim((string) ($vehicle['trailer_body_volume'] ?? '')) !== '';
         ?>
 
         <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/files/upload" class="vehicle-file-upload-form" enctype="multipart/form-data">
@@ -86,7 +81,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if ($isTrailerActive && !$hasTrailerSts): ?>
+                <?php if ($hasTrailer && !$hasTrailerSts): ?>
                     <div class="upload-block">
                         <h3 class="upload-title">Загрузить СТС полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_sts][]" multiple>
@@ -94,7 +89,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if ($isTrailerActive && !$hasTrailerDiagnosticCard): ?>
+                <?php if ($hasTrailer && !$hasTrailerDiagnosticCard): ?>
                     <div class="upload-block">
                         <h3 class="upload-title">Загрузить диагностическую карту полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_diagnostic_card][]" multiple>
@@ -110,7 +105,7 @@
                     </div>
                 <?php endif; ?>
 
-                <?php if ($isTrailerActive && !$hasTrailerPhoto): ?>
+                <?php if ($hasTrailer && !$hasTrailerPhoto): ?>
                     <div class="upload-block">
                         <h3 class="upload-title">Загрузить фото полуприцепа</h3>
                         <input type="file" name="typed_files[trailer_photo][]" multiple accept=".jpg,.jpeg,.png,.webp">
@@ -164,6 +159,6 @@
         <?php endif; ?>
     </div>
 
-    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js?v=20260512_forms_fix"></script>
+    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js?v=20260512_has_trailer"></script>
     <script src="<?= config('app.url') ?>/assets/js/vehicle-files.js"></script>
 </div>

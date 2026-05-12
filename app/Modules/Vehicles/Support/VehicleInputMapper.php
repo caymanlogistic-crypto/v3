@@ -8,6 +8,9 @@ final class VehicleInputMapper
 {
     public static function map(array $data): array
     {
+        $rawHasTrailer = $data['has_trailer'] ?? null;
+        $data['has_trailer'] = self::normalizeHasTrailer($rawHasTrailer);
+
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
                 continue;
@@ -94,5 +97,20 @@ final class VehicleInputMapper
             'Y' => 'У',
             'X' => 'Х',
         ]);
+    }
+
+    private static function normalizeHasTrailer(mixed $value): int
+    {
+        if ($value === null) {
+            return 0;
+        }
+
+        if (is_bool($value)) {
+            return $value ? 1 : 0;
+        }
+
+        $normalized = mb_strtolower(trim((string) $value), 'UTF-8');
+
+        return in_array($normalized, ['1', 'on', 'true', 'yes'], true) ? 1 : 0;
     }
 }

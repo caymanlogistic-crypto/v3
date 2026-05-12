@@ -81,6 +81,7 @@ final class VehiclesController extends Controller
     ): void {
 
         $data = [
+            'has_trailer' => $request->input('has_trailer'),
             'truck_brand' => trim((string) $request->input('truck_brand')),
             'truck_model' => trim((string) $request->input('truck_model')),
             'truck_plate' => trim((string) $request->input('truck_plate')),
@@ -119,12 +120,12 @@ final class VehiclesController extends Controller
             return;
         }
 
-        $this->service->create($data);
+        $vehicleId = $this->service->create($data);
 
         Flash::success('Vehicle created successfully');
 
         Response::redirect(
-            config('app.url') . '/vehicles'
+            config('app.url') . '/vehicles/' . $vehicleId . '/edit'
         );
     }
 
@@ -167,6 +168,7 @@ final class VehiclesController extends Controller
         }
 
         $data = [
+            'has_trailer' => $request->input('has_trailer'),
             'truck_brand' => trim((string) $request->input('truck_brand')),
             'truck_model' => trim((string) $request->input('truck_model')),
             'truck_plate' => trim((string) $request->input('truck_plate')),

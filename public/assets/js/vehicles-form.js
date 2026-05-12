@@ -5,20 +5,15 @@
     }
 
     const trailerSection = document.getElementById('trailerSection');
-    const toggleButton = document.getElementById('toggleTrailerSection');
+    const hasTrailerCheckbox = document.getElementById('hasTrailerCheckbox');
     const validationAlert = document.getElementById('vehicleFormValidationAlert');
 
     function getInput(name) {
         return form.querySelector('[name="' + name + '"]');
     }
 
-    function hasValue(name) {
-        const input = getInput(name);
-        return !!(input && input.value && input.value.trim() !== '');
-    }
-
     function isTrailerActive() {
-        return ['trailer_plate', 'trailer_brand', 'trailer_model', 'trailer_vin', 'trailer_load_capacity', 'trailer_body_volume'].some(hasValue);
+        return !!(hasTrailerCheckbox && hasTrailerCheckbox.checked);
     }
 
     function showTrailerSection(show) {
@@ -27,16 +22,13 @@
         }
     }
 
-    if (toggleButton) {
-        toggleButton.addEventListener('click', function () {
-            const opened = trailerSection && trailerSection.style.display !== 'none';
-            showTrailerSection(!opened);
+    if (hasTrailerCheckbox) {
+        hasTrailerCheckbox.addEventListener('change', function () {
+            showTrailerSection(hasTrailerCheckbox.checked);
         });
     }
 
-    if (isTrailerActive()) {
-        showTrailerSection(true);
-    }
+    showTrailerSection(isTrailerActive());
 
     const rules = {
         truck_plate: { required: true, message: 'Госномер тягача обязателен', validate: validatePlate },
