@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     if (!form) {
         return;
@@ -135,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         input.addEventListener('blur', function () {
+            if ((name === 'passport_number' || name === 'license_number') && window.FormUx && window.FormUx.normalize && window.FormUx.normalize.passportLicenseDisplay) {
+                input.value = window.FormUx.normalize.passportLicenseDisplay(input.value);
+            }
             validateField(name);
         });
     });

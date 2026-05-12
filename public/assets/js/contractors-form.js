@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     const forms = Array.from(document.querySelectorAll('form')).filter(function (form) {
         const action = form.getAttribute('action') || '';
 
@@ -86,6 +86,16 @@
             },
             message: 'Корреспондентский счет должен содержать 20 цифр',
         },
+        contact1_phone: {
+            validator: function (value) {
+                if (value === '') {
+                    return true;
+                }
+                const digits = value.replace(/\D/g, '');
+                return /^(7|8)\d{10}$/.test(digits);
+            },
+            message: 'Телефон должен содержать 11 цифр и начинаться с 7 или 8',
+        },
         contact1_email: {
             validator: function (value) {
                 if (value === '') {
@@ -100,24 +110,18 @@
                 if (value === '') {
                     return true;
                 }
-                const parts = value.trim().split(/\s+/);
-                return parts.length === 3 && parts.every(function (part) {
-                    return part.length >= 2;
-                });
+                return value.length <= 255;
             },
-            message: 'ФИО должно быть в формате: Фамилия Имя Отчество',
+            message: 'ФИО директора не должно превышать 255 символов',
         },
         contact1_name: {
             validator: function (value) {
                 if (value === '') {
                     return true;
                 }
-                const parts = value.trim().split(/\s+/);
-                return parts.length === 3 && parts.every(function (part) {
-                    return part.length >= 2;
-                });
+                return value.length <= 255;
             },
-            message: 'ФИО должно быть в формате: Фамилия Имя Отчество',
+            message: 'ФИО контакта не должно превышать 255 символов',
         },
     };
 

@@ -19,11 +19,13 @@ final class VehicleInputMapper
         if (!empty($data['truck_plate'])) {
             $data['truck_plate'] = mb_strtoupper($data['truck_plate']);
             $data['truck_plate'] = preg_replace('/\s+/', '', $data['truck_plate']);
+            $data['truck_plate'] = self::mapLatinPlateLettersToCyrillic($data['truck_plate']);
         }
 
         if (!empty($data['trailer_plate'])) {
             $data['trailer_plate'] = mb_strtoupper($data['trailer_plate']);
             $data['trailer_plate'] = preg_replace('/\s+/', '', $data['trailer_plate']);
+            $data['trailer_plate'] = self::mapLatinPlateLettersToCyrillic($data['trailer_plate']);
         }
 
         if (!empty($data['truck_vin'])) {
@@ -74,5 +76,23 @@ final class VehicleInputMapper
     {
         $value = str_replace([',', ' '], ['.', ''], $value);
         return $value;
+    }
+
+    private static function mapLatinPlateLettersToCyrillic(string $value): string
+    {
+        return strtr($value, [
+            'A' => 'А',
+            'B' => 'В',
+            'E' => 'Е',
+            'K' => 'К',
+            'M' => 'М',
+            'H' => 'Н',
+            'O' => 'О',
+            'P' => 'Р',
+            'C' => 'С',
+            'T' => 'Т',
+            'Y' => 'У',
+            'X' => 'Х',
+        ]);
     }
 }

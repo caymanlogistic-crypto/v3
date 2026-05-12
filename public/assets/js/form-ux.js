@@ -80,6 +80,15 @@
         return digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6, 9) + ' ' + digits.slice(9, 11);
     }
 
+    function normalizePassportLicenseDisplay(value) {
+        const digits = normalizeDigits(value);
+        if (digits.length !== 10) {
+            return digits;
+        }
+
+        return digits.slice(0, 4) + ' ' + digits.slice(4, 10);
+    }
+
     function normalizeVin(value) {
         return collapseSpaces(value).replace(/\s+/g, '').toUpperCase();
     }
@@ -370,6 +379,7 @@
             { names: ['inn', 'kpp', 'ogrn', 'bank_bik', 'bank_account', 'bank_corr_account'], fn: createNormalizeProcessor(normalizeDigits) },
             { names: ['okved'], fn: okvedProcessor },
             { names: ['snils'], fn: createNormalizeProcessor(normalizeSnilsDisplay) },
+            { names: ['passport_number', 'license_number'], fn: createNormalizeProcessor(normalizePassportLicenseDisplay) },
             { names: ['truck_vin', 'trailer_vin'], fn: createNormalizeProcessor(normalizeVin) },
             { names: ['truck_plate'], fn: createNormalizeProcessor(normalizeTruckPlate) },
             { names: ['trailer_plate'], fn: createNormalizeProcessor(normalizeTrailerPlate) },
@@ -461,6 +471,7 @@
             okved: normalizeOkved,
             phoneDisplay: normalizePhoneDisplay,
             snilsDisplay: normalizeSnilsDisplay,
+            passportLicenseDisplay: normalizePassportLicenseDisplay,
             vin: normalizeVin,
             dateDisplay: normalizeDateDisplay,
             decimal: normalizeDecimal,

@@ -12,7 +12,7 @@ final class ContractorValidator
 
         if (empty($data['name'])) {
             $errors['name'] = 'Название подрядчика обязательно';
-        } elseif (mb_strlen($data['name']) > 255) {
+        } elseif (mb_strlen((string) $data['name']) > 255) {
             $errors['name'] = 'Название не должно превышать 255 символов';
         }
 
@@ -38,12 +38,19 @@ final class ContractorValidator
             $errors['director'] = 'ФИО директора не должно превышать 255 символов';
         }
 
-        if (!empty($data['contact1_email']) && !filter_var($data['contact1_email'], FILTER_VALIDATE_EMAIL)) {
-            $errors['contact1_email'] = 'Некорректный email';
-        }
-
         if (!empty($data['contact1_name']) && mb_strlen((string) $data['contact1_name']) > 255) {
             $errors['contact1_name'] = 'ФИО контакта не должно превышать 255 символов';
+        }
+
+        if (!empty($data['contact1_phone'])) {
+            $phoneDigits = preg_replace('/\D+/', '', (string) $data['contact1_phone']);
+            if (!preg_match('/^(7|8)\d{10}$/', (string) $phoneDigits)) {
+                $errors['contact1_phone'] = 'Телефон должен содержать 11 цифр и начинаться с 7 или 8';
+            }
+        }
+
+        if (!empty($data['contact1_email']) && !filter_var($data['contact1_email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['contact1_email'] = 'Некорректный email';
         }
 
         if (!empty($data['bank_name']) && mb_strlen((string) $data['bank_name']) > 255) {

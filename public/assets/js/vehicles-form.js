@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     if (!form) {
         return;
@@ -42,13 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
         truck_plate: { required: true, message: 'Госномер тягача обязателен', validate: validatePlate },
         truck_brand: { required: true, message: 'Марка тягача обязательна', validate: nonEmpty },
         truck_vin: { required: true, message: 'VIN тягача обязателен', validate: nonEmpty },
-        truck_load_capacity: { required: true, message: 'Грузоподъёмность тягача обязательна', validate: validateNumber },
-        truck_body_volume: { required: true, message: 'Объём кузова тягача обязателен', validate: validateNumber },
+        truck_load_capacity: { required: true, message: 'Грузоподъёмность тягача обязательна', validate: validateNumber, max: 60, maxMessage: 'Грузоподъёмность не может быть больше 60 тонн' },
+        truck_body_volume: { required: true, message: 'Объём кузова тягача обязателен', validate: validateNumber, max: 150, maxMessage: 'Объём кузова не может быть больше 150 м³' },
         trailer_plate: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его госномер', validate: validatePlate },
         trailer_brand: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его марку', validate: nonEmpty },
         trailer_vin: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его VIN', validate: nonEmpty },
-        trailer_load_capacity: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его грузоподъёмность', validate: validateNumber },
-        trailer_body_volume: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его объём кузова', validate: validateNumber },
+        trailer_load_capacity: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его грузоподъёмность', validate: validateNumber, max: 60, maxMessage: 'Грузоподъёмность не может быть больше 60 тонн' },
+        trailer_body_volume: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его объём кузова', validate: validateNumber, max: 150, maxMessage: 'Объём кузова не может быть больше 150 м³' },
     };
 
     function nonEmpty(value) {
@@ -60,12 +60,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return cleaned.length >= 6 && cleaned.length <= 20;
     }
 
-    function validateNumber(value) {
+    function parseNumeric(value) {
         const cleaned = value.trim().replace(/,/g, '.').replace(/\s/g, '');
         if (cleaned === '') {
-            return false;
+            return null;
         }
-        return !isNaN(parseFloat(cleaned)) && isFinite(cleaned) && parseFloat(cleaned) >= 0;
+        const parsed = parseFloat(cleaned);
+        if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
+            return null;
+        }
+        return parsed;
+    }
+
+    function validateNumber(value) {
+        const parsed = parseNumeric(value);
+        return parsed !== null && parsed >= 0;
     }
 
     function errorNode(name) {
@@ -116,6 +125,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 setError(name, rule.message);
             }
             return false;
+        }
+
+        if (typeof rule.max === 'number') {
+            const parsed = parseNumeric(value);
+            if (parsed !== null && parsed > rule.max) {
+                setError(name, rule.maxMessage || 'Значение превышает допустимый предел');
+                return false;
+            }
         }
 
         clearError(name);
