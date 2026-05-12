@@ -119,12 +119,12 @@ final class VehiclesController extends Controller
             return;
         }
 
-        $this->service->create($data);
+        $vehicleId = $this->service->create($data);
 
         Flash::success('Vehicle created successfully');
 
         Response::redirect(
-            config('app.url') . '/vehicles'
+            config('app.url') . '/vehicles/' . $vehicleId . '/edit'
         );
     }
 

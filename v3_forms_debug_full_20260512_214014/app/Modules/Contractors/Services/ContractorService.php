@@ -44,9 +44,4 @@ final class ContractorService
             $search
         );
     }
-
-    public function existsByInn(string $inn, ?int $excludeId = null): bool
-    {
-        return $this->repository->existsByInn($inn, $excludeId);
-    }
 }

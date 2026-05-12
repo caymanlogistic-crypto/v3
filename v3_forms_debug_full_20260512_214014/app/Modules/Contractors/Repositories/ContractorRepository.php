@@ -260,28 +260,4 @@ final class ContractorRepository
             'pagination' => $paginator->toArray(),
         ];
     }
-
-    public function existsByInn(string $inn, ?int $excludeId = null): bool
-    {
-        $sql = "
-            SELECT COUNT(*) AS total
-            FROM contractors
-            WHERE inn = :inn
-              AND deleted_at IS NULL
-        ";
-
-        $params = ['inn' => $inn];
-
-        if ($excludeId !== null) {
-            $sql .= " AND id <> :exclude_id";
-            $params['exclude_id'] = $excludeId;
-        }
-
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return (int) ($row['total'] ?? 0) > 0;
-    }
 }

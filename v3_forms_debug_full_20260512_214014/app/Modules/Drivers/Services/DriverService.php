@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Contractors\Services;
+namespace App\Modules\Drivers\Services;
 
-use App\Modules\Contractors\Repositories\ContractorRepository;
+use App\Modules\Drivers\Repositories\DriverRepository;
 
-final class ContractorService
+final class DriverService
 {
     public function __construct(
-        private ContractorRepository $repository = new ContractorRepository(),
+        private DriverRepository $repository = new DriverRepository(),
     ) {
     }
 
@@ -43,10 +43,5 @@ final class ContractorService
             $perPage,
             $search
         );
-    }
-
-    public function existsByInn(string $inn, ?int $excludeId = null): bool
-    {
-        return $this->repository->existsByInn($inn, $excludeId);
     }
 }

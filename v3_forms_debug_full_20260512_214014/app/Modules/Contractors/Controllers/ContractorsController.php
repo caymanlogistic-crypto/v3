@@ -123,22 +123,6 @@ final class ContractorsController extends Controller
             return;
         }
 
-        if ($this->service->existsByInn((string) ($data['inn'] ?? ''))) {
-            Flash::error('Validation failed');
-
-            $this->view(
-                'contractors.create',
-                [
-                    'errors' => array_merge($errors, [
-                        'inn' => 'Подрядчик с таким ИНН уже существует',
-                    ]),
-                    'old' => $data,
-                ]
-            );
-
-            return;
-        }
-
         $contractorId = $this->service->create(
             $data
         );
@@ -248,33 +232,6 @@ final class ContractorsController extends Controller
                         $data
                     ),
                     'errors' => $errors,
-                    'contacts' => $contacts,
-                    'files' => $files,
-                ]
-            );
-
-            return;
-        }
-
-        if ($this->service->existsByInn((string) ($data['inn'] ?? ''), $id)) {
-            Flash::error('Validation failed');
-
-            $contactService = new ContractorContactService();
-            $contacts = $contactService->findByContractorId($id);
-
-            $fileService = new ContractorFileService();
-            $files = $fileService->findByContractorId($id);
-
-            $this->view(
-                'contractors.edit',
-                [
-                    'contractor' => array_merge(
-                        ['id' => $id],
-                        $data
-                    ),
-                    'errors' => array_merge($errors, [
-                        'inn' => 'Подрядчик с таким ИНН уже существует',
-                    ]),
                     'contacts' => $contacts,
                     'files' => $files,
                 ]

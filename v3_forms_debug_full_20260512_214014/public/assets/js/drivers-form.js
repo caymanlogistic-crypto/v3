@@ -97,24 +97,6 @@
         }
     }
 
-    function normalizePassportLicense(value) {
-        const digits = String(value || '').replace(/\D/g, '');
-        if (digits.length === 10) {
-            return digits.slice(0, 4) + ' ' + digits.slice(4);
-        }
-        return digits;
-    }
-
-    function normalizePassportLicenseFields() {
-        ['passport_number', 'license_number'].forEach(function (name) {
-            const input = getInput(name);
-            if (!input) {
-                return;
-            }
-            input.value = normalizePassportLicense(input.value);
-        });
-    }
-
     function validateField(name) {
         const rule = fields[name];
         const input = getInput(name);
@@ -153,25 +135,14 @@
         });
 
         input.addEventListener('blur', function () {
-            if (name === 'passport_number' || name === 'license_number') {
-                input.value = normalizePassportLicense(input.value);
+            if ((name === 'passport_number' || name === 'license_number') && window.FormUx && window.FormUx.normalize && window.FormUx.normalize.passportLicenseDisplay) {
+                input.value = window.FormUx.normalize.passportLicenseDisplay(input.value);
             }
             validateField(name);
         });
-
-        if (name === 'passport_number' || name === 'license_number') {
-            input.addEventListener('paste', function () {
-                window.setTimeout(function () {
-                    input.value = normalizePassportLicense(input.value);
-                    validateField(name);
-                }, 0);
-            });
-        }
     });
 
     form.addEventListener('submit', function (event) {
-        normalizePassportLicenseFields();
-
         let valid = true;
         let firstInvalid = null;
 
