@@ -19,65 +19,6 @@ $errorFlash = Flash::getError();
     <title>
         Transport ERP Platform v3
     </title>
-
-    <style>
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-        }
-
-        header {
-            background: #1f2937;
-            color: white;
-            padding: 15px 20px;
-        }
-
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .topbar {
-            float: right;
-        }
-
-        .topbar a {
-            color: #fff;
-            margin-left: 15px;
-            text-decoration: none;
-        }
-
-        .flash-success {
-            background: #d1fae5;
-            border: 1px solid #10b981;
-            color: #065f46;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-        .flash-error {
-            background: #fee2e2;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-    </style>
-
 </head>
 <body>
 
