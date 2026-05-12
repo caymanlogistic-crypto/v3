@@ -13,6 +13,7 @@ use App\Modules\Contractors\Controllers\ContractorsController;
 use App\Modules\Contractors\Controllers\ContractorContactsController;
 use App\Modules\Contractors\Controllers\ContractorDadataController;
 use App\Modules\Contractors\Controllers\ContractorFilesController;
+use App\Modules\Crews\Controllers\CrewsController;
 use App\Modules\Drivers\Controllers\DriverFilesController;
 use App\Modules\Drivers\Controllers\DriversController;
 use App\Modules\Home\Controllers\HomeController;
@@ -278,6 +279,80 @@ $router->post(
 );
 
 $router->get(
+    '/crews',
+    static function (): void {
+
+        (new CrewsController())->index(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.view',
+    ]
+);
+
+$router->get(
+    '/crews/create',
+    static function (): void {
+
+        (new CrewsController())->create(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->post(
+    '/crews/store',
+    static function (): void {
+
+        (new CrewsController())->store(
+            new Request()
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.create',
+    ]
+);
+
+$router->get(
+    '/crews/{id}/edit',
+    static function (array $params): void {
+
+        (new CrewsController())->edit(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/crews/{id}/update',
+    static function (array $params): void {
+
+        (new CrewsController())->update(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->get(
     '/drivers',
     static function (): void {
 
@@ -356,6 +431,22 @@ $router->post(
     static function (array $params): void {
 
         (new DriversController())->delete(
+            new Request(),
+            $params
+        );
+    },
+    [
+        AuthMiddleware::class,
+        CsrfMiddleware::class,
+        PermissionMiddleware::class . ':contractors.edit',
+    ]
+);
+
+$router->post(
+    '/crews/{id}/delete',
+    static function (array $params): void {
+
+        (new CrewsController())->delete(
             new Request(),
             $params
         );

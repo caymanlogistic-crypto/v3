@@ -131,6 +131,10 @@ $errorFlash = Flash::getError();
                 Vehicles
             </a>
 
+            <a href="<?= config('app.url') ?>/crews">
+                Связки
+            </a>
+
         <?php endif; ?>
 
     </nav>
