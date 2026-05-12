@@ -79,14 +79,14 @@ final class CrewService
         if ($driverId > 0) {
             $driverCrews = $this->repository->getActiveCrewsByDriverId($driverId, $excludeId);
             if (!empty($driverCrews)) {
-                $warnings[] = '�������� ��� ������������ � ������ �������� ������.';
+                $warnings[] = "\u{0412}\u{043E}\u{0434}\u{0438}\u{0442}\u{0435}\u{043B}\u{044C} \u{0443}\u{0436}\u{0435} \u{0438}\u{0441}\u{043F}\u{043E}\u{043B}\u{044C}\u{0437}\u{0443}\u{0435}\u{0442}\u{0441}\u{044F} \u{0432} \u{0434}\u{0440}\u{0443}\u{0433}\u{043E}\u{0439} \u{0430}\u{043A}\u{0442}\u{0438}\u{0432}\u{043D}\u{043E}\u{0439} \u{0441}\u{0432}\u{044F}\u{0437}\u{043A}\u{0435}.";
             }
         }
 
         if ($vehicleId > 0) {
             $vehicleCrews = $this->repository->getActiveCrewsByVehicleId($vehicleId, $excludeId);
             if (!empty($vehicleCrews)) {
-                $warnings[] = '������ ��� ������������ � ������ �������� ������.';
+                $warnings[] = "\u{041C}\u{0430}\u{0448}\u{0438}\u{043D}\u{0430} \u{0443}\u{0436}\u{0435} \u{0438}\u{0441}\u{043F}\u{043E}\u{043B}\u{044C}\u{0437}\u{0443}\u{0435}\u{0442}\u{0441}\u{044F} \u{0432} \u{0434}\u{0440}\u{0443}\u{0433}\u{043E}\u{0439} \u{0430}\u{043A}\u{0442}\u{0438}\u{0432}\u{043D}\u{043E}\u{0439} \u{0441}\u{0432}\u{044F}\u{0437}\u{043A}\u{0435}.";
             }
         }
 

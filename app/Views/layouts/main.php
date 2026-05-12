@@ -132,7 +132,7 @@ $errorFlash = Flash::getError();
             </a>
 
             <a href="<?= config('app.url') ?>/crews">
-                Связки
+                <?= "\u{0421}\u{0432}\u{044F}\u{0437}\u{043A}\u{0438}" ?>
             </a>
 
         <?php endif; ?>
@@ -167,3 +167,6 @@ $errorFlash = Flash::getError();
 
 </body>
 </html>
+
+
+

@@ -2,7 +2,7 @@
 
 <div class="page form-page">
     <div class="page-header">
-        <h1>&#1057;&#1086;&#1079;&#1076;&#1072;&#1090;&#1100; &#1089;&#1074;&#1103;&#1079;&#1082;&#1091;</h1>
+        <h1><?= "\u{041D}\u{043E}\u{0432}\u{0430}\u{044F} \u{0441}\u{0432}\u{044F}\u{0437}\u{043A}\u{0430}" ?></h1>
     </div>
 
     <?php if (!empty($warnings)): ?>
@@ -18,10 +18,10 @@
 
         <table class="form-table">
             <tr>
-                <td>&#1055;&#1086;&#1076;&#1088;&#1103;&#1076;&#1095;&#1080;&#1082; *</td>
+                <td><?= "\u{041F}\u{043E}\u{0434}\u{0440}\u{044F}\u{0434}\u{0447}\u{0438}\u{043A}" ?> *</td>
                 <td>
                     <select name="contractor_id">
-                        <option value="">-- &#1042;&#1099;&#1073;&#1077;&#1088;&#1080;&#1090;&#1077; --</option>
+                        <option value="">-- <?= "\u{0412}\u{044B}\u{0431}\u{0435}\u{0440}\u{0438}\u{0442}\u{0435}" ?> --</option>
                         <?php foreach ($contractors as $contractor): ?>
                             <?php $value = (int) ($contractor['id'] ?? 0); ?>
                             <option value="<?= $value ?>" <?= (int) ($old['contractor_id'] ?? 0) === $value ? 'selected' : '' ?>>
@@ -37,10 +37,10 @@
             </tr>
 
             <tr>
-                <td>&#1042;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100; *</td>
+                <td><?= "\u{0412}\u{043E}\u{0434}\u{0438}\u{0442}\u{0435}\u{043B}\u{044C}" ?> *</td>
                 <td>
                     <select name="driver_id">
-                        <option value="">-- &#1042;&#1099;&#1073;&#1077;&#1088;&#1080;&#1090;&#1077; --</option>
+                        <option value="">-- <?= "\u{0412}\u{044B}\u{0431}\u{0435}\u{0440}\u{0438}\u{0442}\u{0435}" ?> --</option>
                         <?php foreach ($drivers as $driver): ?>
                             <?php $value = (int) ($driver['id'] ?? 0); ?>
                             <option value="<?= $value ?>" <?= (int) ($old['driver_id'] ?? 0) === $value ? 'selected' : '' ?>>
@@ -56,10 +56,10 @@
             </tr>
 
             <tr>
-                <td>&#1052;&#1072;&#1096;&#1080;&#1085;&#1072; *</td>
+                <td><?= "\u{041C}\u{0430}\u{0448}\u{0438}\u{043D}\u{0430}" ?> *</td>
                 <td>
                     <select name="vehicle_id">
-                        <option value="">-- &#1042;&#1099;&#1073;&#1077;&#1088;&#1080;&#1090;&#1077; --</option>
+                        <option value="">-- <?= "\u{0412}\u{044B}\u{0431}\u{0435}\u{0440}\u{0438}\u{0442}\u{0435}" ?> --</option>
                         <?php foreach ($vehicles as $vehicle): ?>
                             <?php $value = (int) ($vehicle['id'] ?? 0); ?>
                             <option value="<?= $value ?>" <?= (int) ($old['vehicle_id'] ?? 0) === $value ? 'selected' : '' ?>>
@@ -75,19 +75,19 @@
             </tr>
 
             <tr>
-                <td>&#1057;&#1090;&#1072;&#1090;&#1091;&#1089; *</td>
+                <td><?= "\u{0421}\u{0442}\u{0430}\u{0442}\u{0443}\u{0441}" ?> *</td>
                 <td>
                     <select name="status">
-                        <option value="active" <?= ($old['status'] ?? 'active') === 'active' ? 'selected' : '' ?>>&#1040;&#1082;&#1090;&#1080;&#1074;&#1085;&#1072;</option>
-                        <option value="inactive" <?= ($old['status'] ?? '') === 'inactive' ? 'selected' : '' ?>>&#1053;&#1077;&#1072;&#1082;&#1090;&#1080;&#1074;&#1085;&#1072;</option>
-                        <option value="archived" <?= ($old['status'] ?? '') === 'archived' ? 'selected' : '' ?>>&#1040;&#1088;&#1093;&#1080;&#1074;</option>
+                        <option value="active" <?= ($old['status'] ?? 'active') === 'active' ? 'selected' : '' ?>><?= "\u{0410}\u{043A}\u{0442}\u{0438}\u{0432}\u{043D}\u{0430}" ?></option>
+                        <option value="inactive" <?= ($old['status'] ?? '') === 'inactive' ? 'selected' : '' ?>><?= "\u{041D}\u{0435}\u{0430}\u{043A}\u{0442}\u{0438}\u{0432}\u{043D}\u{0430}" ?></option>
+                        <option value="archived" <?= ($old['status'] ?? '') === 'archived' ? 'selected' : '' ?>><?= "\u{0410}\u{0440}\u{0445}\u{0438}\u{0432}" ?></option>
                     </select>
                     <div class="error"><?= e((string) ($errors['status'] ?? '')) ?></div>
                 </td>
             </tr>
 
             <tr>
-                <td>&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1081;</td>
+                <td><?= "\u{041A}\u{043E}\u{043C}\u{043C}\u{0435}\u{043D}\u{0442}\u{0430}\u{0440}\u{0438}\u{0439}" ?></td>
                 <td>
                     <textarea name="comment" rows="3"><?= e((string) ($old['comment'] ?? '')) ?></textarea>
                     <div class="error"><?= e((string) ($errors['comment'] ?? '')) ?></div>
@@ -96,8 +96,8 @@
         </table>
 
         <div class="form-actions" style="margin-top:20px;">
-            <button type="submit" class="btn btn-primary">&#1057;&#1086;&#1093;&#1088;&#1072;&#1085;&#1080;&#1090;&#1100;</button>
-            <a href="<?= config('app.url') ?>/crews" class="btn">Cancel</a>
+            <button type="submit" class="btn btn-primary"><?= "\u{0421}\u{043E}\u{0437}\u{0434}\u{0430}\u{0442}\u{044C}" ?></button>
+            <a href="<?= config('app.url') ?>/crews" class="btn"><?= "\u{041E}\u{0442}\u{043C}\u{0435}\u{043D}\u{0430}" ?></a>
         </div>
     </form>
 </div>

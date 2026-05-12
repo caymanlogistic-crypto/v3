@@ -67,15 +67,15 @@ final class CrewsController extends Controller
         $errors = $this->validator->validate($data);
 
         if ((int) $data['contractor_id'] > 0 && !$this->service->contractorExists((int) $data['contractor_id'])) {
-            $errors['contractor_id'] = '��������� ��������� �� ������';
+            $errors['contractor_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{044B}\u{0439} \u{043F}\u{043E}\u{0434}\u{0440}\u{044F}\u{0434}\u{0447}\u{0438}\u{043A} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}";
         }
 
         if ((int) $data['driver_id'] > 0 && !$this->service->driverExists((int) $data['driver_id'])) {
-            $errors['driver_id'] = '��������� �������� �� ������';
+            $errors['driver_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{044B}\u{0439} \u{0432}\u{043E}\u{0434}\u{0438}\u{0442}\u{0435}\u{043B}\u{044C} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}";
         }
 
         if ((int) $data['vehicle_id'] > 0 && !$this->service->vehicleExists((int) $data['vehicle_id'])) {
-            $errors['vehicle_id'] = '��������� ������ �� �������';
+            $errors['vehicle_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{0430}\u{044F} \u{043C}\u{0430}\u{0448}\u{0438}\u{043D}\u{0430} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}\u{0430}";
         }
 
         $warnings = $this->service->collectSoftWarnings(
@@ -104,7 +104,7 @@ final class CrewsController extends Controller
         if (!empty($warnings)) {
             Flash::error(implode(' ', $warnings));
         } else {
-            Flash::success('������ �������');
+            Flash::success("\u{0421}\u{0432}\u{044F}\u{0437}\u{043A}\u{0430} \u{0443}\u{0441}\u{043F}\u{0435}\u{0448}\u{043D}\u{043E} \u{0441}\u{043E}\u{0437}\u{0434}\u{0430}\u{043D}\u{0430}");
         }
 
         Response::redirect(config('app.url') . '/crews/' . $crewId . '/edit');
@@ -159,15 +159,15 @@ final class CrewsController extends Controller
         $errors = $this->validator->validate($data);
 
         if ((int) $data['contractor_id'] > 0 && !$this->service->contractorExists((int) $data['contractor_id'])) {
-            $errors['contractor_id'] = '��������� ��������� �� ������';
+            $errors['contractor_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{044B}\u{0439} \u{043F}\u{043E}\u{0434}\u{0440}\u{044F}\u{0434}\u{0447}\u{0438}\u{043A} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}";
         }
 
         if ((int) $data['driver_id'] > 0 && !$this->service->driverExists((int) $data['driver_id'])) {
-            $errors['driver_id'] = '��������� �������� �� ������';
+            $errors['driver_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{044B}\u{0439} \u{0432}\u{043E}\u{0434}\u{0438}\u{0442}\u{0435}\u{043B}\u{044C} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}";
         }
 
         if ((int) $data['vehicle_id'] > 0 && !$this->service->vehicleExists((int) $data['vehicle_id'])) {
-            $errors['vehicle_id'] = '��������� ������ �� �������';
+            $errors['vehicle_id'] = "\u{0412}\u{044B}\u{0431}\u{0440}\u{0430}\u{043D}\u{043D}\u{0430}\u{044F} \u{043C}\u{0430}\u{0448}\u{0438}\u{043D}\u{0430} \u{043D}\u{0435} \u{043D}\u{0430}\u{0439}\u{0434}\u{0435}\u{043D}\u{0430}";
         }
 
         $warnings = $this->service->collectSoftWarnings(
@@ -197,7 +197,7 @@ final class CrewsController extends Controller
         if (!empty($warnings)) {
             Flash::error(implode(' ', $warnings));
         } else {
-            Flash::success('������ ���������');
+            Flash::success("\u{0421}\u{0432}\u{044F}\u{0437}\u{043A}\u{0430} \u{0443}\u{0441}\u{043F}\u{0435}\u{0448}\u{043D}\u{043E} \u{043E}\u{0431}\u{043D}\u{043E}\u{0432}\u{043B}\u{0435}\u{043D}\u{0430}");
         }
 
         Response::redirect(config('app.url') . '/crews');
@@ -215,7 +215,7 @@ final class CrewsController extends Controller
 
         $this->service->softDelete($id);
 
-        Flash::success('������ �������');
+        Flash::success("\u{0421}\u{0432}\u{044F}\u{0437}\u{043A}\u{0430} \u{0443}\u{0434}\u{0430}\u{043B}\u{0435}\u{043D}\u{0430}");
 
         Response::redirect(config('app.url') . '/crews');
     }
