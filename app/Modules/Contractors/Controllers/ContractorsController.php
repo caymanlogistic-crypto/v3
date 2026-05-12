@@ -13,6 +13,7 @@ use App\Modules\Contractors\Services\ContractorFileService;
 use App\Modules\Contractors\Services\ContractorService;
 use App\Modules\Contractors\Support\ContractorInputMapper;
 use App\Modules\Contractors\Validation\ContractorValidator;
+use PDOException;
 
 final class ContractorsController extends Controller
 {
@@ -139,9 +140,29 @@ final class ContractorsController extends Controller
             return;
         }
 
-        $contractorId = $this->service->create(
-            $data
-        );
+        try {
+            $contractorId = $this->service->create(
+                $data
+            );
+        } catch (PDOException $exception) {
+            if (!$this->isDuplicateInnException($exception)) {
+                throw $exception;
+            }
+
+            Flash::error('Validation failed');
+
+            $this->view(
+                'contractors.create',
+                [
+                    'errors' => [
+                        'inn' => 'Подрядчик с таким ИНН уже существует',
+                    ],
+                    'old' => $data,
+                ]
+            );
+
+            return;
+        }
 
         Flash::success(
             'Contractor created successfully'
@@ -283,10 +304,41 @@ final class ContractorsController extends Controller
             return;
         }
 
-        $this->service->update(
-            $id,
-            $data
-        );
+        try {
+            $this->service->update(
+                $id,
+                $data
+            );
+        } catch (PDOException $exception) {
+            if (!$this->isDuplicateInnException($exception)) {
+                throw $exception;
+            }
+
+            Flash::error('Validation failed');
+
+            $contactService = new ContractorContactService();
+            $contacts = $contactService->findByContractorId($id);
+
+            $fileService = new ContractorFileService();
+            $files = $fileService->findByContractorId($id);
+
+            $this->view(
+                'contractors.edit',
+                [
+                    'contractor' => array_merge(
+                        ['id' => $id],
+                        $data
+                    ),
+                    'errors' => [
+                        'inn' => 'Подрядчик с таким ИНН уже существует',
+                    ],
+                    'contacts' => $contacts,
+                    'files' => $files,
+                ]
+            );
+
+            return;
+        }
 
         Flash::success(
             'Contractor updated successfully'
@@ -314,4 +366,17 @@ final class ContractorsController extends Controller
             config('app.url') . '/contractors'
         );
     }
+
+    private function isDuplicateInnException(PDOException $exception): bool
+    {
+        $sqlState = (string) ($exception->errorInfo[0] ?? '');
+        $message = mb_strtolower($exception->getMessage(), 'UTF-8');
+
+        if ($sqlState === '23000' && str_contains($message, 'duplicate entry')) {
+            return str_contains($message, 'inn');
+        }
+
+        return false;
+    }
 }
+

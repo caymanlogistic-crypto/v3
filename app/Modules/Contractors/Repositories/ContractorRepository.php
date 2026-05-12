@@ -267,7 +267,6 @@ final class ContractorRepository
             SELECT COUNT(*) AS total
             FROM contractors
             WHERE inn = :inn
-              AND deleted_at IS NULL
         ";
 
         $params = ['inn' => $inn];

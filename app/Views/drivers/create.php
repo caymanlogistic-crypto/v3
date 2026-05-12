@@ -5,7 +5,7 @@
         <h1>Create Driver</h1>
     </div>
 
-    <form method="POST" action="<?= config('app.url') ?>/drivers/store" class="form-card">
+    <form method="POST" action="<?= config('app.url') ?>/drivers/store" class="form-card" id="driverForm">
         <?= csrf_field() ?>
 
         <div id="driverFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
@@ -59,7 +59,7 @@
         <div class="form-actions" style="margin-top:20px;"><button type="submit" class="btn btn-primary">Create</button><a href="<?= config('app.url') ?>/drivers" class="btn">Cancel</a></div>
     </form>
 
-    <script src="<?= config('app.url') ?>/assets/js/drivers-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/drivers-form.js?v=20260512_forms_fix"></script>
 </div>
 
 

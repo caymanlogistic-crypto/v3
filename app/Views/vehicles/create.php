@@ -42,6 +42,6 @@
         <div class="form-actions" style="margin-top: 20px;"><button type="submit" class="btn btn-primary">Create Vehicle</button><a href="<?= config('app.url') ?>/vehicles" class="btn">Cancel</a></div>
     </form>
 
-    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js?v=20260512_forms_fix"></script>
 </div>
 

@@ -164,6 +164,6 @@
         <?php endif; ?>
     </div>
 
-    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/vehicles-form.js?v=20260512_forms_fix"></script>
     <script src="<?= config('app.url') ?>/assets/js/vehicle-files.js"></script>
 </div>

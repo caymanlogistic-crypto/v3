@@ -3,7 +3,7 @@
 <div class="page form-page">
     <div class="page-header"><h1>Edit Driver</h1></div>
 
-    <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/update" class="form-card">
+    <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/update" class="form-card" id="driverForm">
         <?= csrf_field() ?>
 
         <div id="driverFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">&#1055;&#1086;&#1078;&#1072;&#1083;&#1091;&#1081;&#1089;&#1090;&#1072;, &#1080;&#1089;&#1087;&#1088;&#1072;&#1074;&#1100;&#1090;&#1077; &#1086;&#1096;&#1080;&#1073;&#1082;&#1080; &#1092;&#1086;&#1088;&#1084;&#1099;</div>
@@ -107,7 +107,7 @@
         </form>
     </div>
 
-    <script src="<?= config('app.url') ?>/assets/js/drivers-form.js"></script>
+    <script src="<?= config('app.url') ?>/assets/js/drivers-form.js?v=20260512_forms_fix"></script>
     <script src="<?= config('app.url') ?>/assets/js/driver-files.js"></script>
 </div>
 

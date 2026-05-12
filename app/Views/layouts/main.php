@@ -159,7 +159,7 @@ $errorFlash = Flash::getError();
 
 </div>
 
-<script src="<?= config('app.url') ?>/assets/js/form-ux.js"></script>
+<script src="<?= config('app.url') ?>/assets/js/form-ux.js?v=20260512_forms_fix"></script>
 
 </body>
 </html>
