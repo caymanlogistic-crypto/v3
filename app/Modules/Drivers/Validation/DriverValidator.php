@@ -36,7 +36,7 @@ final class DriverValidator
 
         if (empty($data['passport_number'])) {
             $errors['passport_number'] = 'Номер паспорта обязателен';
-        } elseif (!preg_match('/^\d{10}$/', (string) $data['passport_number'])) {
+        } elseif (!preg_match('/^\d{10}$/', preg_replace('/\D+/', '', (string) $data['passport_number']))) {
             $errors['passport_number'] = 'Номер паспорта должен содержать 10 цифр';
         }
 
@@ -52,7 +52,7 @@ final class DriverValidator
 
         if (empty($data['license_number'])) {
             $errors['license_number'] = 'Номер ВУ обязателен';
-        } elseif (!preg_match('/^\d{10}$/', (string) $data['license_number'])) {
+        } elseif (!preg_match('/^\d{10}$/', preg_replace('/\D+/', '', (string) $data['license_number']))) {
             $errors['license_number'] = 'Номер ВУ должен содержать 10 цифр';
         }
 

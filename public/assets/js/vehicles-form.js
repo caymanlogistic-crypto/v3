@@ -1,5 +1,5 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+    const form = document.getElementById('vehicleForm');
     if (!form) {
         return;
     }
@@ -41,12 +41,12 @@
     const rules = {
         truck_plate: { required: true, message: 'Госномер тягача обязателен', validate: validatePlate },
         truck_brand: { required: true, message: 'Марка тягача обязательна', validate: nonEmpty },
-        truck_vin: { required: true, message: 'VIN тягача обязателен', validate: nonEmpty },
+        truck_vin: { required: true, message: 'VIN тягача обязателен', validate: validateVin },
         truck_load_capacity: { required: true, message: 'Грузоподъёмность тягача обязательна', validate: validateNumber, max: 60, maxMessage: 'Грузоподъёмность не может быть больше 60 тонн' },
         truck_body_volume: { required: true, message: 'Объём кузова тягача обязателен', validate: validateNumber, max: 150, maxMessage: 'Объём кузова не может быть больше 150 м³' },
         trailer_plate: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его госномер', validate: validatePlate },
         trailer_brand: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его марку', validate: nonEmpty },
-        trailer_vin: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его VIN', validate: nonEmpty },
+        trailer_vin: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его VIN', validate: validateVin },
         trailer_load_capacity: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его грузоподъёмность', validate: validateNumber, max: 60, maxMessage: 'Грузоподъёмность не может быть больше 60 тонн' },
         trailer_body_volume: { requiredWhenTrailer: true, message: 'Если заполнен полуприцеп, укажите его объём кузова', validate: validateNumber, max: 150, maxMessage: 'Объём кузова не может быть больше 150 м³' },
     };
@@ -75,6 +75,11 @@
     function validateNumber(value) {
         const parsed = parseNumeric(value);
         return parsed !== null && parsed >= 0;
+    }
+
+    function validateVin(value) {
+        const vin = value.trim().toUpperCase().replace(/\s/g, '');
+        return /^[A-HJ-NPR-Z0-9]{17}$/.test(vin);
     }
 
     function errorNode(name) {
@@ -119,6 +124,13 @@
         if (!rule.validate(value)) {
             if (name.includes('load_capacity') || name.includes('body_volume')) {
                 setError(name, 'Поле должно быть числом');
+            } else if (name.includes('vin')) {
+                const vin = value.trim().toUpperCase().replace(/\s/g, '');
+                if (vin.length !== 17) {
+                    setError(name, 'VIN должен содержать 17 символов');
+                } else {
+                    setError(name, 'VIN может содержать только латинские буквы и цифры (без I, O, Q)');
+                }
             } else if (name.includes('plate')) {
                 setError(name, 'Госномер должен содержать от 6 до 20 символов');
             } else {

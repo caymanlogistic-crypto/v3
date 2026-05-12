@@ -28,8 +28,8 @@ final class VehicleValidator
 
         if (empty($data['truck_vin'])) {
             $errors['truck_vin'] = 'VIN тягача обязателен';
-        } elseif (mb_strlen((string) $data['truck_vin']) > 50) {
-            $errors['truck_vin'] = 'VIN тягача не должен превышать 50 символов';
+        } elseif (!$this->isValidVin((string) $data['truck_vin'])) {
+            $errors['truck_vin'] = $this->buildVinError((string) $data['truck_vin']);
         }
 
         $this->validateRequiredDecimalRange(
@@ -69,8 +69,8 @@ final class VehicleValidator
 
             if (empty($data['trailer_vin'])) {
                 $errors['trailer_vin'] = 'Если заполнен полуприцеп, укажите его VIN';
-            } elseif (mb_strlen((string) $data['trailer_vin']) > 50) {
-                $errors['trailer_vin'] = 'VIN полуприцепа не должен превышать 50 символов';
+            } elseif (!$this->isValidVin((string) $data['trailer_vin'])) {
+                $errors['trailer_vin'] = $this->buildVinError((string) $data['trailer_vin']);
             }
 
             $this->validateRequiredDecimalRange(
@@ -96,15 +96,19 @@ final class VehicleValidator
             if (!empty($data['trailer_brand']) && mb_strlen((string) $data['trailer_brand']) > 100) {
                 $errors['trailer_brand'] = 'Марка полуприцепа не должна превышать 100 символов';
             }
+
             if (!empty($data['trailer_model']) && mb_strlen((string) $data['trailer_model']) > 100) {
                 $errors['trailer_model'] = 'Модель полуприцепа не должна превышать 100 символов';
             }
+
             if (!empty($data['trailer_plate']) && (mb_strlen((string) $data['trailer_plate']) < 6 || mb_strlen((string) $data['trailer_plate']) > 20)) {
                 $errors['trailer_plate'] = 'Госномер полуприцепа должен содержать от 6 до 20 символов';
             }
-            if (!empty($data['trailer_vin']) && mb_strlen((string) $data['trailer_vin']) > 50) {
-                $errors['trailer_vin'] = 'VIN полуприцепа не должен превышать 50 символов';
+
+            if (!empty($data['trailer_vin']) && !$this->isValidVin((string) $data['trailer_vin'])) {
+                $errors['trailer_vin'] = $this->buildVinError((string) $data['trailer_vin']);
             }
+
             $this->validateOptionalDecimalRange($data, $errors, 'trailer_load_capacity', 'Грузоподъёмность полуприцепа должна быть числом', 'Грузоподъёмность полуприцепа не должна превышать 60', 60);
             $this->validateOptionalDecimalRange($data, $errors, 'trailer_body_volume', 'Объём кузова полуприцепа должен быть числом', 'Объём кузова полуприцепа не должен превышать 150', 150);
         }
@@ -171,5 +175,27 @@ final class VehicleValidator
         if ((float) $normalized > $max) {
             $errors[$field] = $maxMessage;
         }
+    }
+
+    private function isValidVin(string $value): bool
+    {
+        $vin = mb_strtoupper(trim($value), 'UTF-8');
+
+        if (mb_strlen($vin, 'UTF-8') !== 17) {
+            return false;
+        }
+
+        return preg_match('/^[A-HJ-NPR-Z0-9]{17}$/', $vin) === 1;
+    }
+
+    private function buildVinError(string $value): string
+    {
+        $vin = mb_strtoupper(trim($value), 'UTF-8');
+
+        if (mb_strlen($vin, 'UTF-8') !== 17) {
+            return 'VIN должен содержать 17 символов';
+        }
+
+        return 'VIN может содержать только латинские буквы и цифры (без I, O, Q)';
     }
 }

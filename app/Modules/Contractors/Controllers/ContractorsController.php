@@ -97,7 +97,7 @@ final class ContractorsController extends Controller
             'bank_corr_account' => trim((string) $request->input('bank_corr_account')),
             'bank_bik' => trim((string) $request->input('bank_bik')),
             'comments' => trim((string) $request->input('comments')),
-            'status' => trim((string) $request->input('status')),
+            'status' => trim((string) $request->input('status', 'active')),
         ];
 
         $data = ContractorInputMapper::map($data);
@@ -201,7 +201,7 @@ final class ContractorsController extends Controller
             'bank_corr_account' => trim((string) $request->input('bank_corr_account')),
             'bank_bik' => trim((string) $request->input('bank_bik')),
             'comments' => trim((string) $request->input('comments')),
-            'status' => trim((string) $request->input('status')),
+            'status' => trim((string) $request->input('status', 'active')),
         ];
 
         $data = ContractorInputMapper::map($data);
