@@ -2,64 +2,122 @@
 
 <div class="page form-page">
     <div class="page-header">
-        <h1>Create Driver</h1>
+        <h1>Новый водитель</h1>
     </div>
 
-    <form method="POST" action="<?= config('app.url') ?>/drivers/store" class="form-card" id="driverForm">
+    <form method="POST" action="<?= config('app.url') ?>/drivers/store" class="driver-form entity-form" id="driverForm">
         <?= csrf_field() ?>
-
-        <div id="driverFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
-            &#1055;&#1086;&#1078;&#1072;&#1083;&#1091;&#1081;&#1089;&#1090;&#1072;, &#1080;&#1089;&#1087;&#1088;&#1072;&#1074;&#1100;&#1090;&#1077; &#1086;&#1096;&#1080;&#1073;&#1082;&#1080; &#1092;&#1086;&#1088;&#1084;&#1099;
+        <div id="driverFormValidationAlert" class="form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
+            Пожалуйста, исправьте ошибки формы
         </div>
 
-        <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">&#1051;&#1080;&#1095;&#1085;&#1099;&#1077; &#1076;&#1072;&#1085;&#1085;&#1099;&#1077;</th></tr>
-            <tr>
-                <td><span class="form-label"><span class="form-label-text">Full Name *</span><button type="button" class="form-help-button" data-help="&#1042;&#1074;&#1077;&#1076;&#1080;&#1090;&#1077; &#1092;&#1072;&#1084;&#1080;&#1083;&#1080;&#1102;, &#1080;&#1084;&#1103; &#1080; &#1086;&#1090;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086; &#1087;&#1086;&#1083;&#1085;&#1086;&#1089;&#1090;&#1100;&#1102;.">?</button></span></td>
-                <td>
-                    <input type="text" name="full_name" value="<?= e($old['full_name'] ?? '') ?>">
-                    <div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: &#1048;&#1074;&#1072;&#1085;&#1086;&#1074; &#1048;&#1074;&#1072;&#1085; &#1048;&#1074;&#1072;&#1085;&#1086;&#1074;&#1080;&#1095;</div>
-                    <div id="error-full_name" class="error"><?= e($errors['full_name'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td><span class="form-label"><span class="form-label-text">Phone *</span><button type="button" class="form-help-button" data-help="&#1052;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1083;&#1103;&#1090;&#1100; &#1085;&#1086;&#1084;&#1077;&#1088; &#1074; &#1083;&#1102;&#1073;&#1086;&#1084; &#1092;&#1086;&#1088;&#1084;&#1072;&#1090;&#1077;, &#1092;&#1086;&#1088;&#1084;&#1072; &#1085;&#1086;&#1088;&#1084;&#1072;&#1083;&#1080;&#1079;&#1091;&#1077;&#1090; &#1077;&#1075;&#1086;.">?</button></span></td>
-                <td>
-                    <input type="text" name="phone" value="<?= e($old['phone'] ?? '') ?>">
-                    <div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1080;&#1090;&#1100;: 8 (999) 123-45-67</div>
-                    <div id="error-phone" class="error"><?= e($errors['phone'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td><span class="form-label"><span class="form-label-text">Email *</span><button type="button" class="form-help-button" data-help="&#1056;&#1072;&#1073;&#1086;&#1095;&#1072;&#1103; &#1087;&#1086;&#1095;&#1090;&#1072; &#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1103; &#1076;&#1083;&#1103; &#1089;&#1074;&#1103;&#1079;&#1080; &#1080; &#1076;&#1086;&#1082;&#1091;&#1084;&#1077;&#1085;&#1090;&#1086;&#1074;.">?</button></span></td>
-                <td>
-                    <input type="text" name="email" value="<?= e($old['email'] ?? '') ?>">
-                    <div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: test@test.ru</div>
-                    <div id="error-email" class="error"><?= e($errors['email'] ?? '') ?></div>
-                </td>
-            </tr>
+        <div class="form-body">
+            <!-- Основные данные -->
+            <div class="form-section">
+                <div class="form-section-title">Основные данные</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-full_name">ФИО *</label>
+                        <input id="field-full_name" type="text" name="full_name" class="field-input" value="<?= e($old['full_name'] ?? '') ?>">
+                        <div id="error-full_name" class="field-msg is-error"><?= e($errors['full_name'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">&#1055;&#1072;&#1089;&#1087;&#1086;&#1088;&#1090;</th></tr>
-            <tr><td>Passport Number *</td><td><input type="text" name="passport_number" value="<?= e($old['passport_number'] ?? '') ?>"><div class="form-hint">10 &#1094;&#1080;&#1092;&#1088;</div><div id="error-passport_number" class="error"><?= e($errors['passport_number'] ?? '') ?></div></td></tr>
-            <tr><td>Passport Issue Date *</td><td><input type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="passport_issue_date" value="<?= e($old['passport_issue_date'] ?? '') ?>"><div id="error-passport_issue_date" class="error"><?= e($errors['passport_issue_date'] ?? '') ?></div></td></tr>
-            <tr><td>Passport Issued By *</td><td><input type="text" name="passport_issued_by" value="<?= e($old['passport_issued_by'] ?? '') ?>"><div id="error-passport_issued_by" class="error"><?= e($errors['passport_issued_by'] ?? '') ?></div></td></tr>
+                    <div class="field">
+                        <label class="field-label" for="field-phone">Телефон *</label>
+                        <input id="field-phone" type="text" name="phone" class="field-input" value="<?= e($old['phone'] ?? '') ?>">
+                        <div class="form-hint">Пример: +7 912 345-67-89, 89123456789</div>
+                        <div id="error-phone" class="field-msg is-error"><?= e($errors['phone'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
 
-            <tr><th colspan="2" class="form-section-title">&#1042;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;&#1089;&#1082;&#1086;&#1077; &#1091;&#1076;&#1086;&#1089;&#1090;&#1086;&#1074;&#1077;&#1088;&#1077;&#1085;&#1080;&#1077;</th></tr>
-            <tr><td>License Number *</td><td><input type="text" name="license_number" value="<?= e($old['license_number'] ?? '') ?>"><div class="form-hint">10 &#1094;&#1080;&#1092;&#1088;</div><div id="error-license_number" class="error"><?= e($errors['license_number'] ?? '') ?></div></td></tr>
-            <tr><td>License Issue Date *</td><td><input type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="license_issue_date" value="<?= e($old['license_issue_date'] ?? '') ?>"><div id="error-license_issue_date" class="error"><?= e($errors['license_issue_date'] ?? '') ?></div></td></tr>
+            <!-- Паспорт -->
+            <div class="form-section">
+                <div class="form-section-title">Паспорт</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-passport_number">Passport Number *</label>
+                        <input id="field-passport_number" type="text" name="passport_number" class="field-input" value="<?= e($old['passport_number'] ?? '') ?>">
+                        <div class="form-hint">10 цифр</div>
+                        <div id="error-passport_number" class="field-msg is-error"><?= e($errors['passport_number'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">&#1057;&#1053;&#1048;&#1051;&#1057;</th></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">SNILS *</span><button type="button" class="form-help-button" data-help="&#1057;&#1053;&#1048;&#1051;&#1057; &#1084;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1083;&#1103;&#1090;&#1100; &#1089; &#1076;&#1077;&#1092;&#1080;&#1089;&#1072;&#1084;&#1080; &#1080;&#1083;&#1080; &#1073;&#1077;&#1079; &#1085;&#1080;&#1093;.">?</button></span></td><td><input type="text" name="snils" value="<?= e($old['snils'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: 123-456-789 01</div><div id="error-snils" class="error"><?= e($errors['snils'] ?? '') ?></div></td></tr>
+                    <div class="field">
+                        <label class="field-label" for="field-passport_issue_date">Passport Issue Date *</label>
+                        <input id="field-passport_issue_date" type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="passport_issue_date" class="field-input" value="<?= e($old['passport_issue_date'] ?? '') ?>">
+                        <div id="error-passport_issue_date" class="field-msg is-error"><?= e($errors['passport_issue_date'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1080; &#1080; &#1089;&#1090;&#1072;&#1090;&#1091;&#1089;</th></tr>
-            <tr><td>Comments</td><td><textarea name="comments" rows="4"><?= e($old['comments'] ?? '') ?></textarea></td></tr>
-            <tr><td>Status</td><td><select name="status"><option value="active" <?= ($old['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($old['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($old['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><?php if (!empty($errors['status'])): ?><div class="error"><?= e($errors['status']) ?></div><?php endif; ?></td></tr>
-        </table>
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label class="field-label" for="field-passport_issued_by">Passport Issued By *</label>
+                        <input id="field-passport_issued_by" type="text" name="passport_issued_by" class="field-input" value="<?= e($old['passport_issued_by'] ?? '') ?>">
+                        <div id="error-passport_issued_by" class="field-msg is-error"><?= e($errors['passport_issued_by'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-actions" style="margin-top:20px;"><button type="submit" class="btn btn-primary">Create</button><a href="<?= config('app.url') ?>/drivers" class="btn">Cancel</a></div>
+            <!-- Водительское удостоверение -->
+            <div class="form-section">
+                <div class="form-section-title">Водительское удостоверение</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-license_number">License Number *</label>
+                        <input id="field-license_number" type="text" name="license_number" class="field-input" value="<?= e($old['license_number'] ?? '') ?>">
+                        <div class="form-hint">10 цифр</div>
+                        <div id="error-license_number" class="field-msg is-error"><?= e($errors['license_number'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-license_issue_date">License Issue Date *</label>
+                        <input id="field-license_issue_date" type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="license_issue_date" class="field-input" value="<?= e($old['license_issue_date'] ?? '') ?>">
+                        <div id="error-license_issue_date" class="field-msg is-error"><?= e($errors['license_issue_date'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СНИЛС -->
+            <div class="form-section">
+                <div class="form-section-title">СНИЛС</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-snils">
+                            <span class="field-label-text">SNILS *</span>
+                            <button type="button" class="form-help-button" data-help="СНИЛС можно вставлять с дефисами или без них.">?</button>
+                        </label>
+                        <input id="field-snils" type="text" name="snils" class="field-input" value="<?= e($old['snils'] ?? '') ?>">
+                        <div class="form-hint">Пример: 123-456-789 01</div>
+                        <div id="error-snils" class="field-msg is-error"><?= e($errors['snils'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Комментарии и статус -->
+            <div class="form-section">
+                <div class="form-section-title">Комментарии и статус</div>
+                <div class="form-grid">
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label class="field-label" for="field-comments">Comments</label>
+                        <textarea id="field-comments" name="comments" class="field-textarea" rows="4"><?= e($old['comments'] ?? '') ?></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-status">Status</label>
+                        <select id="field-status" name="status" class="field-select">
+                            <option value="active" <?= ($old['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                            <option value="blocked" <?= ($old['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option>
+                            <option value="archive" <?= ($old['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option>
+                        </select>
+                        <div id="error-status" class="field-msg is-error"><?= e($errors['status'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="<?= config('app.url') ?>/drivers" class="btn btn-ghost">Отмена</a>
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </div>
     </form>
 
     <script src="<?= config('app.url') ?>/assets/js/drivers-form.js?v=20260512_forms_fix"></script>
 </div>
-
-

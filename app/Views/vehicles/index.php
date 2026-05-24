@@ -1,128 +1,135 @@
 <?php declare(strict_types=1); ?>
 
 <div class="page">
-
     <div class="page-header">
-        <h1>Vehicles</h1>
+        <h1>Транспорт</h1>
+        <div class="page-header-actions">
+            <a href="<?= config('app.url') ?>/vehicles/create" class="btn btn-primary">Добавить транспорт</a>
+        </div>
     </div>
 
-    <form method="GET" action="<?= config('app.url') ?>/vehicles">
-
-        <div>
+    <div class="table-card">
+        <form method="GET" action="<?= config('app.url') ?>/vehicles" class="table-toolbar">
             <input
                 type="text"
                 name="search"
-                placeholder="Search by plate, brand, model, or VIN"
+                class="search-input"
+                placeholder="Поиск по госномеру, марке, модели, VIN"
                 value="<?= e($search ?? '') ?>"
             >
-            <button type="submit" class="btn">Search</button>
-            <a href="<?= config('app.url') ?>/vehicles/create" class="btn btn-primary">Create Vehicle</a>
+            <button type="submit" class="btn btn-toolbar">Найти</button>
+            <?php if (!empty($search)): ?>
+                <a href="<?= config('app.url') ?>/vehicles" class="btn btn-toolbar">Сброс</a>
+            <?php endif; ?>
+        </form>
+
+        <div class="table-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Госномер</th>
+                        <th>Марка / Модель</th>
+                        <th>Прицеп</th>
+                        <th>Г/п, т</th>
+                        <th>Объём, м³</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($vehicles)): ?>
+                        <tr>
+                            <td colspan="8" class="table-empty">Транспорт не найден.</td>
+                        </tr>
+                    <?php endif; ?>
+
+                    <?php foreach ($vehicles as $vehicle): ?>
+                        <?php
+                            $status = (string) ($vehicle['status'] ?? '');
+                            $badge = match ($status) {
+                                'active' => 'badge badge-ok',
+                                'blocked' => 'badge badge-danger',
+                                'archive' => 'badge badge-neutral',
+                                default => 'badge badge-neutral',
+                            };
+                            $label = match ($status) {
+                                'active' => 'Активен',
+                                'blocked' => 'Заблокирован',
+                                'archive' => 'Архив',
+                                default => $status ?: '—',
+                            };
+                        ?>
+                        <tr>
+                            <td class="table-num"><?= (int) $vehicle['id'] ?></td>
+                            <td><?= e($vehicle['truck_plate'] ?? '') ?></td>
+                            <td>
+                                <?php if (!empty($vehicle['truck_brand']) || !empty($vehicle['truck_model'])): ?>
+                                    <?= e($vehicle['truck_brand'] ?? '') ?> <?= e($vehicle['truck_model'] ?? '') ?>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if (!empty($vehicle['trailer_plate'])): ?>
+                                    <?= e($vehicle['trailer_plate']) ?>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td class="table-num">
+                                <?php if (!empty($vehicle['load_capacity'])): ?>
+                                    <?= e($vehicle['load_capacity']) ?>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td class="table-num">
+                                <?php if (!empty($vehicle['body_volume'])): ?>
+                                    <?= e($vehicle['body_volume']) ?>
+                                <?php else: ?>
+                                    —
+                                <?php endif; ?>
+                            </td>
+                            <td><span class="<?= $badge ?>"><?= e($label) ?></span></td>
+                            <td class="row-actions">
+                                <a href="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/edit" class="row-btn">Изменить</a>
+                                <form method="POST" action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/delete" style="display:inline;">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="row-btn is-danger" onclick="return confirm('Удалить транспорт?')">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
-    </form>
+        <?php if (isset($pagination) && $pagination['pages'] > 1): ?>
+            <div class="pagination">
+                <div class="pagination-info">
+                    Страница <?= (int) ($pagination['page'] ?? 1) ?> из <?= (int) ($pagination['pages'] ?? 1) ?>
+                </div>
+                <div class="pagination-pages">
+                    <?php if (($pagination['has_prev'] ?? false)): ?>
+                        <a href="?page=<?= (int) $pagination['prev_page'] ?>&search=<?= urlencode($search ?? '') ?>">←</a>
+                    <?php else: ?>
+                        <span>←</span>
+                    <?php endif; ?>
 
-    <table border="1" width="100%" cellpadding="8">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Truck Plate</th>
-                <th>Truck</th>
-                <th>Trailer Plate</th>
-                <th>Trailer</th>
-                <th>Load Capacity</th>
-                <th>Body Volume</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (empty($vehicles)): ?>
-                <tr>
-                    <td colspan="9">No vehicles found.</td>
-                </tr>
-            <?php endif; ?>
+                    <span class="is-current"><?= (int) ($pagination['page'] ?? 1) ?></span>
 
-            <?php foreach ($vehicles as $vehicle): ?>
-                <tr>
-                    <td><?= (int) $vehicle['id'] ?></td>
-                    <td><?= e($vehicle['truck_plate'] ?? '') ?></td>
-                    <td>
-                        <?php if (!empty($vehicle['truck_brand']) || !empty($vehicle['truck_model'])): ?>
-                            <?= e($vehicle['truck_brand'] ?? '') ?> <?= e($vehicle['truck_model'] ?? '') ?>
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </td>
-                    <td><?= e($vehicle['trailer_plate'] ?? '-') ?></td>
-                    <td>
-                        <?php if (!empty($vehicle['trailer_brand']) || !empty($vehicle['trailer_model'])): ?>
-                            <?= e($vehicle['trailer_brand'] ?? '') ?> <?= e($vehicle['trailer_model'] ?? '') ?>
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <?php if (!empty($vehicle['load_capacity'])): ?>
-                            <?= e($vehicle['load_capacity']) ?> т
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <?php if (!empty($vehicle['body_volume'])): ?>
-                            <?= e($vehicle['body_volume']) ?> м³
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </td>
-                    <td><?= e($vehicle['status'] ?? '') ?></td>
-                    <td>
-                        <a
-                            href="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/edit"
-                            class="btn"
-                        >
-                            Edit
-                        </a>
-
-                        <form
-                            method="POST"
-                            action="<?= config('app.url') ?>/vehicles/<?= (int) $vehicle['id'] ?>/delete"
-                            style="display:inline-block; margin-left:8px;"
-                        >
-                            <?= csrf_field() ?>
-                            <button type="submit" class="btn" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <?php if (isset($pagination)): ?>
-        <div style="margin-top:20px;">
-
-            <?php if (($pagination['has_prev'] ?? false)): ?>
-
-                <a href="?page=<?= (int) $pagination['prev_page'] ?>&search=<?= urlencode($search ?? '') ?>">
-                    ← Prev
-                </a>
-
-            <?php endif; ?>
-
-            Page
-            <?= (int) ($pagination['page'] ?? 1) ?>
-            of
-            <?= (int) ($pagination['pages'] ?? 1) ?>
-
-            <?php if (($pagination['has_next'] ?? false)): ?>
-
-                <a href="?page=<?= (int) $pagination['next_page'] ?>&search=<?= urlencode($search ?? '') ?>">
-                    Next →
-                </a>
-
-            <?php endif; ?>
-
-        </div>
-    <?php endif; ?>
-
+                    <?php if (($pagination['has_next'] ?? false)): ?>
+                        <a href="?page=<?= (int) $pagination['next_page'] ?>&search=<?= urlencode($search ?? '') ?>">→</a>
+                    <?php else: ?>
+                        <span>→</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php elseif (!empty($vehicles)): ?>
+            <div class="pagination">
+                <div class="pagination-info">Всего: <?= count($vehicles) ?></div>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>

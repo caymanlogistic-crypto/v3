@@ -50,6 +50,36 @@ function csrf_field(): string
     return '<input type="hidden" name="_token" value="' . $token . '">';
 }
 
+function isActivePath(string $path): string
+{
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    $base = rtrim(config('app.url'), '/');
+
+    // Strip base URL prefix
+    $current = $uri;
+    if ($base !== '' && str_starts_with($uri, $base)) {
+        $current = substr($uri, strlen($base));
+    }
+
+    // Remove query string
+    $pos = strpos($current, '?');
+    if ($pos !== false) {
+        $current = substr($current, 0, $pos);
+    }
+
+    $current = rtrim($current, '/') ?: '/';
+
+    if ($path === '/' && $current === '/') {
+        return 'is-active';
+    }
+
+    if ($path !== '/' && $current !== '' && str_starts_with($current, $path)) {
+        return 'is-active';
+    }
+
+    return '';
+}
+
 function csrf_verify(?string $token): bool
 {
     if (!is_string($token) || $token === '') {

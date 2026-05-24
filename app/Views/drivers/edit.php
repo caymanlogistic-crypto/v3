@@ -1,115 +1,190 @@
 <?php declare(strict_types=1); ?>
 
 <div class="page form-page">
-    <div class="page-header"><h1>Edit Driver</h1></div>
+    <div class="page-header">
+        <h1>Редактирование водителя #<?= (int) ($driver['id'] ?? 0) ?></h1>
+    </div>
 
-    <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/update" class="form-card" id="driverForm">
+    <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) ($driver['id'] ?? 0) ?>/update" class="driver-form entity-form" id="driverForm">
         <?= csrf_field() ?>
+        <div id="driverFormValidationAlert" class="form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
+            Пожалуйста, исправьте ошибки формы
+        </div>
 
-        <div id="driverFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">&#1055;&#1086;&#1078;&#1072;&#1083;&#1091;&#1081;&#1089;&#1090;&#1072;, &#1080;&#1089;&#1087;&#1088;&#1072;&#1074;&#1100;&#1090;&#1077; &#1086;&#1096;&#1080;&#1073;&#1082;&#1080; &#1092;&#1086;&#1088;&#1084;&#1099;</div>
-
-        <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">&#1051;&#1080;&#1095;&#1085;&#1099;&#1077; &#1076;&#1072;&#1085;&#1085;&#1099;&#1077;</th></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Full Name *</span><button type="button" class="form-help-button" data-help="&#1042;&#1074;&#1077;&#1076;&#1080;&#1090;&#1077; &#1092;&#1072;&#1084;&#1080;&#1083;&#1080;&#1102;, &#1080;&#1084;&#1103; &#1080; &#1086;&#1090;&#1095;&#1077;&#1089;&#1090;&#1074;&#1086; &#1087;&#1086;&#1083;&#1085;&#1086;&#1089;&#1090;&#1100;&#1102;.">?</button></span></td><td><input type="text" name="full_name" value="<?= e($driver['full_name'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: &#1048;&#1074;&#1072;&#1085;&#1086;&#1074; &#1048;&#1074;&#1072;&#1085; &#1048;&#1074;&#1072;&#1085;&#1086;&#1074;&#1080;&#1095;</div><div id="error-full_name" class="error"><?= e($errors['full_name'] ?? '') ?></div></td></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Phone *</span><button type="button" class="form-help-button" data-help="&#1052;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1083;&#1103;&#1090;&#1100; &#1085;&#1086;&#1084;&#1077;&#1088; &#1074; &#1083;&#1102;&#1073;&#1086;&#1084; &#1092;&#1086;&#1088;&#1084;&#1072;&#1090;&#1077;, &#1092;&#1086;&#1088;&#1084;&#1072; &#1085;&#1086;&#1088;&#1084;&#1072;&#1083;&#1080;&#1079;&#1091;&#1077;&#1090; &#1077;&#1075;&#1086;.">?</button></span></td><td><input type="text" name="phone" value="<?= e($driver['phone'] ?? '') ?>"><div class="form-hint">&#1052;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1080;&#1090;&#1100;: 8 (999) 123-45-67</div><div id="error-phone" class="error"><?= e($errors['phone'] ?? '') ?></div></td></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">Email *</span><button type="button" class="form-help-button" data-help="&#1056;&#1072;&#1073;&#1086;&#1095;&#1072;&#1103; &#1087;&#1086;&#1095;&#1090;&#1072; &#1074;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1103; &#1076;&#1083;&#1103; &#1089;&#1074;&#1103;&#1079;&#1080; &#1080; &#1076;&#1086;&#1082;&#1091;&#1084;&#1077;&#1085;&#1090;&#1086;&#1074;.">?</button></span></td><td><input type="text" name="email" value="<?= e($driver['email'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: test@test.ru</div><div id="error-email" class="error"><?= e($errors['email'] ?? '') ?></div></td></tr>
-
-            <tr><th colspan="2" class="form-section-title">&#1055;&#1072;&#1089;&#1087;&#1086;&#1088;&#1090;</th></tr>
-            <tr><td>Passport Number *</td><td><input type="text" name="passport_number" value="<?= e($driver['passport_number'] ?? '') ?>"><div class="form-hint">10 &#1094;&#1080;&#1092;&#1088;</div><div id="error-passport_number" class="error"><?= e($errors['passport_number'] ?? '') ?></div></td></tr>
-            <tr><td>Passport Issue Date *</td><td><input type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="passport_issue_date" value="<?= e($driver['passport_issue_date'] ?? '') ?>"><div id="error-passport_issue_date" class="error"><?= e($errors['passport_issue_date'] ?? '') ?></div></td></tr>
-            <tr><td>Passport Issued By *</td><td><input type="text" name="passport_issued_by" value="<?= e($driver['passport_issued_by'] ?? '') ?>"><div id="error-passport_issued_by" class="error"><?= e($errors['passport_issued_by'] ?? '') ?></div></td></tr>
-
-            <tr><th colspan="2" class="form-section-title">&#1042;&#1086;&#1076;&#1080;&#1090;&#1077;&#1083;&#1100;&#1089;&#1082;&#1086;&#1077; &#1091;&#1076;&#1086;&#1089;&#1090;&#1086;&#1074;&#1077;&#1088;&#1077;&#1085;&#1080;&#1077;</th></tr>
-            <tr><td>License Number *</td><td><input type="text" name="license_number" value="<?= e($driver['license_number'] ?? '') ?>"><div class="form-hint">10 &#1094;&#1080;&#1092;&#1088;</div><div id="error-license_number" class="error"><?= e($errors['license_number'] ?? '') ?></div></td></tr>
-            <tr><td>License Issue Date *</td><td><input type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="license_issue_date" value="<?= e($driver['license_issue_date'] ?? '') ?>"><div id="error-license_issue_date" class="error"><?= e($errors['license_issue_date'] ?? '') ?></div></td></tr>
-
-            <tr><th colspan="2" class="form-section-title">&#1057;&#1053;&#1048;&#1051;&#1057;</th></tr>
-            <tr><td><span class="form-label"><span class="form-label-text">SNILS *</span><button type="button" class="form-help-button" data-help="&#1057;&#1053;&#1048;&#1051;&#1057; &#1084;&#1086;&#1078;&#1085;&#1086; &#1074;&#1089;&#1090;&#1072;&#1074;&#1083;&#1103;&#1090;&#1100; &#1089; &#1076;&#1077;&#1092;&#1080;&#1089;&#1072;&#1084;&#1080; &#1080;&#1083;&#1080; &#1073;&#1077;&#1079; &#1085;&#1080;&#1093;.">?</button></span></td><td><input type="text" name="snils" value="<?= e($driver['snils'] ?? '') ?>"><div class="form-hint">&#1055;&#1088;&#1080;&#1084;&#1077;&#1088;: 123-456-789 01</div><div id="error-snils" class="error"><?= e($errors['snils'] ?? '') ?></div></td></tr>
-
-            <tr><th colspan="2" class="form-section-title">&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1080; &#1080; &#1089;&#1090;&#1072;&#1090;&#1091;&#1089;</th></tr>
-            <tr><td>Comments</td><td><textarea name="comments" rows="4"><?= e($driver['comments'] ?? '') ?></textarea></td></tr>
-            <tr><td>Status</td><td><select name="status"><option value="active" <?= ($driver['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option><option value="blocked" <?= ($driver['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option><option value="archive" <?= ($driver['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option></select><?php if (!empty($errors['status'])): ?><div class="error"><?= e($errors['status']) ?></div><?php endif; ?></td></tr>
-        </table>
-
-        <div class="form-actions" style="margin-top:20px;"><button type="submit" class="btn btn-primary">Save</button><a href="<?= config('app.url') ?>/drivers" class="btn">Cancel</a></div>
-    </form>
-
-    <div style="margin-top:40px;" class="form-section">
-        <h2 class="form-section-title">&#1044;&#1086;&#1082;&#1091;&#1084;&#1077;&#1085;&#1090;&#1099;</h2>
-
-        <table border="1" width="100%" cellpadding="8">
-            <thead><tr><th>Type</th><th>File Name</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
-            <tbody>
-                <?php if (empty($files)): ?><tr><td colspan="5">No files uploaded yet.</td></tr><?php endif; ?>
-                <?php foreach ($files as $file): ?>
-                    <tr>
-                        <td><?= e($file['file_type'] ?? '') ?></td>
-                        <td><?= e($file['original_name'] ?? '') ?></td>
-                        <td><?= e(isset($file['file_size']) ? number_format((int) $file['file_size'] / 1024, 0, '.', ' ') . ' KB' : '') ?></td>
-                        <td><?= e($file['created_at'] ?? '') ?></td>
-                        <td><a href="<?= config('app.url') ?>/drivers/files/<?= (int) $file['id'] ?>/download" class="btn">Download</a><form method="POST" action="<?= config('app.url') ?>/drivers/files/<?= (int) $file['id'] ?>/delete" style="display:inline-block; margin-left:8px;"><?= csrf_field() ?><button type="submit" class="btn">Delete</button></form></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-                <?php
-            $hasPassport = false;
-            $hasLicense = false;
-            $hasSnils = false;
-            foreach ($files as $fileItem) {
-                $type = (string) ($fileItem['file_type'] ?? '');
-                if ($type === 'passport') { $hasPassport = true; }
-                if ($type === 'license') { $hasLicense = true; }
-                if ($type === 'snils') { $hasSnils = true; }
-            }
-        ?>
-
-        <form method="POST" action="<?= config('app.url') ?>/drivers/<?= (int) $driver['id'] ?>/files/upload" enctype="multipart/form-data" class="driver-file-upload-form">
-            <?= csrf_field() ?>
-
-            <div class="upload-grid" style="margin-top:20px;">
-                <?php if (!$hasPassport): ?>
-                    <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1087;&#1072;&#1089;&#1087;&#1086;&#1088;&#1090;</h3>
-                        <input type="file" name="typed_files[passport][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                        <div class="error file-error"></div>
+        <div class="form-body">
+            <!-- Основные данные -->
+            <div class="form-section">
+                <div class="form-section-title">Основные данные</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-full_name">ФИО *</label>
+                        <input id="field-full_name" type="text" name="full_name" class="field-input" value="<?= e($old['full_name'] ?? $driver['full_name'] ?? '') ?>">
+                        <div id="error-full_name" class="field-msg is-error"><?= e($errors['full_name'] ?? '') ?></div>
                     </div>
-                <?php endif; ?>
 
-                <?php if (!$hasLicense): ?>
-                    <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1042;&#1059;</h3>
-                        <input type="file" name="typed_files[license][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                        <div class="error file-error"></div>
+                    <div class="field">
+                        <label class="field-label" for="field-phone">Телефон *</label>
+                        <input id="field-phone" type="text" name="phone" class="field-input" value="<?= e($old['phone'] ?? $driver['phone'] ?? '') ?>">
+                        <div class="form-hint">Пример: +7 912 345-67-89, 89123456789</div>
+                        <div id="error-phone" class="field-msg is-error"><?= e($errors['phone'] ?? '') ?></div>
                     </div>
-                <?php endif; ?>
-
-                <?php if (!$hasSnils): ?>
-                    <div class="upload-block">
-                        <h3 class="upload-title">&#1047;&#1072;&#1075;&#1088;&#1091;&#1079;&#1080;&#1090;&#1100; &#1057;&#1053;&#1048;&#1051;&#1057;</h3>
-                        <input type="file" name="typed_files[snils][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                        <div class="error file-error"></div>
-                    </div>
-                <?php endif; ?>
-
-                <div class="upload-block">
-                    <h3 class="upload-title">&#1055;&#1088;&#1086;&#1095;&#1080;&#1077; &#1092;&#1072;&#1081;&#1083;&#1099;</h3>
-                    <textarea name="comments[other]" rows="3" placeholder="&#1050;&#1086;&#1084;&#1084;&#1077;&#1085;&#1090;&#1072;&#1088;&#1080;&#1081; (&#1085;&#1077;&#1086;&#1073;&#1103;&#1079;&#1072;&#1090;&#1077;&#1083;&#1100;&#1085;&#1086;)"></textarea>
-                    <input type="file" name="typed_files[other][]" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp">
-                    <div class="error file-error"></div>
                 </div>
             </div>
 
-            <div style="margin-top:15px;">
-                <button type="submit" class="btn btn-primary">Upload</button>
+            <!-- Паспорт -->
+            <div class="form-section">
+                <div class="form-section-title">Паспорт</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-passport_number">Passport Number *</label>
+                        <input id="field-passport_number" type="text" name="passport_number" class="field-input" value="<?= e($old['passport_number'] ?? $driver['passport_number'] ?? '') ?>">
+                        <div class="form-hint">10 цифр</div>
+                        <div id="error-passport_number" class="field-msg is-error"><?= e($errors['passport_number'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-passport_issue_date">Passport Issue Date *</label>
+                        <input id="field-passport_issue_date" type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="passport_issue_date" class="field-input" value="<?= e($old['passport_issue_date'] ?? $driver['passport_issue_date'] ?? '') ?>">
+                        <div id="error-passport_issue_date" class="field-msg is-error"><?= e($errors['passport_issue_date'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label class="field-label" for="field-passport_issued_by">Passport Issued By *</label>
+                        <input id="field-passport_issued_by" type="text" name="passport_issued_by" class="field-input" value="<?= e($old['passport_issued_by'] ?? $driver['passport_issued_by'] ?? '') ?>">
+                        <div id="error-passport_issued_by" class="field-msg is-error"><?= e($errors['passport_issued_by'] ?? '') ?></div>
+                    </div>
+                </div>
             </div>
-        </form>
+
+            <!-- Водительское удостоверение -->
+            <div class="form-section">
+                <div class="form-section-title">Водительское удостоверение</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-license_number">License Number *</label>
+                        <input id="field-license_number" type="text" name="license_number" class="field-input" value="<?= e($old['license_number'] ?? $driver['license_number'] ?? '') ?>">
+                        <div class="form-hint">10 цифр</div>
+                        <div id="error-license_number" class="field-msg is-error"><?= e($errors['license_number'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-license_issue_date">License Issue Date *</label>
+                        <input id="field-license_issue_date" type="text" inputmode="numeric" autocomplete="off" placeholder="01.01.2025" name="license_issue_date" class="field-input" value="<?= e($old['license_issue_date'] ?? $driver['license_issue_date'] ?? '') ?>">
+                        <div id="error-license_issue_date" class="field-msg is-error"><?= e($errors['license_issue_date'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СНИЛС -->
+            <div class="form-section">
+                <div class="form-section-title">СНИЛС</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-snils">
+                            <span class="field-label-text">SNILS *</span>
+                            <button type="button" class="form-help-button" data-help="СНИЛС можно вставлять с дефисами или без них.">?</button>
+                        </label>
+                        <input id="field-snils" type="text" name="snils" class="field-input" value="<?= e($old['snils'] ?? $driver['snils'] ?? '') ?>">
+                        <div class="form-hint">Пример: 123-456-789 01</div>
+                        <div id="error-snils" class="field-msg is-error"><?= e($errors['snils'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Комментарии и статус -->
+            <div class="form-section">
+                <div class="form-section-title">Комментарии и статус</div>
+                <div class="form-grid">
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label class="field-label" for="field-comments">Comments</label>
+                        <textarea id="field-comments" name="comments" class="field-textarea" rows="4"><?= e($old['comments'] ?? $driver['comments'] ?? '') ?></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-status">Status</label>
+                        <select id="field-status" name="status" class="field-select">
+                            <option value="active" <?= ($old['status'] ?? $driver['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                            <option value="blocked" <?= ($old['status'] ?? $driver['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option>
+                            <option value="archive" <?= ($old['status'] ?? $driver['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option>
+                        </select>
+                        <div id="error-status" class="field-msg is-error"><?= e($errors['status'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="<?= config('app.url') ?>/drivers" class="btn btn-ghost">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </div>
+    </form>
+
+    <!-- Документы -->
+    <div class="form-section" style="margin-top: 32px;">
+        <div class="form-section-title">Документы</div>
+
+        <?php
+            $hasLicense = false;
+            $hasPassport = false;
+            $hasSnils = false;
+            $hasPhoto = false;
+            foreach ($documents as $doc) {
+                $fileDocType = $doc['doc_type'] ?? '';
+                if ($fileDocType === 'driver_license') $hasLicense = true;
+                if ($fileDocType === 'driver_passport') $hasPassport = true;
+                if ($fileDocType === 'driver_snils') $hasSnils = true;
+                if ($fileDocType === 'driver_photo') $hasPhoto = true;
+            }
+        ?>
+
+        <div class="upload-grid">
+            <?php
+            $docTypes = [
+                ['slug' => 'driver_license',   'label' => 'Водительское удостоверение', 'has' => $hasLicense],
+                ['slug' => 'driver_passport',  'label' => 'Паспорт', 'has' => $hasPassport],
+                ['slug' => 'driver_snils',    'label' => 'СНИЛС', 'has' => $hasSnils],
+                ['slug' => 'driver_photo',    'label' => 'Фото', 'has' => $hasPhoto],
+            ];
+            foreach ($docTypes as $dt):
+                $slug = $dt['slug'];
+                $label = $dt['label'];
+            ?>
+                <div class="upload-block">
+                    <div class="upload-title"><?= e($label) ?></div>
+                    <?php
+                        $docFile = null;
+                        foreach ($documents as $doc) {
+                            if (($doc['doc_type'] ?? '') === $slug) {
+                                $docFile = $doc;
+                                break;
+                            }
+                        }
+                    ?>
+                    <?php if ($docFile): ?>
+                        <div class="doc-status doc-ok">Загружен</div>
+                        <div class="text-sm text-muted mt-2">
+                            <?= e($docFile['original_name'] ?? 'Файл') ?><br>
+                            <?= e($docFile['created_at'] ?? '') ?>
+                        </div>
+                        <div class="mt-2">
+                            <a href="<?= config('app.url') ?>/documents/<?= (int) ($docFile['id'] ?? 0) ?>/download" class="btn" style="font-size: var(--text-xs); padding: 2px 8px;">Скачать</a>
+                        </div>
+                    <?php else: ?>
+                        <div class="doc-status doc-pending">Не загружен</div>
+                    <?php endif; ?>
+                    <div class="mt-2">
+                        <form method="POST" action="<?= config('app.url') ?>/documents/upload/<?= (int) ($driver['id'] ?? 0) ?>" enctype="multipart/form-data" style="display:inline;">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="entity_type" value="driver">
+                            <input type="hidden" name="doc_type" value="<?= e($slug) ?>">
+                            <input type="file" name="file" style="font-size: var(--text-xs);">
+                            <button type="submit" class="btn" style="font-size: var(--text-xs); padding: 2px 8px;">Загрузить</button>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <script src="<?= config('app.url') ?>/assets/js/drivers-form.js?v=20260512_forms_fix"></script>
-    <script src="<?= config('app.url') ?>/assets/js/driver-files.js"></script>
 </div>
-
-
-

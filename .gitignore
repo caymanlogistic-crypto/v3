@@ -1,0 +1,4 @@
+﻿/storage/logs/*.log
+/storage/uploads/
+/app/storage/
+*.rar

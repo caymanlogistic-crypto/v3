@@ -10,161 +10,67 @@ $errorFlash = Flash::getError();
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-
     <meta charset="UTF-8">
     <link rel="stylesheet" href="<?= config('app.url') ?>/assets/css/app.css">
-
-    <title>
-        Transport ERP Platform v3
-    </title>
-
-    <style>
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-        }
-
-        header {
-            background: #1f2937;
-            color: white;
-            padding: 15px 20px;
-        }
-
-        nav {
-            margin-top: 10px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-        }
-
-        .container {
-            padding: 20px;
-        }
-
-        .topbar {
-            float: right;
-        }
-
-        .topbar a {
-            color: #fff;
-            margin-left: 15px;
-            text-decoration: none;
-        }
-
-        .flash-success {
-            background: #d1fae5;
-            border: 1px solid #10b981;
-            color: #065f46;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-        .flash-error {
-            background: #fee2e2;
-            border: 1px solid #ef4444;
-            color: #991b1b;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-    </style>
-
+    <title>TransportERP v3</title>
 </head>
 <body>
 
-<header>
+<div class="app-shell">
 
-    <div>
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-brand">TransportERP v3</div>
 
-        <strong>
-            Transport ERP Platform v3
-        </strong>
+        <?php if (Auth::check() && Auth::can('contractors.view')): ?>
+            <div class="sidebar-nav-group">Справочники</div>
+            <ul class="sidebar-nav">
+                <li><a href="<?= config('app.url') ?>/contractors" class="<?= isActivePath('/contractors') ?>">Контрагенты</a></li>
+                <li><a href="<?= config('app.url') ?>/drivers" class="<?= isActivePath('/drivers') ?>">Водители</a></li>
+                <li><a href="<?= config('app.url') ?>/vehicles" class="<?= isActivePath('/vehicles') ?>">Транспорт</a></li>
+                <li><a href="<?= config('app.url') ?>/crews" class="<?= isActivePath('/crews') ?>">Экипажи</a></li>
+            </ul>
+        <?php endif; ?>
+    </aside>
 
-        <div class="topbar">
+    <!-- Main -->
+    <div class="app-main">
 
-            <?php if (Auth::check()): ?>
-
-                <?= htmlspecialchars(
-                    Auth::user()['email']
-                ) ?>
-
-                <form method="POST" action="<?= config('app.url') ?>/logout" style="display:inline;">
-                    <?= csrf_field() ?>
-                    <button type="submit">Logout</button>
-                </form>
-
-            <?php endif; ?>
-
+        <!-- Topbar -->
+        <div class="app-topbar">
+            <div class="topbar-left">
+                <?php if (Auth::check()): ?>
+                    <span><?= htmlspecialchars(Auth::user()['email']) ?></span>
+                <?php endif; ?>
+            </div>
+            <div class="topbar-user">
+                <?php if (Auth::check()): ?>
+                    <form method="POST" action="<?= config('app.url') ?>/logout" style="display:inline;">
+                        <?= csrf_field() ?>
+                        <button type="submit" class="btn btn-ghost">Выход</button>
+                    </form>
+                <?php endif; ?>
+            </div>
         </div>
 
-    </div>
-
-    <nav>
-
-        <a href="<?= config('app.url') ?>/">
-            Home
-        </a>
-
-        <?php if (
-            Auth::check()
-            && Auth::can('contractors.view')
-        ): ?>
-
-            <a href="<?= config('app.url') ?>/contractors">
-                Contractors
-            </a>
-
-            <a href="<?= config('app.url') ?>/drivers">
-                Drivers
-            </a>
-
-            <a href="<?= config('app.url') ?>/vehicles">
-                Vehicles
-            </a>
-
-            <a href="<?= config('app.url') ?>/crews">
-                <?= "\u{0421}\u{0432}\u{044F}\u{0437}\u{043A}\u{0438}" ?>
-            </a>
-
+        <!-- Flash messages -->
+        <?php if ($successFlash): ?>
+            <div class="flash flash-success"><?= e($successFlash) ?></div>
+        <?php endif; ?>
+        <?php if ($errorFlash): ?>
+            <div class="flash flash-error"><?= e($errorFlash) ?></div>
         <?php endif; ?>
 
-    </nav>
+        <!-- Content -->
+        <?= $content ?>
 
-</header>
-
-<div class="container">
-
-    <?php if ($successFlash): ?>
-
-        <div class="flash-success">
-            <?= e($successFlash) ?>
-        </div>
-
-    <?php endif; ?>
-
-    <?php if ($errorFlash): ?>
-
-        <div class="flash-error">
-            <?= e($errorFlash) ?>
-        </div>
-
-    <?php endif; ?>
-
-    <?= $content ?>
+    </div>
 
 </div>
 
 <script src="<?= config('app.url') ?>/assets/js/form-ux.js?v=20260512_forms_fix"></script>
-
 </body>
 </html>
 

@@ -1,174 +1,114 @@
 <?php declare(strict_types=1); ?>
 
 <div class="page form-page">
-
     <div class="page-header">
-        <h1>Create Contractor</h1>
+        <h1>Новый контрагент</h1>
     </div>
 
-    <form method="POST" action="<?= config('app.url') ?>/contractors/store" class="form-card">
+    <form method="POST" action="<?= config('app.url') ?>/contractors/store" class="entity-form" id="contractorForm">
         <?= csrf_field() ?>
-
-        <div id="contractorFormValidationAlert" class="error form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
+        <div id="contractorFormValidationAlert" class="form-alert form-alert-error" style="display:none; margin-bottom: 16px;">
             Пожалуйста, исправьте ошибки формы
         </div>
 
-        <table class="form-table">
-            <tr><th colspan="2" class="form-section-title">Основные данные</th></tr>
-            <tr>
-                <td>
-                    <span class="form-label"><span class="form-label-text">Name *</span><button type="button" class="form-help-button" data-help="Юридическое наименование компании или ФИО ИП.">?</button></span>
-                </td>
-                <td>
-                    <input type="text" name="name" value="<?= e($old['name'] ?? '') ?>">
-                    <div class="form-hint">Пример: ООО "Ромашка"</div>
-                    <div id="error-name" class="error"><?= e($errors['name'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="form-label"><span class="form-label-text">INN *</span><button type="button" class="form-help-button" data-help="Введите ИНН компании или ИП. Можно вставлять с пробелами, форма нормализует значение.">?</button></span>
-                </td>
-                <td>
-                    <input type="text" name="inn" value="<?= e($old['inn'] ?? '') ?>">
-                    <button type="button" id="contractorDadataAutofill" disabled>Автозаполнить</button>
-                    <div id="contractorDadataMessage" class="error" style="display:none;"></div>
-                    <div class="form-hint">10 цифр для юрлица, 12 цифр для ИП</div>
-                    <div id="error-inn" class="error"><?= e($errors['inn'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>KPP</td>
-                <td>
-                    <input type="text" name="kpp" value="<?= e($old['kpp'] ?? '') ?>">
-                    <div class="form-hint">Пример: 773601001</div>
-                    <div id="error-kpp" class="error"><?= e($errors['kpp'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>OGRN</td>
-                <td>
-                    <input type="text" name="ogrn" value="<?= e($old['ogrn'] ?? '') ?>">
-                    <div class="form-hint">Пример: 1027700132195</div>
-                    <div id="error-ogrn" class="error"><?= e($errors['ogrn'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>OKVED</td>
-                <td>
-                    <input type="text" name="okved" value="<?= e($old['okved'] ?? '') ?>">
-                    <div class="form-hint">Пример: 52.29</div>
-                    <div id="error-okved" class="error"><?= e($errors['okved'] ?? '') ?></div>
-                </td>
-            </tr>
+        <div class="form-body">
+            <!-- Основные данные -->
+            <div class="form-section">
+                <div class="form-section-title">Основные данные</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-name">Наименование *</label>
+                        <input id="field-name" type="text" name="name" class="field-input" value="<?= e($old['name'] ?? '') ?>">
+                        <div id="error-name" class="field-msg is-error"><?= e($errors['name'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">Контакты</th></tr>
-            <tr>
-                <td>Primary Contact Phone</td>
-                <td>
-                    <input type="text" name="contact1_phone" value="<?= e($old['contact1_phone'] ?? '') ?>">
-                    <div class="form-hint">Можно вставить: 8 (999) 123-45-67</div>
-                </td>
-            </tr>
-            <tr>
-                <td>Primary Contact Email</td>
-                <td>
-                    <input type="text" name="contact1_email" value="<?= e($old['contact1_email'] ?? '') ?>">
-                    <div class="form-hint">Пример: test@test.ru</div>
-                    <div id="error-contact1_email" class="error"><?= e($errors['contact1_email'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Primary Contact Name</td>
-                <td>
-                    <input type="text" name="contact1_name" value="<?= e($old['contact1_name'] ?? '') ?>">
-                    <div class="form-hint">Пример: Иванов Иван Иванович</div>
-                    <div id="error-contact1_name" class="error"><?= e($errors['contact1_name'] ?? '') ?></div>
-                </td>
-            </tr>
+                    <div class="field">
+                        <label class="field-label" for="field-inn">ИНН *</label>
+                        <input id="field-inn" type="text" name="inn" class="field-input" autocomplete="off" value="<?= e($old['inn'] ?? '') ?>" placeholder="10 или 12 цифр">
+                        <div class="form-hint">10 цифр для юрлица, 12 для ИП</div>
+                        <div id="error-inn" class="field-msg is-error"><?= e($errors['inn'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">Адреса</th></tr>
-            <tr>
-                <td>Legal Address</td>
-                <td><textarea name="legal_address" rows="4"><?= e($old['legal_address'] ?? '') ?></textarea></td>
-            </tr>
-            <tr>
-                <td>Actual Address</td>
-                <td><textarea name="actual_address" rows="4"><?= e($old['actual_address'] ?? '') ?></textarea></td>
-            </tr>
+                    <div class="field">
+                        <label class="field-label" for="field-kpp">КПП</label>
+                        <input id="field-kpp" type="text" name="kpp" class="field-input" value="<?= e($old['kpp'] ?? '') ?>" placeholder="9 цифр">
+                        <div class="form-hint">9 цифр</div>
+                        <div id="error-kpp" class="field-msg is-error"><?= e($errors['kpp'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">Реквизиты</th></tr>
-            <tr>
-                <td>Director</td>
-                <td>
-                    <input type="text" name="director" value="<?= e($old['director'] ?? '') ?>">
-                    <div id="error-director" class="error"><?= e($errors['director'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Director Post</td>
-                <td><input type="text" name="director_post" value="<?= e($old['director_post'] ?? '') ?>"></td>
-            </tr>
+                    <div class="field">
+                        <label class="field-label" for="field-ogrn">ОГРН</label>
+                        <input id="field-ogrn" type="text" name="ogrn" class="field-input" value="<?= e($old['ogrn'] ?? '') ?>" placeholder="13 или 15 цифр">
+                        <div class="form-hint">13 цифр для юрлица, 15 для ИП</div>
+                        <div id="error-ogrn" class="field-msg is-error"><?= e($errors['ogrn'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">Банк</th></tr>
-            <tr>
-                <td>Bank Name</td>
-                <td>
-                    <input type="text" name="bank_name" value="<?= e($old['bank_name'] ?? '') ?>">
-                    <div id="error-bank_name" class="error"><?= e($errors['bank_name'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Bank Account</td>
-                <td>
-                    <input type="text" name="bank_account" value="<?= e($old['bank_account'] ?? '') ?>">
-                    <div class="form-hint">20 цифр</div>
-                    <div id="error-bank_account" class="error"><?= e($errors['bank_account'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Bank Corr Account</td>
-                <td>
-                    <input type="text" name="bank_corr_account" value="<?= e($old['bank_corr_account'] ?? '') ?>">
-                    <div id="error-bank_corr_account" class="error"><?= e($errors['bank_corr_account'] ?? '') ?></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Bank BIK</td>
-                <td>
-                    <input type="text" name="bank_bik" value="<?= e($old['bank_bik'] ?? '') ?>">
-                    <div class="form-hint">9 цифр</div>
-                    <div id="error-bank_bik" class="error"><?= e($errors['bank_bik'] ?? '') ?></div>
-                </td>
-            </tr>
+                    <div class="field">
+                        <label class="field-label" for="field-legal_address">Юридический адрес</label>
+                        <input id="field-legal_address" type="text" name="legal_address" class="field-input" value="<?= e($old['legal_address'] ?? '') ?>">
+                        <div id="error-legal_address" class="field-msg is-error"><?= e($errors['legal_address'] ?? '') ?></div>
+                    </div>
 
-            <tr><th colspan="2" class="form-section-title">Комментарии и статус</th></tr>
-            <tr>
-                <td>Comments</td>
-                <td><textarea name="comments" rows="4"><?= e($old['comments'] ?? '') ?></textarea></td>
-            </tr>
-            <tr>
-                <td>Status</td>
-                <td>
-                    <select name="status">
-                        <option value="active" <?= ($old['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
-                        <option value="blocked" <?= ($old['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option>
-                        <option value="archive" <?= ($old['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
+                    <div class="field">
+                        <label class="field-label" for="field-physical_address">Фактический адрес</label>
+                        <input id="field-physical_address" type="text" name="physical_address" class="field-input" value="<?= e($old['physical_address'] ?? '') ?>">
+                        <div id="error-physical_address" class="field-msg is-error"><?= e($errors['physical_address'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="form-actions" style="margin-top:20px;">
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a href="<?= config('app.url') ?>/contractors" class="btn">Cancel</a>
+            <!-- Контакты -->
+            <div class="form-section">
+                <div class="form-section-title">Контакты</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-contact_person">Контактное лицо</label>
+                        <input id="field-contact_person" type="text" name="contact_person" class="field-input" value="<?= e($old['contact_person'] ?? '') ?>">
+                        <div id="error-contact_person" class="field-msg is-error"><?= e($errors['contact_person'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-contact_phone">Телефон</label>
+                        <input id="field-contact_phone" type="text" name="contact_phone" class="field-input" value="<?= e($old['contact_phone'] ?? '') ?>">
+                        <div id="error-contact_phone" class="field-msg is-error"><?= e($errors['contact_phone'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label" for="field-contact_email">Email</label>
+                        <input id="field-contact_email" type="text" name="contact_email" class="field-input" value="<?= e($old['contact_email'] ?? '') ?>">
+                        <div id="error-contact_email" class="field-msg is-error"><?= e($errors['contact_email'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Комментарии и статус -->
+            <div class="form-section">
+                <div class="form-section-title">Комментарии и статус</div>
+                <div class="form-grid">
+                    <div class="field">
+                        <label class="field-label" for="field-status">Status</label>
+                        <select id="field-status" name="status" class="field-select">
+                            <option value="active" <?= ($old['status'] ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
+                            <option value="blocked" <?= ($old['status'] ?? '') === 'blocked' ? 'selected' : '' ?>>Blocked</option>
+                            <option value="archive" <?= ($old['status'] ?? '') === 'archive' ? 'selected' : '' ?>>Archive</option>
+                        </select>
+                        <div id="error-status" class="field-msg is-error"><?= e($errors['status'] ?? '') ?></div>
+                    </div>
+
+                    <div class="field" style="grid-column: 1 / -1;">
+                        <label class="field-label" for="field-comments">Comments</label>
+                        <textarea id="field-comments" name="comments" class="field-textarea" rows="3"><?= e($old['comments'] ?? '') ?></textarea>
+                        <div id="error-comments" class="field-msg is-error"><?= e($errors['comments'] ?? '') ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="<?= config('app.url') ?>/contractors" class="btn btn-ghost">Отмена</a>
+            <button type="submit" class="btn btn-primary">Создать</button>
         </div>
     </form>
 
-    <script>
-        window.contractorDadataLookupUrl = "<?= config('app.url') ?>/contractors/dadata/lookup";
-    </script>
-    <script src="<?= config('app.url') ?>/assets/js/contractors-form.js"></script>
-    <script src="<?= config('app.url') ?>/assets/js/contractor-dadata.js"></script>
-
+    <script src="<?= config('app.url') ?>/assets/js/contractors-form.js?v=20260512_forms_fix"></script>
 </div>
