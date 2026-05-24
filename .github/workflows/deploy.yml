@@ -1,4 +1,4 @@
-﻿name: Deploy TransportERP v3
+name: Deploy TransportERP v3
 
 on:
   push:
@@ -82,7 +82,7 @@ jobs:
 
             echo "== Recent app log =="
             if [ -f storage/logs/app.log ]; then
-              tail -80 storage/logs/app.log
+              tail -80 storage/logs/app.log || true
             else
               echo "storage/logs/app.log not found"
             fi
