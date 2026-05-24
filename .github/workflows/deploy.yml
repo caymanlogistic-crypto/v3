@@ -1,0 +1,90 @@
+﻿name: Deploy TransportERP v3
+
+on:
+  push:
+    branches:
+      - feature/backend-contractors
+
+concurrency:
+  group: transporter-v3-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -e
+
+            echo "== TransportERP v3 autodeploy started =="
+
+            cd "${{ secrets.DEPLOY_PATH }}"
+
+            echo "== Current directory =="
+            pwd
+
+            echo "== Current branch =="
+            git rev-parse --abbrev-ref HEAD || true
+
+            echo "== Fetch latest code =="
+            git fetch origin "${{ secrets.DEPLOY_BRANCH }}"
+
+            echo "== Reset server to GitHub branch =="
+            git reset --hard "origin/${{ secrets.DEPLOY_BRANCH }}"
+
+            echo "== Git status after reset =="
+            git status --short
+
+            echo "== PHP version =="
+            /usr/bin/php8.4 -v
+
+            echo "== Composer autoload =="
+            if [ -f composer.phar ]; then
+              /usr/bin/php8.4 composer.phar install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+            elif command -v composer >/dev/null 2>&1; then
+              composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+            else
+              echo "Composer not found, skipping composer step"
+            fi
+
+            echo "== PHP syntax checks =="
+            /usr/bin/php8.4 -l public/index.php
+            /usr/bin/php8.4 -l bootstrap/app.php
+            /usr/bin/php8.4 -l routes/web.php
+
+            /usr/bin/php8.4 -l app/Views/layouts/main.php
+
+            /usr/bin/php8.4 -l app/Views/drivers/index.php
+            /usr/bin/php8.4 -l app/Views/drivers/create.php
+            /usr/bin/php8.4 -l app/Views/drivers/edit.php
+
+            /usr/bin/php8.4 -l app/Views/vehicles/index.php
+            /usr/bin/php8.4 -l app/Views/vehicles/create.php
+            /usr/bin/php8.4 -l app/Views/vehicles/edit.php
+
+            /usr/bin/php8.4 -l app/Views/contractors/index.php
+            /usr/bin/php8.4 -l app/Views/contractors/create.php
+            /usr/bin/php8.4 -l app/Views/contractors/edit.php
+
+            /usr/bin/php8.4 -l app/Views/crews/index.php
+            /usr/bin/php8.4 -l app/Views/crews/create.php
+            /usr/bin/php8.4 -l app/Views/crews/edit.php
+
+            echo "== Recent app log =="
+            if [ -f storage/logs/app.log ]; then
+              tail -80 storage/logs/app.log
+            else
+              echo "storage/logs/app.log not found"
+            fi
+
+            echo "== TransportERP v3 autodeploy finished successfully =="
